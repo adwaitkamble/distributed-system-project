@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "exp_05_7n_ring_majority_t3_20261011_065320_42c713",
+  "exp_id": "EXP-05",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T06:54:17.088096+00:00",
+  "duration_sec": 56.471,
+  "config": {
+    "exp_id": "EXP-05",
+    "name": "Coordinator Crash Failover Comparison",
+    "node_count": 7,
+    "algorithm": "ring",
+    "replication_policy": "majority",
+    "fault_scenario": "coord_crash",
+    "request_count": 25,
+    "concurrency": 2,
+    "warmup_count": 2,
+    "trial_idx": 3,
+    "output_dir": "data/experiments/matrix",
+    "project_name": "matrix_exp_05",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "exp_05_7n_ring_majority_t3_20261011_065320_42c713_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_05_7n_ring_majority_t3_20261011_065320_42c713_requests.ndjson",
+      "size_bytes": 8746,
+      "sha256": "a62d51b5377c24f42072154fc10212ca7b6e5c1bb6b8e1922fd72ede0100a308",
+      "record_count": 20
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "exp_05_7n_ring_majority_t3_20261011_065320_42c713_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_05_7n_ring_majority_t3_20261011_065320_42c713_telemetry.ndjson",
+      "size_bytes": 46328,
+      "sha256": "a1a4a9620995d180813d062c8a86305c54f8e22b12bce960f64ef5d7a8b72ff7",
+      "record_count": 98
+    },
+    "summary_json": {
+      "filename": "exp_05_7n_ring_majority_t3_20261011_065320_42c713_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_05_7n_ring_majority_t3_20261011_065320_42c713_summary.json",
+      "size_bytes": 5625,
+      "sha256": "fa862ca40c94b86a9f0a83d7fedad1f8550e528dfb7c9bdc27faba18116dcffe",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

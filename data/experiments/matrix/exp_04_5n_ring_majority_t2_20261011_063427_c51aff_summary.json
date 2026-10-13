@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "run_id": "exp_04_5n_ring_majority_t2_20261011_063427_c51aff",
+  "exp_id": "EXP-04",
+  "status": "FAILED",
+  "success": false,
+  "duration_sec": 27.963,
+  "timestamp_utc": "2026-10-11T06:34:55.954504+00:00",
+  "config": {
+    "exp_id": "EXP-04",
+    "name": "Ring Baseline (MAJORITY Policy)",
+    "node_count": 5,
+    "algorithm": "ring",
+    "replication_policy": "majority",
+    "fault_scenario": "none",
+    "request_count": 25,
+    "concurrency": 3,
+    "warmup_count": 3,
+    "trial_idx": 2,
+    "output_dir": "data/experiments/matrix",
+    "project_name": "matrix_exp_04",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "workload": null,
+  "container_telemetry": null,
+  "invariants": null,
+  "fault_metrics": {},
+  "errors": [
+    "Execution exception: Cluster failed to start: Failed to start cluster: Network matrix_exp_04_voting-net Creating \n Network matrix_exp_04_voting-net Created \n Container voting-node2-db Creating \n Container voting-node1-db Creating \n Container voting-node3-db Creating \n Container voting-node4-db Creating \n Container voting-node5-db Creating \n Container voting-node3-db Created \n Container voting-node3 Creating \n Container voting-node1-db Created \n Container voting-node1 Creating \n Container voting-node4-db Created \n Container voting-node4 Creating \n Container voting-node5-db Created \n Container voting-node5 Creating \n Container voting-node2-db Created \n Container voting-node2 Creating \n Container voting-node3 Created \n Container voting-node1 Created \n Container voting-node4 Created \n Container voting-node5 Created \n Container voting-node2 Created \n Container voting-node5-db Starting \n Container voting-node1-db Starting \n Container voting-node2-db Starting \n Container voting-node4-db Starting \n Container voting-node3-db Starting \n Container voting-node5-db Started \n Container voting-node5-db Waiting \n Container voting-node1-db Started \n Container voting-node1-db Waiting \n Container voting-node2-db Started \n Container voting-node2-db Waiting \n Container voting-node4-db Started \n Container voting-node4-db Waiting \n Container voting-node3-db Started \n Container voting-node3-db Waiting \n Container voting-node5-db Healthy \n Container voting-node5 Starting \n Container voting-node1-db Healthy \n Container voting-node1 Starting \n Container voting-node2-db Healthy \n Container voting-node2 Starting \n Container voting-node5 Started \n Container voting-node1 Started \n Container voting-node2 Started \n Container voting-node4-db Healthy \n Container voting-node4 Starting \n Container voting-node3-db Healthy \n Container voting-node3 Starting \n Container voting-node3 Started \nError response from daemon: failed to set up container networking: driver failed programming external connectivity on endpoint voting-node4 (c00ca55fa5e3c4067263398478c5963f9e993961f215ea486f232e09b84eab77): failed to bind host port 0.0.0.0:55054/tcp: address already in use"
+  ]
+}

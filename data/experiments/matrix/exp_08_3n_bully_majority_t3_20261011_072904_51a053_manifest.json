@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "exp_08_3n_bully_majority_t3_20261011_072904_51a053",
+  "exp_id": "EXP-08",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T07:29:31.671662+00:00",
+  "duration_sec": 27.076,
+  "config": {
+    "exp_id": "EXP-08",
+    "name": "Follower Rejoin & Catch-up Benchmark",
+    "node_count": 3,
+    "algorithm": "bully",
+    "replication_policy": "majority",
+    "fault_scenario": "follower_rejoin",
+    "request_count": 25,
+    "concurrency": 2,
+    "warmup_count": 2,
+    "trial_idx": 3,
+    "output_dir": "data/experiments/matrix",
+    "project_name": "matrix_exp_08",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "exp_08_3n_bully_majority_t3_20261011_072904_51a053_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_08_3n_bully_majority_t3_20261011_072904_51a053_requests.ndjson",
+      "size_bytes": 10910,
+      "sha256": "c025f2532d2145cb9dd08abcba925ad89ac120b329fa8b09586a0123afcceeac",
+      "record_count": 25
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "exp_08_3n_bully_majority_t3_20261011_072904_51a053_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_08_3n_bully_majority_t3_20261011_072904_51a053_telemetry.ndjson",
+      "size_bytes": 4283,
+      "sha256": "378299469859e64f216ba78e55962a07f37611729a0430d6621f4940d147f586",
+      "record_count": 9
+    },
+    "summary_json": {
+      "filename": "exp_08_3n_bully_majority_t3_20261011_072904_51a053_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_08_3n_bully_majority_t3_20261011_072904_51a053_summary.json",
+      "size_bytes": 3817,
+      "sha256": "2d977e6a07bb46d8e2b8f8e0e79f45e5be2d72527416784e5b0fb1e696367107",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

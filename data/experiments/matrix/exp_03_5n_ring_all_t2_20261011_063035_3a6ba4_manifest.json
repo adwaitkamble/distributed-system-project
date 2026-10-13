@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "exp_03_5n_ring_all_t2_20261011_063035_3a6ba4",
+  "exp_id": "EXP-03",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T06:31:01.331103+00:00",
+  "duration_sec": 25.948,
+  "config": {
+    "exp_id": "EXP-03",
+    "name": "Ring Baseline (ALL Policy)",
+    "node_count": 5,
+    "algorithm": "ring",
+    "replication_policy": "all",
+    "fault_scenario": "none",
+    "request_count": 25,
+    "concurrency": 3,
+    "warmup_count": 3,
+    "trial_idx": 2,
+    "output_dir": "data/experiments/matrix",
+    "project_name": "matrix_exp_03",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "exp_03_5n_ring_all_t2_20261011_063035_3a6ba4_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_03_5n_ring_all_t2_20261011_063035_3a6ba4_requests.ndjson",
+      "size_bytes": 11737,
+      "sha256": "62dac88ad8d2d3f4508ac03e67d95731d249c87702374874911c7a5d85841589",
+      "record_count": 28
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "exp_03_5n_ring_all_t2_20261011_063035_3a6ba4_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_03_5n_ring_all_t2_20261011_063035_3a6ba4_telemetry.ndjson",
+      "size_bytes": 4725,
+      "sha256": "4953bc52a8a810f6779b227af393bcc529b4c3b8564119aedc4b7c01d204a8b6",
+      "record_count": 10
+    },
+    "summary_json": {
+      "filename": "exp_03_5n_ring_all_t2_20261011_063035_3a6ba4_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_03_5n_ring_all_t2_20261011_063035_3a6ba4_summary.json",
+      "size_bytes": 4536,
+      "sha256": "af4f5e0be16d8de910d5f0d5966f0bab9899f9689b409cba6a70358b88631878",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

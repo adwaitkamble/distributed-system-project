@@ -1,0 +1,164 @@
+---
+# Phase 6.2 — Three-Node Docker Compose Cluster Profile
+# Architecture:
+#   node1, node2, node3 communicate over 'voting-net' bridge network.
+#   Inter-node gRPC uses Docker DNS service names (e.g. node1:50051, node2:50051, node3:50051).
+#   Each node has an isolated MySQL container ensuring independent durable state.
+#
+# Usage:
+#   docker compose -f docker/docker-compose.3node.yml up -d --build
+#   docker compose -f docker/docker-compose.3node.yml down -v
+
+services:
+  # ── Isolated MySQL Instances ──────────────────────────────────
+  node1-db:
+    image: mysql:8
+    container_name: voting-node1-db
+    environment:
+      MYSQL_ROOT_PASSWORD: votingpass
+      MYSQL_DATABASE: voting_node
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "33061:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pvotingpass"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 15s
+    networks:
+      - voting-net
+
+  node2-db:
+    image: mysql:8
+    container_name: voting-node2-db
+    environment:
+      MYSQL_ROOT_PASSWORD: votingpass
+      MYSQL_DATABASE: voting_node
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "33062:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pvotingpass"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 15s
+    networks:
+      - voting-net
+
+  node3-db:
+    image: mysql:8
+    container_name: voting-node3-db
+    environment:
+      MYSQL_ROOT_PASSWORD: votingpass
+      MYSQL_DATABASE: voting_node
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "33063:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pvotingpass"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 15s
+    networks:
+      - voting-net
+
+  # ── Distributed Nodes ─────────────────────────────────────────
+  node1:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: voting-node:latest
+    container_name: voting-node1
+    environment:
+      NODE_ID: 1
+      PEER_CONFIGURATION: "1:node1:50051,2:node2:50051,3:node3:50051"
+      INITIAL_COORDINATOR_ID: 3
+      GRPC_PORT: 50051
+      HTTP_PORT: 5000
+      ENABLE_WEB_BRIDGE: "true"
+      ELECTION_ALGORITHM: ${ELECTION_ALGORITHM:-bully}
+      REPLICATION_POLICY: ${REPLICATION_POLICY:-all}
+      AUTO_RECOVER: "true"
+      USE_SQLITE: "false"
+      DB_HOST: node1-db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: votingpass
+      DB_NAME: voting_node
+      LOG_LEVEL: INFO
+    ports:
+      - "5001:5000"
+      - "55051:50051"
+    depends_on:
+      node1-db:
+        condition: service_healthy
+    networks:
+      - voting-net
+
+  node2:
+    image: voting-node:latest
+    container_name: voting-node2
+    environment:
+      NODE_ID: 2
+      PEER_CONFIGURATION: "1:node1:50051,2:node2:50051,3:node3:50051"
+      INITIAL_COORDINATOR_ID: 3
+      GRPC_PORT: 50051
+      HTTP_PORT: 5000
+      ENABLE_WEB_BRIDGE: "true"
+      ELECTION_ALGORITHM: ${ELECTION_ALGORITHM:-bully}
+      REPLICATION_POLICY: ${REPLICATION_POLICY:-all}
+      AUTO_RECOVER: "true"
+      USE_SQLITE: "false"
+      DB_HOST: node2-db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: votingpass
+      DB_NAME: voting_node
+      LOG_LEVEL: INFO
+    ports:
+      - "5002:5000"
+      - "55052:50051"
+    depends_on:
+      node2-db:
+        condition: service_healthy
+    networks:
+      - voting-net
+
+  node3:
+    image: voting-node:latest
+    container_name: voting-node3
+    environment:
+      NODE_ID: 3
+      PEER_CONFIGURATION: "1:node1:50051,2:node2:50051,3:node3:50051"
+      INITIAL_COORDINATOR_ID: 3
+      GRPC_PORT: 50051
+      HTTP_PORT: 5000
+      ENABLE_WEB_BRIDGE: "true"
+      ELECTION_ALGORITHM: ${ELECTION_ALGORITHM:-bully}
+      REPLICATION_POLICY: ${REPLICATION_POLICY:-all}
+      AUTO_RECOVER: "true"
+      USE_SQLITE: "false"
+      DB_HOST: node3-db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: votingpass
+      DB_NAME: voting_node
+      LOG_LEVEL: INFO
+    ports:
+      - "5003:5000"
+      - "55053:50051"
+    depends_on:
+      node3-db:
+        condition: service_healthy
+    networks:
+      - voting-net
+
+networks:
+  voting-net:
+    driver: bridge

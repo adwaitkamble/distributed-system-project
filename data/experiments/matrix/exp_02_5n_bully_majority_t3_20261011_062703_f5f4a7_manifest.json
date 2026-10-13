@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "exp_02_5n_bully_majority_t3_20261011_062703_f5f4a7",
+  "exp_id": "EXP-02",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T06:27:27.479133+00:00",
+  "duration_sec": 24.447,
+  "config": {
+    "exp_id": "EXP-02",
+    "name": "Bully Baseline (MAJORITY Policy)",
+    "node_count": 5,
+    "algorithm": "bully",
+    "replication_policy": "majority",
+    "fault_scenario": "none",
+    "request_count": 25,
+    "concurrency": 3,
+    "warmup_count": 3,
+    "trial_idx": 3,
+    "output_dir": "data/experiments/matrix",
+    "project_name": "matrix_exp_02",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "exp_02_5n_bully_majority_t3_20261011_062703_f5f4a7_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_02_5n_bully_majority_t3_20261011_062703_f5f4a7_requests.ndjson",
+      "size_bytes": 12203,
+      "sha256": "4f8f9ec38f54e76edfc373f1a29f4c795ff207b0e2abd0e32d7a168031666e6e",
+      "record_count": 28
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "exp_02_5n_bully_majority_t3_20261011_062703_f5f4a7_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_02_5n_bully_majority_t3_20261011_062703_f5f4a7_telemetry.ndjson",
+      "size_bytes": 4778,
+      "sha256": "954c7fb456f99b19f3f72cfbc1b3ef31039fc17ef0ca726866eb39b44bd6e6e3",
+      "record_count": 10
+    },
+    "summary_json": {
+      "filename": "exp_02_5n_bully_majority_t3_20261011_062703_f5f4a7_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_02_5n_bully_majority_t3_20261011_062703_f5f4a7_summary.json",
+      "size_bytes": 4574,
+      "sha256": "ad5fb737b028a71221de6fd8bb9dc1fc1e637eec70cf7bdf3d2f41b60c416161",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

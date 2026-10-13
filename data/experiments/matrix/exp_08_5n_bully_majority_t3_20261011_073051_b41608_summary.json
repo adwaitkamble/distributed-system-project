@@ -1,0 +1,166 @@
+{
+  "schema_version": "1.0",
+  "run_id": "exp_08_5n_bully_majority_t3_20261011_073051_b41608",
+  "exp_id": "EXP-08",
+  "status": "PASSED",
+  "success": true,
+  "duration_sec": 30.388,
+  "timestamp_utc": "2026-10-11T07:31:21.521914+00:00",
+  "config": {
+    "exp_id": "EXP-08",
+    "name": "Follower Rejoin & Catch-up Benchmark",
+    "node_count": 5,
+    "algorithm": "bully",
+    "replication_policy": "majority",
+    "fault_scenario": "follower_rejoin",
+    "request_count": 25,
+    "concurrency": 2,
+    "warmup_count": 2,
+    "trial_idx": 3,
+    "output_dir": "data/experiments/matrix",
+    "project_name": "matrix_exp_08",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "workload": {
+    "run_id": "exp_08_5n_bully_majority_t3_20261011_073051_b41608",
+    "target_endpoint": "http://localhost:5005",
+    "concurrency": 2,
+    "warmup_requests": 0,
+    "measured_requests": 25,
+    "total_requests": 25,
+    "attempted_requests": 25,
+    "successful_requests": 25,
+    "rejected_requests": 0,
+    "failed_requests": 0,
+    "duration_sec": 3.3687,
+    "successful_throughput_ops_sec": 7.42,
+    "overall_throughput_ops_sec": 7.42,
+    "throughput_ops_sec": 7.42,
+    "latency_stats_ms": {
+      "p50": 111.07,
+      "p90": 149.6,
+      "p95": 1682.7,
+      "p99": 2074.39,
+      "mean": 268.32,
+      "stddev": 542.66,
+      "min": 90.03,
+      "max": 2077.71
+    },
+    "raw_trace_path": "data/experiments/matrix\\exp_08_5n_bully_majority_t3_20261011_073051_b41608_requests.ndjson"
+  },
+  "container_telemetry": {
+    "total_samples": 20,
+    "sampling_interval_sec": 1.0,
+    "containers": {
+      "1": {
+        "container_name": "voting-node1",
+        "sample_count": 4,
+        "cpu_mean_pct": 1.12,
+        "cpu_max_pct": 3.05,
+        "mem_mean_bytes": 18397265,
+        "mem_max_bytes": 36846960,
+        "mem_limit_bytes": 0,
+        "net_rx_peak_bytes": 64599,
+        "net_tx_peak_bytes": 65800,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      },
+      "2": {
+        "container_name": "voting-node2",
+        "sample_count": 4,
+        "cpu_mean_pct": 2.73,
+        "cpu_max_pct": 8.18,
+        "mem_mean_bytes": 37887672,
+        "mem_max_bytes": 38136709,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 110000,
+        "net_tx_peak_bytes": 116000,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      },
+      "3": {
+        "container_name": "voting-node3",
+        "sample_count": 4,
+        "cpu_mean_pct": 2.76,
+        "cpu_max_pct": 7.87,
+        "mem_mean_bytes": 37955829,
+        "mem_max_bytes": 38388367,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 112000,
+        "net_tx_peak_bytes": 118000,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      },
+      "4": {
+        "container_name": "voting-node4",
+        "sample_count": 4,
+        "cpu_mean_pct": 2.69,
+        "cpu_max_pct": 7.9,
+        "mem_mean_bytes": 38031851,
+        "mem_max_bytes": 38377881,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 112000,
+        "net_tx_peak_bytes": 118000,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      },
+      "5": {
+        "container_name": "voting-node5",
+        "sample_count": 4,
+        "cpu_mean_pct": 5.33,
+        "cpu_max_pct": 16.55,
+        "mem_mean_bytes": 38889061,
+        "mem_max_bytes": 39153827,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 179000,
+        "net_tx_peak_bytes": 202000,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      }
+    },
+    "unavailable_metrics": [
+      "grpc_internal_queue_depth",
+      "lock_wait_nanoseconds"
+    ]
+  },
+  "invariants": {
+    "node_count": 5,
+    "coordinator_id": 5,
+    "election_term": 0,
+    "algorithm": "bully",
+    "replication_policy": "majority",
+    "total_cluster_election_messages": 0,
+    "election_messages_sent": 0,
+    "ok_messages_sent": 0,
+    "coord_messages_sent": 0,
+    "last_election_duration_ms": 0.0,
+    "total_committed_votes": 25,
+    "tally": {
+      "Alice": 9,
+      "Bob": 8,
+      "Charlie": 8
+    },
+    "ghost_votes_demoted": 0,
+    "committed_vote_count": 25,
+    "invariants_passed": true,
+    "invariant_errors": []
+  },
+  "fault_metrics": {
+    "scenario": "follower_rejoin",
+    "rejoined_follower_id": 1,
+    "rejoin_settle_ms": 2318.32
+  },
+  "errors": []
+}

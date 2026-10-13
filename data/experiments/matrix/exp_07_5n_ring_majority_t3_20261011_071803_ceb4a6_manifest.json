@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "exp_07_5n_ring_majority_t3_20261011_071803_ceb4a6",
+  "exp_id": "EXP-07",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T07:19:21.213489+00:00",
+  "duration_sec": 78.012,
+  "config": {
+    "exp_id": "EXP-07",
+    "name": "Sequential Cascading Failover",
+    "node_count": 5,
+    "algorithm": "ring",
+    "replication_policy": "majority",
+    "fault_scenario": "cascading_crash",
+    "request_count": 25,
+    "concurrency": 2,
+    "warmup_count": 2,
+    "trial_idx": 3,
+    "output_dir": "data/experiments/matrix",
+    "project_name": "matrix_exp_07",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "exp_07_5n_ring_majority_t3_20261011_071803_ceb4a6_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_07_5n_ring_majority_t3_20261011_071803_ceb4a6_requests.ndjson",
+      "size_bytes": 8721,
+      "sha256": "a4a523c4bf79208c32b34ae79f22498155a86d0b321e0cbb75bbc867f283112e",
+      "record_count": 20
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "exp_07_5n_ring_majority_t3_20261011_071803_ceb4a6_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_07_5n_ring_majority_t3_20261011_071803_ceb4a6_telemetry.ndjson",
+      "size_bytes": 58333,
+      "sha256": "7994bf40c06288b81a55884693e3137e88cd7caeda245cf02aa61150c5ef31c0",
+      "record_count": 125
+    },
+    "summary_json": {
+      "filename": "exp_07_5n_ring_majority_t3_20261011_071803_ceb4a6_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_07_5n_ring_majority_t3_20261011_071803_ceb4a6_summary.json",
+      "size_bytes": 4840,
+      "sha256": "6c1d9d2a8967154e781229873255c0188ef1c2d44f6a4c554bae04c5aa0d0a49",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

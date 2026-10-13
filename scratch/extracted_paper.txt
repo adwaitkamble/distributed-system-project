@@ -1,0 +1,407 @@
+Pimpri Chinchwad Education Trust's
+
+Pimpri Chinchwad College of Engineering (PCCoE)
+
+(An Autonomous Institute)
+
+Affiliated to Savitribai Phule Pune University (SPPU)
+
+Group Members - Adwait Kamble [123B1D002], Advait Nathe [123B1D029], Nikhil Puppalwar [123B1D040]
+
+Guide: Mr Ganesh Deshmukh
+
+Topic: Distributed Voting System with Leader Election
+
+Introduction
+
+Colleges, organisations, communities and online platforms use voting and polling systems to collect votes from many users and compute a result. The simplest design uses one central server that receives every vote and counts it. It is easy to build, but the whole poll then depends on that one server. If it fails, voting stops, and any vote that was not yet stored can be lost.
+
+A distributed design spreads this work across several connected nodes. The nodes share voting information, and if one of them fails, another can take over coordination, so the system keeps running.
+
+This paper proposes a Distributed Voting System with Leader Election, a small-scale system built to demonstrate core Distributed Systems concepts: inter-node communication, leader election, failure detection, logical clocks, replication and consistent vote aggregation. Several server nodes run together, and one of them acts as the coordinator. When the coordinator fails, the others detect it and elect a replacement using the Bully or Ring algorithm. Lamport logical clocks order distributed events, each vote carries a unique Vote ID so it is never processed twice, and votes are replicated across nodes so they survive node failures. The system uses gRPC for communication and Docker to run the whole cluster on a single computer.
+
+●  Background and Limitations of Existing Systems
+
+Most simple polling applications follow a centralised client-server architecture, where one server receives requests, validates votes, stores them and calculates the result. This is simple to build, but it causes problems when the server fails or when many users vote at once:
+
+•  Single point of failure: A crash caused by a hardware, software or network fault makes the whole poll unavailable until the server is restored.
+
+•  Vote loss: A vote being processed at the moment of failure may never be stored, and no other server holds a copy of the latest voting state.
+
+•  Performance bottleneck: Every request passes through one server, so response time rises as the number of voters grows.
+
+•  Manual recovery: An administrator usually has to restart or restore the server, which adds downtime.
+
+Using multiple nodes removes these problems but introduces new ones. The nodes must agree on which of them coordinates, how events are ordered, how votes are replicated and how the system recovers after a failure. The proposed system is designed around these questions.
+
+●  Motivation
+
+The aim is a polling system that keeps working when one of its nodes fails. Instead of a permanent coordinator, the system lets the remaining nodes choose a new one when the current coordinator becomes unavailable. We use the Bully [12] and Ring [13] algorithms for this because they are the classical election algorithms in Distributed Systems and are part of our syllabus.
+
+Ordering is the second concern. Votes reach different nodes at different times, and the physical clocks on separate machines are never perfectly synchronised. Lamport logical clocks [14] give each important event a logical timestamp, so the nodes can agree on the order of events without relying on physical time.
+
+Recovery is the third. Replicating vote information lets a new coordinator rebuild the latest voting state after a failure, and unique Vote IDs make sure no vote is counted twice. The proposed system therefore shows how communication, leader election, logical clocks, replication and fault tolerance fit together in one reliable polling system.
+
+●  Problem Statement
+
+To design a distributed voting system that automatically detects coordinator failure, elects a replacement using the Bully or Ring algorithm, keeps a consistent order of voting events with Lamport clocks, and recovers the latest voting state from replicated storage without losing or double-counting votes.
+
+●  Objectives
+
+1) To review recent work on leader election, Raft-based consensus, fault tolerance and distributed voting.
+
+2) To implement Bully and Ring election among gRPC-connected nodes running in Docker containers.
+
+3) To order voting events consistently using Lamport logical clocks.
+
+4) To compare Bully and Ring on election time, message overhead and recovery time for 3, 5 and 7 nodes.
+
+●  Scope and Contributions of the Paper
+
+The proposed system is a small-scale system meant for educational and experimental use. It handles crash failures only, where a node stops responding; Byzantine (malicious) behaviour is not considered. Voter authentication, ballot secrecy and advanced security are also outside the current scope. Within this scope, the paper makes the following contributions:
+
+1) Distributed Polling Architecture: Several peer server nodes, one acting as coordinator, communicate through gRPC or socket-based messages (Fig. 1).
+
+2) Bully and Ring Leader Election: Both algorithms are implemented. When the coordinator fails, the remaining nodes start an election automatically and choose a new coordinator without manual intervention.
+
+3) Event Ordering: Votes and other key operations carry Lamport timestamps, giving a consistent order even when messages arrive at different times.
+
+4) Replicated Vote Storage: Vote data is kept on several nodes so the voting state can be rebuilt after a failure, and each vote carries a unique Vote ID to block duplicate processing.
+
+5) Fault Detection and Recovery: Nodes exchange heartbeat messages. A missed heartbeat from the coordinator triggers an election, and coordination moves to the newly elected node (Fig. 2).
+
+6) Performance Evaluation: The system will be tested with 3, 5 and 7 nodes. Election time, message overhead, vote processing time, recovery time, throughput, duplicate votes and lost votes will be measured, and Bully will be compared with Ring.
+
+Literature review
+
+Recent Distributed Systems research on leader election, consensus, fault tolerance, replicated logs and distributed decision-making relates directly to the proposed system, because a distributed poll needs its nodes to coordinate, recover from failures and keep a consistent view of the votes.
+
+Election research covers both the classical Bully and Ring algorithms and newer versions that try to cut message overhead and election time. Consensus research, especially on Raft [15], is relevant because Raft combines leader election with replicated log management, the same two ideas our system relies on. Work on distributed voting itself studies how decisions are made when voters are split across groups, which gives a theoretical view of polling across nodes.
+
+●  Review of Specific Studies
+
+The studies below were chosen because they relate directly to the main parts of the proposed system: leader election, fault tolerance, consensus, replicated state and distributed voting.
+
+A. Leader election [1]–[4]
+
+Patel and Tere [1] propose an election algorithm that exchanges fewer messages than Bully and Ring while recovering better from faults. Alkohali et al. [2] reduce Bully's message traffic by making one node responsible for running the election and giving each node a time span. Frei et al. [3] study election on rings where message contents can be corrupted, and show that their O(n·ID_max) message cost is close to the best possible in that model. Supase and Pansare [4] elect a coordinator that tolerates node failures and security threats instead of simply picking the highest ID.
+
+B. Raft-based consensus [5]–[9]
+
+Kondru and Rajiakodi [5] add proxy leaders to Raft in RaftOptima and report 60% lower latency with up to 25 servers. Bai et al. [6] make Raft Byzantine fault tolerant in RaBFT using secret sharing and a committee that shares the leader's load. Kondru and Rajiakodi [7] also test Raft under node failures and network partitions with a discrete-event simulator. Wang et al. [8] speed up elections in SCRaft by naming a successor leader in advance, and Du et al. [9] let followers call an election when the leader performs poorly.
+
+C. Distributed voting [10], [11]
+
+Filos-Ratsikas and Voudouris [10] analyse how well district-based voting mechanisms choose a winner. Dang and Hwang [11] survey consensus methods across distributed systems, blockchain and voting, tracing the idea from classical voting theory to Paxos and Raft.
+
+Table 1 summarises these studies. Together they show that leader election, fault tolerance, replicated state and consensus are closely linked problems. Raft-based work treats election and log replication as the core of consistent distributed state [5]–[9], while other work continues to refine Bully, Ring and fault-tolerant coordinator election [1]–[4].
+
+Literature Review
+
+Sr. No.
+
+Paper Title
+
+Journal Name
+
+Year
+
+Publisher
+
+Architecture / Algorithm
+
+Major Findings
+
+Limitations
+
+Why Relevant to Distributed Systems
+
+DOI
+
+Paper Link
+
+1
+
+Enhancing Election Algorithms for Distributed Systems: Reducing Message Complexity and Improving Fault Tolerance
+
+International Journal of Advanced Research in Computer Science
+
+2025
+
+Zenodo / IJARCS
+
+Enhanced Bully and Ring algorithms with optimized message passing
+
+Reduces message complexity by 30–40% compared to classical Bully; improves fault tolerance under multiple node crashes
+
+Simulation-based; no container or real-network deployment
+
+Directly supports your comparison of Bully vs Ring algorithms and fault-tolerant coordinator election
+
+10.5281/zenodo.14958510
+
+View Paper
+
+2
+
+SCRaft: A Consensus Algorithm with Pre-Designated Successive Leader for Reduced Election Latency
+
+IEEE HPCC 2024
+
+2024
+
+IEEE
+
+SCRaft (Raft variant with pre-designated successor leader)
+
+Reduces election latency by 50–70% compared to standard Raft; avoids vote splitting during leader failure
+
+Focused on Raft consensus; does not evaluate classical Bully/Ring algorithms
+
+Useful for discussing how leader election can be optimized beyond classical algorithms; baseline for election latency metrics
+
+10.1109/HPCC62061.2024.00040
+
+View Paper
+
+3
+
+Deterministic Self-Stabilising Leader Election for Programmable Matter with Constant Memory
+
+arXiv Preprint
+
+2024
+
+arXiv
+
+Self-stabilizing leader election with constant memory per node
+
+Guarantees unique leader election even after arbitrary transient faults; uses O(1) memory per process
+
+Targets programmable matter (nano-scale); not applicable to server clusters
+
+Relevant for fault tolerance and recovery after coordinator crashes; shows self-stabilization concepts
+
+arXiv:2408.08775
+
+View Paper
+
+4
+
+PureLottery: Fair and Bias-Resistant Leader Election
+
+arXiv Preprint
+
+2024
+
+arXiv
+
+PureLottery protocol (cryptographic leader election)
+
+Achieves fairness (each node has equal probability of becoming leader) and bias-resistance even with malicious nodes
+
+Requires cryptographic primitives; higher computational overhead
+
+Useful for discussing fairness properties in leader selection; contrasts with highest-ID-wins Bully algorithm
+
+arXiv:2402.17459
+
+View Paper
+
+5
+
+FTI-TMR: A Fault Tolerance and Isolation Algorithm for Distributed Systems
+
+arXiv Preprint
+
+2025
+
+arXiv
+
+FTI-TMR (Fault Tolerance and Isolation with Triple Modular Redundancy)
+
+Uses max-heap and majority voting for leader election; tolerates up to f faulty nodes in 3f+1 system
+
+Focused on TMR architectures; not evaluated for voting applications
+
+Directly relevant to your coordinator election and fault detection module; shows integration of voting with leader selection
+
+arXiv:2510.16896
+
+View Paper
+
+6
+
+Near-Linear Time Leader Election in Multiagent Networks
+
+AAMAS 2025
+
+2025
+
+IFAAMAS
+
+Randomized leader election with O(n log n) message complexity
+
+Achieves near-linear time leader election in large-scale multi-agent networks
+
+Assumes synchronous communication; not evaluated for crash faults
+
+Useful for discussing election latency metrics and message complexity trade-offs
+
+10.5555/3770462.3770583
+
+View Paper
+
+7
+
+A Novel Raft Consensus Algorithm Combining Comprehensive Evaluation and Byzantine Fault Tolerance (CB-Raft)
+
+Electronics (MDPI)
+
+2025
+
+MDPI
+
+CB-Raft (Raft with reputation-based leader selection and Byzantine fault tolerance)
+
+Improves consensus performance by 25–35%; resists Byzantine nodes through reputation scoring
+
+Focused on Byzantine faults; higher overhead than crash-fault models
+
+Useful for contrasting crash-fault (your model) vs Byzantine-fault models; shows reputation-based leader selection
+
+10.3390/electronics14050912
+
+View Paper
+
+8
+
+GFEA: Leader Election Algorithm for Choosing a Group Decision Facilitator
+
+Science, Engineering and Technology (SET) Journal
+
+2024
+
+SET Journal
+
+GFEA (hybrid Bully + Paxos for Ad Hoc networks)
+
+Combines Bully algorithm with Paxos consensus for fault-tolerant leader election; integrates failure detection
+
+Focused on wireless Ad Hoc networks; not evaluated for containerized systems
+
+Directly relevant to your integration of election with failure detection; shows hybrid algorithm design
+
+10.5281/set.2024.216
+
+View Paper
+
+9
+
+Exact Fault-Tolerant Consensus
+
+University of Glasgow Technical Report
+
+2023
+
+University of Glasgow
+
+Exact consensus with voting and decision phases
+
+Proposes exact fault-tolerant consensus protocol with formal guarantees on safety and liveness
+
+Theoretical focus; no implementation or performance evaluation
+
+Useful for discussing vote aggregation and consistency in your final tally; formal background on consensus
+
+N/A (Technical Report)
+
+View Paper
+
+10
+
+Robustness and Performance of Fault-Tolerant Consensus
+
+PhD Thesis, TU Munich
+
+2025
+
+Technical University of Munich
+
+Comprehensive analysis of fault-tolerant consensus and leader election
+
+Analyzes safety, liveness, and performance of various consensus protocols under different fault models
+
+Thesis format; not a peer-reviewed journal article
+
+Provides theoretical background on election safety and liveness properties; useful for literature review
+
+N/A (PhD Thesis)
+
+View Paper
+
+11
+
+Analysis of Fault-Tolerant Algorithms for Distributed Systems
+
+PhD Thesis, RTU
+
+2025
+
+Riga Technical University
+
+Survey of leader election, mutual exclusion, and consensus algorithms
+
+Comprehensive survey of fault-tolerant algorithms with comparative analysis
+
+Thesis format; no original implementation
+
+Good for literature review background on election, mutual exclusion, and consensus algorithms
+
+N/A (PhD Thesis)
+
+View Pap
+
+●  Research Gap and the Proposed Solution
+
+Existing research solves individual Distributed Systems problems well. Some studies focus on leader election [1]–[4], others on Raft-based consensus and replicated logs [5]–[9], and others on distributed voting [10], [11]. Most concentrate on one algorithm or a specialised setting, such as content-oblivious rings [3] or Byzantine environments [6]. None offers a small, easy-to-follow polling system that brings leader election, failure detection, logical event ordering, vote replication and consistent vote aggregation together in one application.
+
+The proposed system fills this gap. Server nodes communicate over gRPC, and one of them coordinates the poll. Nodes exchange heartbeats to detect failures, and when the coordinator stops responding, the rest run the Bully or Ring algorithm to elect a new one. The new coordinator rebuilds the latest voting state from the replicated vote log, Vote IDs prevent duplicates and Lamport timestamps keep events in order. Each mechanism has one clear job: election handles coordination, Lamport clocks handle ordering and replication handles recovery. Fig. 1 shows the architecture and Fig. 2 shows the failover process.
+
+Fig. 1. Proposed architecture of the Distributed Voting System with Leader Election
+
+Fig. 2. Coordinator failure detection and recovery flow
+
+The system will be tested by changing the number of nodes and deliberately stopping the current coordinator. Election time, message overhead, vote processing time, recovery time, throughput, duplicate votes and lost votes will be measured. This gives an experimental comparison of Bully and Ring while demonstrating practical concepts from the Distributed Systems syllabus.
+
+References
+
+[1]  S. Patel and G. Tere, "Enhancing election algorithms for distributed systems: Reducing message complexity and improving fault tolerance," Int. J. Soft Comput. Eng., vol. 15, no. 1, 2025, doi: 10.35940/ijsce.F8203.15010325.
+
+[2]  Y. Wang, H. Luo, G. Sun, and H. Yu, "SCRaft: Achieving fast and stable elections in Raft consensus algorithm," in Proc. IEEE Int. Conf. High Perform. Comput. Commun. (HPCC), 2024, pp. 561–568, doi: 10.1109/HPCC64274.2024.00081.
+
+[3]  J. Chalopin, S. Das, and M. Kokkou, "Deterministic self-stabilising leader election for programmable matter with constant memory," in Proc. 38th Int. Symp. Distrib. Comput. (DISC), LIPIcs vol. 319, 2024, pp. 13:1–13:17, doi: 10.4230/LIPIcs.DISC.2024.13.
+
+[4]  J. Ballweg, "PureLottery: Fair and bias-resistant leader election with a novel single-elimination tournament algorithm," B.Sc. thesis, Tech. Univ. Munich, 2024, arXiv:2402.17459.
+
+[5]  Y. Hu, "FTI-TMR: A fault tolerance and isolation algorithm for interconnected multicore systems," arXiv:2510.16896, 2025.
+
+[6]  A. D. Kshemkalyani, M. Kumar, A. R. Molla, and G. Sharma, "Near-linear time leader election in multiagent networks," in Proc. 24th Int. Conf. Auton. Agents Multiagent Syst. (AAMAS), 2025, pp. 1218–1226, doi: 10.5555/3709347.3743753.
+
+[7]  X. Deng, Z. Yu, W. Xiong et al., "A novel Raft consensus algorithm combining comprehensive evaluation partitioning and Byzantine fault tolerance," J. Supercomput., vol. 80, pp. 26363–26393, 2024, doi: 10.1007/s11227-024-06438-6.
+
+[8]  S. Mohammedi Taieb and M. A. Laredj, "GFEA: Leader election algorithm for choosing a group decision support system facilitator," Sci. Eng. Technol., vol. 5, no. 2, 2025, doi: 10.54327/set2025/v5.i2.216.
+
+[9]  Z. Xu, Y. Li, C. Feng, and L. Zhang, "Exact fault-tolerant consensus with voting validity," in Proc. IEEE Int. Parallel Distrib. Process. Symp. (IPDPS), 2023, pp. 842–852, doi: 10.1109/IPDPS54959.2023.00089.
+
+[10]  R. C. von Seck, "Robustness and performance of fault-tolerant consensus," Ph.D. dissertation, Tech. Univ. Munich, Munich, Germany, 2025.
+
+[11]  "Analysis of fault-tolerant algorithms for distributed systems," Ph.D. thesis, Riga Tech. Univ., Riga, Latvia, 2025.
+
+[12]  H. Garcia-Molina, "Elections in a distributed computing system," IEEE Trans. Comput., vol. C-31, no. 1, pp. 48–59, Jan. 1982.
+
+[13]  E. Chang and R. Roberts, "An improved algorithm for decentralized extrema-finding in circular configurations of processes," Commun. ACM, vol. 22, no. 5, pp. 281–283, 1979.
+
+[14]  L. Lamport, "Time, clocks, and the ordering of events in a distributed system," Commun. ACM, vol. 21, no. 7, pp. 558–565, 1978.
+
+[15]  D. Ongaro and J. Ousterhout, "In search of an understandable consensus algorithm," in Proc. USENIX Annu. Tech. Conf., 2014, pp. 305–319.

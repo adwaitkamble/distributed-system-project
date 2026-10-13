@@ -1,0 +1,62 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Environment variables, credentials & local secrets
+.env
+.env.*
+*.env.local
+*.pem
+*.key
+*.cert
+
+# Database files & SQLite journals
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+
+# Temporary scratch outputs, logs & debug runs
+scratch/*.db*
+scratch/debug_*/
+scratch/__pycache__/
+*.log
+*.tmp
+
+# Frontend dependencies & build artifacts
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# Test caches & coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.ruff_cache/
+extracted_paper_text.txt
+
+# Editor & OS artifacts
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Explicit preservation of verified experimental artifacts
+!data/experiments/matrix/summary/benchmark_summary.csv
+!data/experiments/matrix/manifests/
+!data/experiments/matrix/requests/
+!data/experiments/matrix/telemetry/
+!data/experiments/matrix/summaries/

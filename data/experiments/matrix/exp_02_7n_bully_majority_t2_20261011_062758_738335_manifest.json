@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "exp_02_7n_bully_majority_t2_20261011_062758_738335",
+  "exp_id": "EXP-02",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T06:28:30.384109+00:00",
+  "duration_sec": 31.957,
+  "config": {
+    "exp_id": "EXP-02",
+    "name": "Bully Baseline (MAJORITY Policy)",
+    "node_count": 7,
+    "algorithm": "bully",
+    "replication_policy": "majority",
+    "fault_scenario": "none",
+    "request_count": 25,
+    "concurrency": 3,
+    "warmup_count": 3,
+    "trial_idx": 2,
+    "output_dir": "data/experiments/matrix",
+    "project_name": "matrix_exp_02",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "exp_02_7n_bully_majority_t2_20261011_062758_738335_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_02_7n_bully_majority_t2_20261011_062758_738335_requests.ndjson",
+      "size_bytes": 12211,
+      "sha256": "6ef8e1f2f89987f9c522cace2280ac6e1a01e20f705ad344c238035da487b51b",
+      "record_count": 28
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "exp_02_7n_bully_majority_t2_20261011_062758_738335_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_02_7n_bully_majority_t2_20261011_062758_738335_telemetry.ndjson",
+      "size_bytes": 6686,
+      "sha256": "3aa9070f6dcc9aab8d9df95c0aa285714f8e17cbe2eaaadbd8f03f6cff7c42ac",
+      "record_count": 14
+    },
+    "summary_json": {
+      "filename": "exp_02_7n_bully_majority_t2_20261011_062758_738335_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_02_7n_bully_majority_t2_20261011_062758_738335_summary.json",
+      "size_bytes": 5433,
+      "sha256": "562cee38fadd1e122555442a9f9790a59114c21aef256df13bddf297bc96c595",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

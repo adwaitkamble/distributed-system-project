@@ -1,0 +1,75 @@
+{
+  "phase": "8.3",
+  "audit_name": "Final Demonstration, Release Verification and Sign-off",
+  "timestamp": "2026-10-12T20:24:00+05:30",
+  "overall_verdict": "BLOCKED",
+  "verdict_rationale": "Live cluster demonstration blocked due to Docker Desktop Linux engine unavailability. Preflight checks, codebase freeze integrity, and non-Docker regression test suite fully verified and passed.",
+  "environment": {
+    "os": "Windows",
+    "python_version": "Python 3.11.9",
+    "git_root": "D:/",
+    "git_parent_commits": 0,
+    "git_parent_remotes": 0,
+    "project_git_status": "Untracked directory within parent D:/ drive root; no nested git initialized",
+    "docker_desktop_installed": true,
+    "docker_desktop_path": "C:\\Program Files\\Docker\\Docker\\Docker Desktop.exe",
+    "docker_client_version": "29.4.0",
+    "docker_engine_status": "UNAVAILABLE",
+    "docker_service_status": "com.docker.service Stopped",
+    "docker_connection_error": "failed to connect to the docker API at npipe:////./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified."
+  },
+  "preflight_checks": {
+    "project_root_verified": "d:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System",
+    "compose_files_verified": [
+      "docker/docker-compose.single.yml",
+      "docker/docker-compose.3node.yml",
+      "docker/docker-compose.5node.yml",
+      "docker/docker-compose.7node.yml"
+    ],
+    "database_init_script": "docker/init.sql",
+    "container_naming_convention": "voting-node{id} and voting-node{id}-db",
+    "network_name": "voting-net",
+    "ports_verified": {
+      "web_rest": "5000 (single), 5001-5003 (3-node), 5001-5005 (5-node), 5001-5007 (7-node)",
+      "grpc": "50051 (single), 55051-55053 (3-node), 55051-55055 (5-node), 55051-55057 (7-node)",
+      "mysql": "33060 (single), 33061-33063 (3-node), 33061-33065 (5-node), 33061-33067 (7-node)"
+    }
+  },
+  "regression_suite": {
+    "command": ".venv\\Scripts\\pytest.exe tests/ -q",
+    "total_collected": 274,
+    "passed": 235,
+    "skipped": 39,
+    "failed": 0,
+    "errors": 0,
+    "duration_seconds": 64.25,
+    "skip_breakdown": {
+      "tests/test_docker_cluster_3node.py": 5,
+      "tests/test_docker_cluster_5node.py": 5,
+      "tests/test_docker_cluster_5node_edge_cases.py": 4,
+      "tests/test_docker_cluster_7node.py": 10,
+      "tests/test_docker_single.py": 8,
+      "tests/test_mysql_smoke.py": 6,
+      "tests/test_recovery.py": 1
+    },
+    "skip_reason": "Live Docker cluster profiles and live MySQL containers not running on localhost"
+  },
+  "documentation_mismatches_identified": [
+    {
+      "file": "README.md",
+      "section": "Environment Configuration & Development Credentials",
+      "documented_value": "voting_db",
+      "actual_compose_value": "voting_node",
+      "recommendation": "Update README.md lines 125 & 143 to reference 'voting_node' matching docker-compose.*.yml and init.sql"
+    }
+  ],
+  "production_code_integrity": {
+    "node_directory_modified": false,
+    "api_directory_modified": false,
+    "consensus_modified": false,
+    "elections_modified": false,
+    "replication_modified": false,
+    "recovery_modified": false,
+    "schemas_modified": false
+  }
+}

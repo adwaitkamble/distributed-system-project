@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "smoke_72c_1n_bully_all_t1_20261011_053215_99bbdb",
+  "exp_id": "SMOKE-72C",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T05:32:39.303429+00:00",
+  "duration_sec": 23.607,
+  "config": {
+    "exp_id": "SMOKE-72C",
+    "name": "",
+    "node_count": 1,
+    "algorithm": "bully",
+    "replication_policy": "all",
+    "fault_scenario": "none",
+    "request_count": 5,
+    "concurrency": 1,
+    "warmup_count": 1,
+    "trial_idx": 1,
+    "output_dir": "data/experiments/smoke_72c",
+    "project_name": null,
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "smoke_72c_1n_bully_all_t1_20261011_053215_99bbdb_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\smoke_72c\\smoke_72c_1n_bully_all_t1_20261011_053215_99bbdb_requests.ndjson",
+      "size_bytes": 2536,
+      "sha256": "6026da73b7c28d94fecc60d1ca1bab0a54f5284dd839851587b51567b8584558",
+      "record_count": 6
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "smoke_72c_1n_bully_all_t1_20261011_053215_99bbdb_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\smoke_72c\\smoke_72c_1n_bully_all_t1_20261011_053215_99bbdb_telemetry.ndjson",
+      "size_bytes": 950,
+      "sha256": "b8acf75341c8781a0b73c824e21540612556bfd0b1d14fb42601c9a02b3fecca",
+      "record_count": 2
+    },
+    "summary_json": {
+      "filename": "smoke_72c_1n_bully_all_t1_20261011_053215_99bbdb_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\smoke_72c\\smoke_72c_1n_bully_all_t1_20261011_053215_99bbdb_summary.json",
+      "size_bytes": 2783,
+      "sha256": "85d8c517facd27506f9ea95b4a62a33d02eacf51fc43aafaf76fe1f4c48f0fdd",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

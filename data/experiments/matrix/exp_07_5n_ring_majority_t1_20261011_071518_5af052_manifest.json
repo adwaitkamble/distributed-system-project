@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "exp_07_5n_ring_majority_t1_20261011_071518_5af052",
+  "exp_id": "EXP-07",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T07:16:41.884146+00:00",
+  "duration_sec": 82.979,
+  "config": {
+    "exp_id": "EXP-07",
+    "name": "Sequential Cascading Failover",
+    "node_count": 5,
+    "algorithm": "ring",
+    "replication_policy": "majority",
+    "fault_scenario": "cascading_crash",
+    "request_count": 25,
+    "concurrency": 2,
+    "warmup_count": 2,
+    "trial_idx": 1,
+    "output_dir": "data/experiments/matrix",
+    "project_name": "matrix_exp_07",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "exp_07_5n_ring_majority_t1_20261011_071518_5af052_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_07_5n_ring_majority_t1_20261011_071518_5af052_requests.ndjson",
+      "size_bytes": 8726,
+      "sha256": "1ee9e7f9e041f927033ef905bb0aed52051e2fad5e049e4a8cfd38fa58e28bbc",
+      "record_count": 20
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "exp_07_5n_ring_majority_t1_20261011_071518_5af052_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_07_5n_ring_majority_t1_20261011_071518_5af052_telemetry.ndjson",
+      "size_bytes": 60637,
+      "sha256": "aad56d9920edf61964bfc1d2683fea2087c8b2ffe6fa7e3bcb0b30d40692bd2f",
+      "record_count": 130
+    },
+    "summary_json": {
+      "filename": "exp_07_5n_ring_majority_t1_20261011_071518_5af052_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_07_5n_ring_majority_t1_20261011_071518_5af052_summary.json",
+      "size_bytes": 4847,
+      "sha256": "1168fe4162a16c465eaa8a01fb6d449e625593d8683488d82c66dd7625e4c3bb",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

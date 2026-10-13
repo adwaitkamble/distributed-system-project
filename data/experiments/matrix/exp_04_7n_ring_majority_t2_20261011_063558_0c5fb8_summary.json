@@ -1,0 +1,192 @@
+{
+  "schema_version": "1.0",
+  "run_id": "exp_04_7n_ring_majority_t2_20261011_063558_0c5fb8",
+  "exp_id": "EXP-04",
+  "status": "PASSED",
+  "success": true,
+  "duration_sec": 36.712,
+  "timestamp_utc": "2026-10-11T06:36:35.413953+00:00",
+  "config": {
+    "exp_id": "EXP-04",
+    "name": "Ring Baseline (MAJORITY Policy)",
+    "node_count": 7,
+    "algorithm": "ring",
+    "replication_policy": "majority",
+    "fault_scenario": "none",
+    "request_count": 25,
+    "concurrency": 3,
+    "warmup_count": 3,
+    "trial_idx": 2,
+    "output_dir": "data/experiments/matrix",
+    "project_name": "matrix_exp_04",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "workload": {
+    "run_id": "exp_04_7n_ring_majority_t2_20261011_063558_0c5fb8",
+    "target_endpoint": "http://localhost:5007",
+    "concurrency": 3,
+    "warmup_requests": 3,
+    "measured_requests": 25,
+    "total_requests": 28,
+    "attempted_requests": 25,
+    "successful_requests": 25,
+    "rejected_requests": 0,
+    "failed_requests": 0,
+    "duration_sec": 0.9758,
+    "successful_throughput_ops_sec": 25.62,
+    "overall_throughput_ops_sec": 25.62,
+    "throughput_ops_sec": 25.62,
+    "latency_stats_ms": {
+      "p50": 114.57,
+      "p90": 132.53,
+      "p95": 137.81,
+      "p99": 147.17,
+      "mean": 114.16,
+      "stddev": 16.57,
+      "min": 77.22,
+      "max": 149.91
+    },
+    "raw_trace_path": "data/experiments/matrix\\exp_04_7n_ring_majority_t2_20261011_063558_0c5fb8_requests.ndjson"
+  },
+  "container_telemetry": {
+    "total_samples": 14,
+    "sampling_interval_sec": 1.0,
+    "containers": {
+      "1": {
+        "container_name": "voting-node1",
+        "sample_count": 2,
+        "cpu_mean_pct": 2.15,
+        "cpu_max_pct": 2.78,
+        "mem_mean_bytes": 38063308,
+        "mem_max_bytes": 38231080,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 123000,
+        "net_tx_peak_bytes": 130000,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      },
+      "2": {
+        "container_name": "voting-node2",
+        "sample_count": 2,
+        "cpu_mean_pct": 5.65,
+        "cpu_max_pct": 10.83,
+        "mem_mean_bytes": 38157680,
+        "mem_max_bytes": 38283509,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 126000,
+        "net_tx_peak_bytes": 134000,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      },
+      "3": {
+        "container_name": "voting-node3",
+        "sample_count": 2,
+        "cpu_mean_pct": 2.04,
+        "cpu_max_pct": 2.63,
+        "mem_mean_bytes": 38100008,
+        "mem_max_bytes": 38262538,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 124000,
+        "net_tx_peak_bytes": 131000,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      },
+      "4": {
+        "container_name": "voting-node4",
+        "sample_count": 2,
+        "cpu_mean_pct": 0.96,
+        "cpu_max_pct": 1.48,
+        "mem_mean_bytes": 38147194,
+        "mem_max_bytes": 38273024,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 125000,
+        "net_tx_peak_bytes": 132000,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      },
+      "5": {
+        "container_name": "voting-node5",
+        "sample_count": 2,
+        "cpu_mean_pct": 0.97,
+        "cpu_max_pct": 1.49,
+        "mem_mean_bytes": 38141952,
+        "mem_max_bytes": 38273024,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 125000,
+        "net_tx_peak_bytes": 132000,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      },
+      "6": {
+        "container_name": "voting-node6",
+        "sample_count": 2,
+        "cpu_mean_pct": 1.02,
+        "cpu_max_pct": 1.47,
+        "mem_mean_bytes": 38047580,
+        "mem_max_bytes": 38178652,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 125000,
+        "net_tx_peak_bytes": 131000,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      },
+      "7": {
+        "container_name": "voting-node7",
+        "sample_count": 2,
+        "cpu_mean_pct": 4.06,
+        "cpu_max_pct": 4.87,
+        "mem_mean_bytes": 39824916,
+        "mem_max_bytes": 39877345,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 228000,
+        "net_tx_peak_bytes": 273000,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      }
+    },
+    "unavailable_metrics": [
+      "grpc_internal_queue_depth",
+      "lock_wait_nanoseconds"
+    ]
+  },
+  "invariants": {
+    "node_count": 7,
+    "coordinator_id": 7,
+    "election_term": 4,
+    "algorithm": "ring",
+    "replication_policy": "majority",
+    "total_cluster_election_messages": 22,
+    "election_messages_sent": 8,
+    "ok_messages_sent": 8,
+    "coord_messages_sent": 6,
+    "last_election_duration_ms": 191.09,
+    "total_committed_votes": 28,
+    "tally": {
+      "Alice": 10,
+      "Bob": 9,
+      "Charlie": 9
+    },
+    "ghost_votes_demoted": 0,
+    "committed_vote_count": 28,
+    "invariants_passed": true,
+    "invariant_errors": []
+  },
+  "fault_metrics": {},
+  "errors": []
+}

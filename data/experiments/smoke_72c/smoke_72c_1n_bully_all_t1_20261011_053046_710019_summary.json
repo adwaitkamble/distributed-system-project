@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "run_id": "smoke_72c_1n_bully_all_t1_20261011_053046_710019",
+  "exp_id": "SMOKE-72C",
+  "status": "FAILED",
+  "success": false,
+  "duration_sec": 23.929,
+  "timestamp_utc": "2026-10-11T05:31:10.297211+00:00",
+  "config": {
+    "exp_id": "SMOKE-72C",
+    "name": "",
+    "node_count": 1,
+    "algorithm": "bully",
+    "replication_policy": "all",
+    "fault_scenario": "none",
+    "request_count": 5,
+    "concurrency": 1,
+    "warmup_count": 1,
+    "trial_idx": 1,
+    "output_dir": "data/experiments/smoke_72c",
+    "project_name": null,
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "workload": null,
+  "container_telemetry": {
+    "total_samples": 1,
+    "sampling_interval_sec": 1.0,
+    "containers": {
+      "1": {
+        "container_name": "voting-node1",
+        "sample_count": 1,
+        "cpu_mean_pct": 0.15,
+        "cpu_max_pct": 0.15,
+        "mem_mean_bytes": 37612421,
+        "mem_max_bytes": 37612421,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 8950,
+        "net_tx_peak_bytes": 10000,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      }
+    },
+    "unavailable_metrics": [
+      "grpc_internal_queue_depth",
+      "lock_wait_nanoseconds"
+    ]
+  },
+  "invariants": null,
+  "fault_metrics": {},
+  "errors": [
+    "Execution exception: WorkloadClient.run_benchmark() got an unexpected keyword argument 'run_id'"
+  ]
+}

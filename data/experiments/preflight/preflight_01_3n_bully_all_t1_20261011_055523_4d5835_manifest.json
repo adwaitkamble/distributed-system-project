@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "preflight_01_3n_bully_all_t1_20261011_055523_4d5835",
+  "exp_id": "PREFLIGHT-01",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T05:55:50.748891+00:00",
+  "duration_sec": 26.882,
+  "config": {
+    "exp_id": "PREFLIGHT-01",
+    "name": "",
+    "node_count": 3,
+    "algorithm": "bully",
+    "replication_policy": "all",
+    "fault_scenario": "none",
+    "request_count": 10,
+    "concurrency": 2,
+    "warmup_count": 2,
+    "trial_idx": 1,
+    "output_dir": "data/experiments/preflight",
+    "project_name": "preflight_run",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "preflight_01_3n_bully_all_t1_20261011_055523_4d5835_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\preflight\\preflight_01_3n_bully_all_t1_20261011_055523_4d5835_requests.ndjson",
+      "size_bytes": 5200,
+      "sha256": "84ec446cb2de8b7dee1b28a9e18e8684b028511fedc8046fa1c847ed07cdee1b",
+      "record_count": 12
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "preflight_01_3n_bully_all_t1_20261011_055523_4d5835_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\preflight\\preflight_01_3n_bully_all_t1_20261011_055523_4d5835_telemetry.ndjson",
+      "size_bytes": 1430,
+      "sha256": "1dd3ea430c2946dcf7bf78b15a8d1ff34590727445082474f5353e9e7e747141",
+      "record_count": 3
+    },
+    "summary_json": {
+      "filename": "preflight_01_3n_bully_all_t1_20261011_055523_4d5835_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\preflight\\preflight_01_3n_bully_all_t1_20261011_055523_4d5835_summary.json",
+      "size_bytes": 3674,
+      "sha256": "48acb89783b18d54a6eca5b5515ad040c47efbd2239df73a613ebc97650ca3aa",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

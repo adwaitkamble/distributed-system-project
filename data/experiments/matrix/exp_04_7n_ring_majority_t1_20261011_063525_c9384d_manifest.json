@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "exp_04_7n_ring_majority_t1_20261011_063525_c9384d",
+  "exp_id": "EXP-04",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T06:35:58.701449+00:00",
+  "duration_sec": 33.484,
+  "config": {
+    "exp_id": "EXP-04",
+    "name": "Ring Baseline (MAJORITY Policy)",
+    "node_count": 7,
+    "algorithm": "ring",
+    "replication_policy": "majority",
+    "fault_scenario": "none",
+    "request_count": 25,
+    "concurrency": 3,
+    "warmup_count": 3,
+    "trial_idx": 1,
+    "output_dir": "data/experiments/matrix",
+    "project_name": "matrix_exp_04",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "exp_04_7n_ring_majority_t1_20261011_063525_c9384d_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_04_7n_ring_majority_t1_20261011_063525_c9384d_requests.ndjson",
+      "size_bytes": 12129,
+      "sha256": "e9c5bf3862d487584fc93b4eca883faf40d39cf10192604f7b051671db4606f6",
+      "record_count": 28
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "exp_04_7n_ring_majority_t1_20261011_063525_c9384d_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_04_7n_ring_majority_t1_20261011_063525_c9384d_telemetry.ndjson",
+      "size_bytes": 6674,
+      "sha256": "6e66ad38c7ecdb4749c0c5a656e299b6deba103d34bf485e71d26c5c959ea03d",
+      "record_count": 14
+    },
+    "summary_json": {
+      "filename": "exp_04_7n_ring_majority_t1_20261011_063525_c9384d_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_04_7n_ring_majority_t1_20261011_063525_c9384d_summary.json",
+      "size_bytes": 5427,
+      "sha256": "37ce98d8b51745dc56c0c8c21ef3d42b873917b6173d7582a3aacc1a447001f3",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

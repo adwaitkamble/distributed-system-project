@@ -1,0 +1,199 @@
+{
+  "schema_version": "1.0",
+  "run_id": "exp_05_7n_ring_majority_t2_20261011_065214_f3f9a0",
+  "exp_id": "EXP-05",
+  "status": "PASSED",
+  "success": true,
+  "duration_sec": 63.693,
+  "timestamp_utc": "2026-10-11T06:53:18.582743+00:00",
+  "config": {
+    "exp_id": "EXP-05",
+    "name": "Coordinator Crash Failover Comparison",
+    "node_count": 7,
+    "algorithm": "ring",
+    "replication_policy": "majority",
+    "fault_scenario": "coord_crash",
+    "request_count": 25,
+    "concurrency": 2,
+    "warmup_count": 2,
+    "trial_idx": 2,
+    "output_dir": "data/experiments/matrix",
+    "project_name": "matrix_exp_05",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "workload": {
+    "run_id": "exp_05_7n_ring_majority_t2_20261011_065214_f3f9a0",
+    "target_endpoint": "http://localhost:5006",
+    "concurrency": 2,
+    "warmup_requests": 0,
+    "measured_requests": 20,
+    "total_requests": 20,
+    "attempted_requests": 20,
+    "successful_requests": 20,
+    "rejected_requests": 0,
+    "failed_requests": 0,
+    "duration_sec": 1.4142,
+    "successful_throughput_ops_sec": 14.14,
+    "overall_throughput_ops_sec": 14.14,
+    "throughput_ops_sec": 14.14,
+    "latency_stats_ms": {
+      "p50": 138.24,
+      "p90": 163.69,
+      "p95": 170.96,
+      "p99": 172.28,
+      "mean": 138.69,
+      "stddev": 20.86,
+      "min": 95.0,
+      "max": 172.61
+    },
+    "raw_trace_path": "data/experiments/matrix\\exp_05_7n_ring_majority_t2_20261011_065214_f3f9a0_requests.ndjson"
+  },
+  "container_telemetry": {
+    "total_samples": 98,
+    "sampling_interval_sec": 1.0,
+    "containers": {
+      "1": {
+        "container_name": "voting-node1",
+        "sample_count": 14,
+        "cpu_mean_pct": 1.51,
+        "cpu_max_pct": 3.93,
+        "mem_mean_bytes": 38385371,
+        "mem_max_bytes": 38797312,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 157000,
+        "net_tx_peak_bytes": 163000,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      },
+      "2": {
+        "container_name": "voting-node2",
+        "sample_count": 14,
+        "cpu_mean_pct": 1.36,
+        "cpu_max_pct": 3.84,
+        "mem_mean_bytes": 38427313,
+        "mem_max_bytes": 38702940,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 164000,
+        "net_tx_peak_bytes": 171000,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      },
+      "3": {
+        "container_name": "voting-node3",
+        "sample_count": 14,
+        "cpu_mean_pct": 1.52,
+        "cpu_max_pct": 4.04,
+        "mem_mean_bytes": 38359156,
+        "mem_max_bytes": 38503710,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 161000,
+        "net_tx_peak_bytes": 166000,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      },
+      "4": {
+        "container_name": "voting-node4",
+        "sample_count": 14,
+        "cpu_mean_pct": 1.48,
+        "cpu_max_pct": 3.94,
+        "mem_mean_bytes": 38382374,
+        "mem_max_bytes": 38692454,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 161000,
+        "net_tx_peak_bytes": 169000,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      },
+      "5": {
+        "container_name": "voting-node5",
+        "sample_count": 14,
+        "cpu_mean_pct": 1.41,
+        "cpu_max_pct": 5.98,
+        "mem_mean_bytes": 38414581,
+        "mem_max_bytes": 39048970,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 161000,
+        "net_tx_peak_bytes": 167000,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      },
+      "6": {
+        "container_name": "voting-node6",
+        "sample_count": 14,
+        "cpu_mean_pct": 2.86,
+        "cpu_max_pct": 12.11,
+        "mem_mean_bytes": 39513339,
+        "mem_max_bytes": 39625687,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 266000,
+        "net_tx_peak_bytes": 300000,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      },
+      "7": {
+        "container_name": "voting-node7",
+        "sample_count": 14,
+        "cpu_mean_pct": 0.0,
+        "cpu_max_pct": 0.0,
+        "mem_mean_bytes": 0,
+        "mem_max_bytes": 0,
+        "mem_limit_bytes": 0,
+        "net_rx_peak_bytes": 0,
+        "net_tx_peak_bytes": 0,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      }
+    },
+    "unavailable_metrics": [
+      "grpc_internal_queue_depth",
+      "lock_wait_nanoseconds"
+    ]
+  },
+  "invariants": {
+    "node_count": 7,
+    "coordinator_id": 6,
+    "election_term": 332,
+    "algorithm": "ring",
+    "replication_policy": "majority",
+    "total_cluster_election_messages": 32,
+    "election_messages_sent": 17,
+    "ok_messages_sent": 10,
+    "coord_messages_sent": 5,
+    "last_election_duration_ms": 933.19,
+    "total_committed_votes": 28,
+    "tally": {
+      "Alice": 11,
+      "Bob": 10,
+      "Charlie": 7
+    },
+    "ghost_votes_demoted": 0,
+    "committed_vote_count": 28,
+    "invariants_passed": true,
+    "invariant_errors": []
+  },
+  "fault_metrics": {
+    "scenario": "coord_crash",
+    "crashed_coordinator_id": 7,
+    "new_coordinator_id": 6,
+    "election_failover_ms": 3543.9,
+    "write_readiness_ms": 3658.6,
+    "probe_write_success": true
+  },
+  "errors": []
+}

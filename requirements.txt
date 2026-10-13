@@ -1,0 +1,14 @@
+# ── gRPC & Protobuf (pinned for reproducibility) ──
+grpcio==1.84.0
+grpcio-tools==1.84.0
+protobuf==7.35.1
+
+# ── Database ──
+mysql-connector-python>=8.0,<10
+
+# ── Web Bridge (Phase 5) ──
+flask>=3.0.0
+flask-cors>=4.0.0
+
+# ── Testing ──
+pytest>=8.0

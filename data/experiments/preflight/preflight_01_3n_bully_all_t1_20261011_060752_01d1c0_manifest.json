@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "preflight_01_3n_bully_all_t1_20261011_060752_01d1c0",
+  "exp_id": "PREFLIGHT-01",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T06:08:13.859469+00:00",
+  "duration_sec": 21.494,
+  "config": {
+    "exp_id": "PREFLIGHT-01",
+    "name": "",
+    "node_count": 3,
+    "algorithm": "bully",
+    "replication_policy": "all",
+    "fault_scenario": "none",
+    "request_count": 10,
+    "concurrency": 2,
+    "warmup_count": 2,
+    "trial_idx": 1,
+    "output_dir": "data/experiments/preflight",
+    "project_name": "preflight_run",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "preflight_01_3n_bully_all_t1_20261011_060752_01d1c0_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\preflight\\preflight_01_3n_bully_all_t1_20261011_060752_01d1c0_requests.ndjson",
+      "size_bytes": 5199,
+      "sha256": "9acb23fb0976a561caa43dcedc7b991c8348b64fed60da8ec1b2664ceda9e6aa",
+      "record_count": 12
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "preflight_01_3n_bully_all_t1_20261011_060752_01d1c0_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\preflight\\preflight_01_3n_bully_all_t1_20261011_060752_01d1c0_telemetry.ndjson",
+      "size_bytes": 1428,
+      "sha256": "11c40516b98bcc0185cf6338d1b1a036b1b79e3f71f34bc5f326cfa804df5e52",
+      "record_count": 3
+    },
+    "summary_json": {
+      "filename": "preflight_01_3n_bully_all_t1_20261011_060752_01d1c0_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\preflight\\preflight_01_3n_bully_all_t1_20261011_060752_01d1c0_summary.json",
+      "size_bytes": 3676,
+      "sha256": "83fc3146bde39decad10a24da6a766f4fd8f353054ea85ca5be629fd592f1c64",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

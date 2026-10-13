@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "exp_09_7n_bully_majority_t1_20261011_073531_8f5134",
+  "exp_id": "EXP-09",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T07:36:13.665901+00:00",
+  "duration_sec": 42.473,
+  "config": {
+    "exp_id": "EXP-09",
+    "name": "Majority vs Minority Network Partition",
+    "node_count": 7,
+    "algorithm": "bully",
+    "replication_policy": "majority",
+    "fault_scenario": "network_partition",
+    "request_count": 25,
+    "concurrency": 2,
+    "warmup_count": 2,
+    "trial_idx": 1,
+    "output_dir": "data/experiments/matrix",
+    "project_name": "matrix_exp_09",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "exp_09_7n_bully_majority_t1_20261011_073531_8f5134_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_09_7n_bully_majority_t1_20261011_073531_8f5134_requests.ndjson",
+      "size_bytes": 11763,
+      "sha256": "bccffd86fac0b8161d13f829a7b6e24d132bef3e06001321930f0d5377206003",
+      "record_count": 27
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "exp_09_7n_bully_majority_t1_20261011_073531_8f5134_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_09_7n_bully_majority_t1_20261011_073531_8f5134_telemetry.ndjson",
+      "size_bytes": 19884,
+      "sha256": "be19388741044a509862d7646df7a61052608b59d864cc8bbedcd8e614163109",
+      "record_count": 42
+    },
+    "summary_json": {
+      "filename": "exp_09_7n_bully_majority_t1_20261011_073531_8f5134_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_09_7n_bully_majority_t1_20261011_073531_8f5134_summary.json",
+      "size_bytes": 5628,
+      "sha256": "8078f82f1e9b1c4095deda2a60c8ecd78dfbf647cdaebec63c94b5d95f1d5c39",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

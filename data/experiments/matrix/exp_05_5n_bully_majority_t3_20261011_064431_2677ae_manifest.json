@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "exp_05_5n_bully_majority_t3_20261011_064431_2677ae",
+  "exp_id": "EXP-05",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T06:45:28.413126+00:00",
+  "duration_sec": 57.283,
+  "config": {
+    "exp_id": "EXP-05",
+    "name": "Coordinator Crash Failover Comparison",
+    "node_count": 5,
+    "algorithm": "bully",
+    "replication_policy": "majority",
+    "fault_scenario": "coord_crash",
+    "request_count": 25,
+    "concurrency": 2,
+    "warmup_count": 2,
+    "trial_idx": 3,
+    "output_dir": "data/experiments/matrix",
+    "project_name": "matrix_exp_05",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "exp_05_5n_bully_majority_t3_20261011_064431_2677ae_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_05_5n_bully_majority_t3_20261011_064431_2677ae_requests.ndjson",
+      "size_bytes": 8759,
+      "sha256": "7f01a875b393615a6cfab2b412074390a6f28e7c0be1bf0fc6173a0541b3023e",
+      "record_count": 20
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "exp_05_5n_bully_majority_t3_20261011_064431_2677ae_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_05_5n_bully_majority_t3_20261011_064431_2677ae_telemetry.ndjson",
+      "size_bytes": 33038,
+      "sha256": "29b728300e3e3c85b04c49de7d4c4a516d10bb2d30889060078b516ff4306134",
+      "record_count": 70
+    },
+    "summary_json": {
+      "filename": "exp_05_5n_bully_majority_t3_20261011_064431_2677ae_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_05_5n_bully_majority_t3_20261011_064431_2677ae_summary.json",
+      "size_bytes": 4768,
+      "sha256": "b26c42dc7b693a90c712a0bd3b7bfdef0bd3d35c3c81740320eca4fd20781b60",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

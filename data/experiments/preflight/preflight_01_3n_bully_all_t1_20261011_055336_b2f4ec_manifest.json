@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "preflight_01_3n_bully_all_t1_20261011_055336_b2f4ec",
+  "exp_id": "PREFLIGHT-01",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T05:54:03.462777+00:00",
+  "duration_sec": 26.995,
+  "config": {
+    "exp_id": "PREFLIGHT-01",
+    "name": "",
+    "node_count": 3,
+    "algorithm": "bully",
+    "replication_policy": "all",
+    "fault_scenario": "none",
+    "request_count": 10,
+    "concurrency": 2,
+    "warmup_count": 2,
+    "trial_idx": 1,
+    "output_dir": "data/experiments/preflight",
+    "project_name": "preflight_run",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "preflight_01_3n_bully_all_t1_20261011_055336_b2f4ec_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\preflight\\preflight_01_3n_bully_all_t1_20261011_055336_b2f4ec_requests.ndjson",
+      "size_bytes": 5199,
+      "sha256": "a07ececbee42803329c7fddaf854f435389053b45f36733a2d01749a9f3b74cb",
+      "record_count": 12
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "preflight_01_3n_bully_all_t1_20261011_055336_b2f4ec_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\preflight\\preflight_01_3n_bully_all_t1_20261011_055336_b2f4ec_telemetry.ndjson",
+      "size_bytes": 1426,
+      "sha256": "ff9323ca2b7995b6f77338acf594f72e7d1d37bba2cefaace4a66b3b8b142f3f",
+      "record_count": 3
+    },
+    "summary_json": {
+      "filename": "preflight_01_3n_bully_all_t1_20261011_055336_b2f4ec_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\preflight\\preflight_01_3n_bully_all_t1_20261011_055336_b2f4ec_summary.json",
+      "size_bytes": 3670,
+      "sha256": "19ee68cf5d2b81b9ea54bf962994f5e1300d87cc444ece9ca04a53063055663b",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

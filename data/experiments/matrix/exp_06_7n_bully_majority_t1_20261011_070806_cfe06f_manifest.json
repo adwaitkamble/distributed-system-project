@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "exp_06_7n_bully_majority_t1_20261011_070806_cfe06f",
+  "exp_id": "EXP-06",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T07:09:03.628019+00:00",
+  "duration_sec": 56.74,
+  "config": {
+    "exp_id": "EXP-06",
+    "name": "Follower Crash Quorum Sensitivity",
+    "node_count": 7,
+    "algorithm": "bully",
+    "replication_policy": "majority",
+    "fault_scenario": "follower_crash",
+    "request_count": 25,
+    "concurrency": 2,
+    "warmup_count": 2,
+    "trial_idx": 1,
+    "output_dir": "data/experiments/matrix",
+    "project_name": "matrix_exp_06",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "exp_06_7n_bully_majority_t1_20261011_070806_cfe06f_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_06_7n_bully_majority_t1_20261011_070806_cfe06f_requests.ndjson",
+      "size_bytes": 11750,
+      "sha256": "9ec244a7ed4064392110c78950fb1b90de1b71477a12776605a5db8ac319a487",
+      "record_count": 27
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "exp_06_7n_bully_majority_t1_20261011_070806_cfe06f_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_06_7n_bully_majority_t1_20261011_070806_cfe06f_telemetry.ndjson",
+      "size_bytes": 43139,
+      "sha256": "dad26cbc920aa42f9dda3c082ce9615636ce79a67988ff1b92b750f562af694b",
+      "record_count": 91
+    },
+    "summary_json": {
+      "filename": "exp_06_7n_bully_majority_t1_20261011_070806_cfe06f_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_06_7n_bully_majority_t1_20261011_070806_cfe06f_summary.json",
+      "size_bytes": 5501,
+      "sha256": "6e289321a583f8f5f46b2f66a3611be0f0d8c5236c661aa2530841fb23bbd960",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

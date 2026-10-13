@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "exp_07_7n_ring_majority_t1_20261011_072341_74d226",
+  "exp_id": "EXP-07",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T07:25:04.611936+00:00",
+  "duration_sec": 82.598,
+  "config": {
+    "exp_id": "EXP-07",
+    "name": "Sequential Cascading Failover",
+    "node_count": 7,
+    "algorithm": "ring",
+    "replication_policy": "majority",
+    "fault_scenario": "cascading_crash",
+    "request_count": 25,
+    "concurrency": 2,
+    "warmup_count": 2,
+    "trial_idx": 1,
+    "output_dir": "data/experiments/matrix",
+    "project_name": "matrix_exp_07",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "exp_07_7n_ring_majority_t1_20261011_072341_74d226_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_07_7n_ring_majority_t1_20261011_072341_74d226_requests.ndjson",
+      "size_bytes": 8724,
+      "sha256": "fdca0db3ab614e405307f9000ad12c61e81ef3e6d47d7384dfff6a63eef9c06a",
+      "record_count": 20
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "exp_07_7n_ring_majority_t1_20261011_072341_74d226_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_07_7n_ring_majority_t1_20261011_072341_74d226_telemetry.ndjson",
+      "size_bytes": 82070,
+      "sha256": "75d7c46b40c5723f8f84837d89625c0ba069e2252dc89e308da6bbd9d35a9fe4",
+      "record_count": 175
+    },
+    "summary_json": {
+      "filename": "exp_07_7n_ring_majority_t1_20261011_072341_74d226_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_07_7n_ring_majority_t1_20261011_072341_74d226_summary.json",
+      "size_bytes": 5705,
+      "sha256": "0ef74ea42c4ff18c244e1aa1a95560cfa8a918a4903c86266c0a30491c09ce08",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

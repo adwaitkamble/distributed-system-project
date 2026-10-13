@@ -1,0 +1,166 @@
+syntax = "proto3";
+
+package voting;
+
+// ─────────────────────────────────────────────────────────────────
+// NodeService — every node exposes the same service.
+// Phase 1 implements SubmitVote, GetClusterStatus, GetResults.
+// Other RPCs return UNIMPLEMENTED until their phase.
+// ─────────────────────────────────────────────────────────────────
+
+service NodeService {
+  // ── Voting ──
+  rpc SubmitVote     (VoteRequest)             returns (VoteResponse);
+  rpc ReplicateVote  (VoteRecord)              returns (ReplicationAck);
+  rpc FinalizeVote   (FinalizeRequest)         returns (FinalizeAck);
+  rpc SyncLog        (SyncRequest)             returns (SyncResponse);
+
+  // ── Heartbeat ──
+  rpc Heartbeat      (HeartbeatPing)           returns (HeartbeatPong);
+
+  // ── Election ──
+  rpc Election             (ElectionMessage)   returns (ElectionResponse);
+  rpc AnnounceCoordinator  (CoordinatorMessage) returns (Ack);
+
+  // ── Query (bridge / admin) ──
+  rpc GetClusterStatus (Empty)                 returns (ClusterStatus);
+  rpc GetResults       (Empty)                 returns (TallyResponse);
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Voting messages
+// ─────────────────────────────────────────────────────────────────
+
+message VoteRequest {
+  string client_id = 1;     // non-empty voter identifier
+  string choice    = 2;     // must match a configured candidate
+}
+
+message VoteResponse {
+  bool   success    = 1;
+  string vote_id    = 2;    // receipt: "client_id:origin_node_id:lamport_ts"
+  string error      = 3;    // non-empty on failure
+  int64  lamport_ts = 4;
+}
+
+message VoteRecord {
+  string vote_id        = 1;  // "client_id:origin_node_id:lamport_ts"
+  string client_id      = 2;
+  int32  origin_node_id = 3;
+  int64  lamport_ts     = 4;
+  string choice         = 5;
+  int64  received_at_ms = 6;  // epoch millis on the origin node (observability only)
+  string status         = 7;  // "PENDING" or "COMMITTED"
+  string commit_proof   = 8;  // durable commit decision/certificate ("COORD_FINALIZED:<id>:<ts>" or "REPLICA_FINALIZED:<id>")
+}
+
+message ReplicationAck {
+  bool   success    = 1;
+  int32  node_id    = 2;
+  string error      = 3;
+  int64  lamport_ts = 4;
+}
+
+message FinalizeRequest {
+  string vote_id    = 1;
+  int64  lamport_ts = 2;
+}
+
+message FinalizeAck {
+  bool   success    = 1;
+  int32  node_id    = 2;
+  string error      = 3;
+  int64  lamport_ts = 4;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Log synchronization (Phase 4)
+// ─────────────────────────────────────────────────────────────────
+
+message SyncRequest {
+  int32  requester_id  = 1;
+  int64  lamport_ts    = 2;
+  int64  election_term = 3;  // Lamport-derived term (amendment 2)
+  int32  initiator_id  = 4;  // node that started this election
+}
+
+message SyncResponse {
+  repeated VoteRecord votes = 1;
+  int32  node_id            = 2;
+  int64  lamport_ts         = 3;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Heartbeat (Phase 2)
+// ─────────────────────────────────────────────────────────────────
+
+message HeartbeatPing {
+  int32  coordinator_id = 1;
+  int64  lamport_ts     = 2;
+  int64  election_term  = 3;  // current term, so followers reject stale coordinators
+  int32  initiator_id   = 4;  // node that initiated this election/term
+}
+
+message HeartbeatPong {
+  int32  node_id    = 1;
+  int64  lamport_ts = 2;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Election (Phase 3)
+//
+// election_term is Lamport-derived: the initiating node increments
+// its Lamport clock and uses the value as the term.  The pair
+// (election_term, initiator_id) uniquely identifies and totally
+// orders concurrent elections.
+// ─────────────────────────────────────────────────────────────────
+
+message ElectionMessage {
+  int32  sender_id      = 1;  // who is sending this specific message
+  int32  candidate_id   = 2;  // Bully: sender_id; Ring: highest-seen ID
+  int64  lamport_ts     = 3;
+  int64  election_term  = 4;
+  int32  initiator_id   = 5;  // node that originally triggered this election
+}
+
+message ElectionResponse {
+  bool   ok         = 1;  // Bully: "I am alive, taking over"; Ring: ack
+  int32  node_id    = 2;
+  int64  lamport_ts = 3;
+}
+
+message CoordinatorMessage {
+  int32  coordinator_id = 1;
+  int64  lamport_ts     = 2;
+  int64  election_term  = 3;
+  int32  initiator_id   = 4;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Query / Status
+// ─────────────────────────────────────────────────────────────────
+
+message ClusterStatus {
+  int32          coordinator_id     = 1;
+  int32          this_node_id       = 2;
+  string         election_algorithm = 3;
+  repeated int32 known_peers        = 4;
+  repeated int32 active_peers       = 5;
+  string         role               = 6;   // "coordinator"|"follower"|"candidate"|"recovering"
+  int64          election_term      = 7;
+  int64          lamport_ts         = 8;
+  bool           accepting_votes    = 9;
+}
+
+message TallyResponse {
+  map<string, int32> tally = 1;   // choice → count
+  int32 total_votes        = 2;
+  int64 lamport_ts         = 3;
+}
+
+message Ack {
+  bool   success    = 1;
+  int64  lamport_ts = 2;
+}
+
+message Empty {}

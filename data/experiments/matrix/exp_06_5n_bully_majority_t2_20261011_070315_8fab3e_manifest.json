@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "exp_06_5n_bully_majority_t2_20261011_070315_8fab3e",
+  "exp_id": "EXP-06",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T07:04:12.326244+00:00",
+  "duration_sec": 57.292,
+  "config": {
+    "exp_id": "EXP-06",
+    "name": "Follower Crash Quorum Sensitivity",
+    "node_count": 5,
+    "algorithm": "bully",
+    "replication_policy": "majority",
+    "fault_scenario": "follower_crash",
+    "request_count": 25,
+    "concurrency": 2,
+    "warmup_count": 2,
+    "trial_idx": 2,
+    "output_dir": "data/experiments/matrix",
+    "project_name": "matrix_exp_06",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "exp_06_5n_bully_majority_t2_20261011_070315_8fab3e_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_06_5n_bully_majority_t2_20261011_070315_8fab3e_requests.ndjson",
+      "size_bytes": 11762,
+      "sha256": "1eaece49617646c6e6a98039af20e2131b5e49e4f535d3df2753895d72d9632c",
+      "record_count": 27
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "exp_06_5n_bully_majority_t2_20261011_070315_8fab3e_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_06_5n_bully_majority_t2_20261011_070315_8fab3e_telemetry.ndjson",
+      "size_bytes": 30684,
+      "sha256": "7538047e89a281ffe881ed8e1279b0e5e71f3ddffb01e8d1927c2f038791d0e9",
+      "record_count": 65
+    },
+    "summary_json": {
+      "filename": "exp_06_5n_bully_majority_t2_20261011_070315_8fab3e_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_06_5n_bully_majority_t2_20261011_070315_8fab3e_summary.json",
+      "size_bytes": 4648,
+      "sha256": "51014d1d1cf035c301793cf24238a666e4a3e79da3de8a9466b3d992592fa16b",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

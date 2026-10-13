@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "exp_07_7n_bully_majority_t1_20261011_071923_972031",
+  "exp_id": "EXP-07",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T07:20:48.435642+00:00",
+  "duration_sec": 85.214,
+  "config": {
+    "exp_id": "EXP-07",
+    "name": "Sequential Cascading Failover",
+    "node_count": 7,
+    "algorithm": "bully",
+    "replication_policy": "majority",
+    "fault_scenario": "cascading_crash",
+    "request_count": 25,
+    "concurrency": 2,
+    "warmup_count": 2,
+    "trial_idx": 1,
+    "output_dir": "data/experiments/matrix",
+    "project_name": "matrix_exp_07",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "exp_07_7n_bully_majority_t1_20261011_071923_972031_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_07_7n_bully_majority_t1_20261011_071923_972031_requests.ndjson",
+      "size_bytes": 8745,
+      "sha256": "e2c53629c27ac5b1127eb4e721f1fb227725fe9b6ed7e61141bf4cbb5e9666c7",
+      "record_count": 20
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "exp_07_7n_bully_majority_t1_20261011_071923_972031_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_07_7n_bully_majority_t1_20261011_071923_972031_telemetry.ndjson",
+      "size_bytes": 82315,
+      "sha256": "8ede53d8e584d223e7e11e80ef1def45f24b60e7b202c69a6fdc00a38bdb7812",
+      "record_count": 175
+    },
+    "summary_json": {
+      "filename": "exp_07_7n_bully_majority_t1_20261011_071923_972031_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_07_7n_bully_majority_t1_20261011_071923_972031_summary.json",
+      "size_bytes": 5712,
+      "sha256": "52340a29be46814cd6ed6bd92670be5d78f0d342f83a6886abea29498b815021",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

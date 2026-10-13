@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "preflight_01_3n_bully_all_t1_20261011_061354_eacb75",
+  "exp_id": "PREFLIGHT-01",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T06:14:18.667032+00:00",
+  "duration_sec": 23.674,
+  "config": {
+    "exp_id": "PREFLIGHT-01",
+    "name": "",
+    "node_count": 3,
+    "algorithm": "bully",
+    "replication_policy": "all",
+    "fault_scenario": "none",
+    "request_count": 10,
+    "concurrency": 2,
+    "warmup_count": 2,
+    "trial_idx": 1,
+    "output_dir": "data/experiments/preflight",
+    "project_name": "preflight_run",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "preflight_01_3n_bully_all_t1_20261011_061354_eacb75_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\preflight\\preflight_01_3n_bully_all_t1_20261011_061354_eacb75_requests.ndjson",
+      "size_bytes": 5229,
+      "sha256": "83c0afedbc3b53800af679f2480c5c5b2253cb748bd05629cfd50701f1abc623",
+      "record_count": 12
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "preflight_01_3n_bully_all_t1_20261011_061354_eacb75_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\preflight\\preflight_01_3n_bully_all_t1_20261011_061354_eacb75_telemetry.ndjson",
+      "size_bytes": 1434,
+      "sha256": "f44b2ff3f8ae8b871ca2c17aece232fd86164a838f5efc28ab06d1e60173470b",
+      "record_count": 3
+    },
+    "summary_json": {
+      "filename": "preflight_01_3n_bully_all_t1_20261011_061354_eacb75_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\preflight\\preflight_01_3n_bully_all_t1_20261011_061354_eacb75_summary.json",
+      "size_bytes": 3674,
+      "sha256": "2a1d35689f048d452bda7a683c0fbb6fcb82c5caab851d25fc949b6174e19ba9",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

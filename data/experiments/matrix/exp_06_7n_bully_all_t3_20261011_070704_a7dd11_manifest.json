@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "exp_06_7n_bully_all_t3_20261011_070704_a7dd11",
+  "exp_id": "EXP-06",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T07:08:04.849875+00:00",
+  "duration_sec": 60.721,
+  "config": {
+    "exp_id": "EXP-06",
+    "name": "Follower Crash Quorum Sensitivity",
+    "node_count": 7,
+    "algorithm": "bully",
+    "replication_policy": "all",
+    "fault_scenario": "follower_crash",
+    "request_count": 25,
+    "concurrency": 2,
+    "warmup_count": 2,
+    "trial_idx": 3,
+    "output_dir": "data/experiments/matrix",
+    "project_name": "matrix_exp_06",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "exp_06_7n_bully_all_t3_20261011_070704_a7dd11_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_06_7n_bully_all_t3_20261011_070704_a7dd11_requests.ndjson",
+      "size_bytes": 11373,
+      "sha256": "efc8e68541a212a3a2e82087590a6aa359ff2cbc1ccae66320dcc58e8407a97d",
+      "record_count": 27
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "exp_06_7n_bully_all_t3_20261011_070704_a7dd11_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_06_7n_bully_all_t3_20261011_070704_a7dd11_telemetry.ndjson",
+      "size_bytes": 42635,
+      "sha256": "1c162f52f03ca79f4055263d8a0f816c3f91d85499456cf4ac52d72930af29dc",
+      "record_count": 91
+    },
+    "summary_json": {
+      "filename": "exp_06_7n_bully_all_t3_20261011_070704_a7dd11_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_06_7n_bully_all_t3_20261011_070704_a7dd11_summary.json",
+      "size_bytes": 5486,
+      "sha256": "a76ed8271ae4db9f6dc41939e245c6b3c2a489935ea367df54e13a3a53e4db86",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

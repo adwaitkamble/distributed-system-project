@@ -1,0 +1,162 @@
+{
+  "schema_version": "1.0",
+  "run_id": "exp_03_5n_ring_all_t2_20261011_063035_3a6ba4",
+  "exp_id": "EXP-03",
+  "status": "PASSED",
+  "success": true,
+  "duration_sec": 25.948,
+  "timestamp_utc": "2026-10-11T06:31:01.313446+00:00",
+  "config": {
+    "exp_id": "EXP-03",
+    "name": "Ring Baseline (ALL Policy)",
+    "node_count": 5,
+    "algorithm": "ring",
+    "replication_policy": "all",
+    "fault_scenario": "none",
+    "request_count": 25,
+    "concurrency": 3,
+    "warmup_count": 3,
+    "trial_idx": 2,
+    "output_dir": "data/experiments/matrix",
+    "project_name": "matrix_exp_03",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "workload": {
+    "run_id": "exp_03_5n_ring_all_t2_20261011_063035_3a6ba4",
+    "target_endpoint": "http://localhost:5005",
+    "concurrency": 3,
+    "warmup_requests": 3,
+    "measured_requests": 25,
+    "total_requests": 28,
+    "attempted_requests": 25,
+    "successful_requests": 25,
+    "rejected_requests": 0,
+    "failed_requests": 0,
+    "duration_sec": 1.36,
+    "successful_throughput_ops_sec": 18.38,
+    "overall_throughput_ops_sec": 18.38,
+    "throughput_ops_sec": 18.38,
+    "latency_stats_ms": {
+      "p50": 159.92,
+      "p90": 190.94,
+      "p95": 196.56,
+      "p99": 210.73,
+      "mean": 159.47,
+      "stddev": 27.54,
+      "min": 107.78,
+      "max": 214.8
+    },
+    "raw_trace_path": "data/experiments/matrix\\exp_03_5n_ring_all_t2_20261011_063035_3a6ba4_requests.ndjson"
+  },
+  "container_telemetry": {
+    "total_samples": 10,
+    "sampling_interval_sec": 1.0,
+    "containers": {
+      "1": {
+        "container_name": "voting-node1",
+        "sample_count": 2,
+        "cpu_mean_pct": 3.21,
+        "cpu_max_pct": 3.88,
+        "mem_mean_bytes": 37968936,
+        "mem_max_bytes": 38105251,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 119000,
+        "net_tx_peak_bytes": 125000,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      },
+      "2": {
+        "container_name": "voting-node2",
+        "sample_count": 2,
+        "cpu_mean_pct": 3.33,
+        "cpu_max_pct": 3.82,
+        "mem_mean_bytes": 37947965,
+        "mem_max_bytes": 38105251,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 118000,
+        "net_tx_peak_bytes": 124000,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      },
+      "3": {
+        "container_name": "voting-node3",
+        "sample_count": 2,
+        "cpu_mean_pct": 3.42,
+        "cpu_max_pct": 3.96,
+        "mem_mean_bytes": 38136709,
+        "mem_max_bytes": 38262538,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 119000,
+        "net_tx_peak_bytes": 125000,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      },
+      "4": {
+        "container_name": "voting-node4",
+        "sample_count": 2,
+        "cpu_mean_pct": 3.38,
+        "cpu_max_pct": 3.89,
+        "mem_mean_bytes": 38262537,
+        "mem_max_bytes": 38293995,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 118000,
+        "net_tx_peak_bytes": 125000,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      },
+      "5": {
+        "container_name": "voting-node5",
+        "sample_count": 2,
+        "cpu_mean_pct": 10.92,
+        "cpu_max_pct": 18.71,
+        "mem_mean_bytes": 39405485,
+        "mem_max_bytes": 39782973,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 193000,
+        "net_tx_peak_bytes": 220000,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      }
+    },
+    "unavailable_metrics": [
+      "grpc_internal_queue_depth",
+      "lock_wait_nanoseconds"
+    ]
+  },
+  "invariants": {
+    "node_count": 5,
+    "coordinator_id": 5,
+    "election_term": 0,
+    "algorithm": "ring",
+    "replication_policy": "all",
+    "total_cluster_election_messages": 0,
+    "election_messages_sent": 0,
+    "ok_messages_sent": 0,
+    "coord_messages_sent": 0,
+    "last_election_duration_ms": 0.0,
+    "total_committed_votes": 28,
+    "tally": {
+      "Alice": 10,
+      "Bob": 9,
+      "Charlie": 9
+    },
+    "ghost_votes_demoted": 0,
+    "committed_vote_count": 28,
+    "invariants_passed": true,
+    "invariant_errors": []
+  },
+  "fault_metrics": {},
+  "errors": []
+}

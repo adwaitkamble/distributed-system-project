@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 420" width="700" height="420">
+<rect width="100%" height="100%" fill="#0d121d" rx="12"/>
+<text x="350.0" y="36" fill="#f8fafc" font-size="16" font-family="sans-serif" font-weight="700" text-anchor="middle">Commit Latency Percentiles Across Cluster Sizes (ms)</text>
+<line x1="80" y1="360.0" x2="660" y2="360.0" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="68" y="364.0" fill="#94a3b8" font-size="11" font-family="sans-serif" text-anchor="end">0.0</text>
+<line x1="80" y1="285.0" x2="660" y2="285.0" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="68" y="289.0" fill="#94a3b8" font-size="11" font-family="sans-serif" text-anchor="end">23.9</text>
+<line x1="80" y1="210.0" x2="660" y2="210.0" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="68" y="214.0" fill="#94a3b8" font-size="11" font-family="sans-serif" text-anchor="end">47.8</text>
+<line x1="80" y1="135.0" x2="660" y2="135.0" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="68" y="139.0" fill="#94a3b8" font-size="11" font-family="sans-serif" text-anchor="end">71.6</text>
+<line x1="80" y1="60.0" x2="660" y2="60.0" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="68" y="64.0" fill="#94a3b8" font-size="11" font-family="sans-serif" text-anchor="end">95.5</text>
+<text x="24" y="210.0" fill="#94a3b8" font-size="11" font-family="sans-serif" transform="rotate(-90 24 210.0)" text-anchor="middle">Latency (ms)</text>
+<rect x="118.66666666666667" y="302.82722513089004" width="32.86666666666667" height="57.17277486910994" fill="#6366f1" rx="3"/>
+<text x="135.1" y="296.82722513089004" fill="#f8fafc" font-size="10" font-family="sans-serif" text-anchor="middle">18.2</text>
+<rect x="157.33333333333334" y="251.62303664921467" width="32.86666666666667" height="108.37696335078533" fill="#06b6d4" rx="3"/>
+<text x="173.76666666666668" y="245.62303664921467" fill="#f8fafc" font-size="10" font-family="sans-serif" text-anchor="middle">34.5</text>
+<rect x="196.0" y="196.33507853403142" width="32.86666666666667" height="163.66492146596858" fill="#10b981" rx="3"/>
+<text x="212.43333333333334" y="190.33507853403142" fill="#f8fafc" font-size="10" font-family="sans-serif" text-anchor="middle">52.1</text>
+<text x="176.66666666666669" y="384" fill="#cbd5e1" font-size="12" font-family="sans-serif" font-weight="600" text-anchor="middle">3 Nodes</text>
+<rect x="312.00000000000006" y="289.63350785340316" width="32.86666666666667" height="70.36649214659685" fill="#6366f1" rx="3"/>
+<text x="328.4333333333334" y="283.63350785340316" fill="#f8fafc" font-size="10" font-family="sans-serif" text-anchor="middle">22.4</text>
+<rect x="350.66666666666674" y="230.5759162303665" width="32.86666666666667" height="129.4240837696335" fill="#06b6d4" rx="3"/>
+<text x="367.1000000000001" y="224.5759162303665" fill="#f8fafc" font-size="10" font-family="sans-serif" text-anchor="middle">41.2</text>
+<rect x="389.33333333333337" y="159.58115183246073" width="32.86666666666667" height="200.41884816753927" fill="#10b981" rx="3"/>
+<text x="405.7666666666667" y="153.58115183246073" fill="#f8fafc" font-size="10" font-family="sans-serif" text-anchor="middle">63.8</text>
+<text x="370.00000000000006" y="384" fill="#cbd5e1" font-size="12" font-family="sans-serif" font-weight="600" text-anchor="middle">5 Nodes</text>
+<rect x="505.33333333333337" y="273.29842931937173" width="32.86666666666667" height="86.70157068062827" fill="#6366f1" rx="3"/>
+<text x="521.7666666666667" y="267.29842931937173" fill="#f8fafc" font-size="10" font-family="sans-serif" text-anchor="middle">27.6</text>
+<rect x="544.0" y="203.56020942408378" width="32.86666666666667" height="156.43979057591622" fill="#06b6d4" rx="3"/>
+<text x="560.4333333333333" y="197.56020942408378" fill="#f8fafc" font-size="10" font-family="sans-serif" text-anchor="middle">49.8</text>
+<rect x="582.6666666666667" y="120.0" width="32.86666666666667" height="240.0" fill="#10b981" rx="3"/>
+<text x="599.1" y="114.0" fill="#f8fafc" font-size="10" font-family="sans-serif" text-anchor="middle">76.4</text>
+<text x="563.3333333333334" y="384" fill="#cbd5e1" font-size="12" font-family="sans-serif" font-weight="600" text-anchor="middle">7 Nodes</text>
+<rect x="300" y="24" width="12" height="12" fill="#6366f1" rx="2"/>
+<text x="318" y="34" fill="#94a3b8" font-size="11" font-family="sans-serif">p50 Latency (ms)</text>
+<rect x="420" y="24" width="12" height="12" fill="#06b6d4" rx="2"/>
+<text x="438" y="34" fill="#94a3b8" font-size="11" font-family="sans-serif">p95 Latency (ms)</text>
+<rect x="540" y="24" width="12" height="12" fill="#10b981" rx="2"/>
+<text x="558" y="34" fill="#94a3b8" font-size="11" font-family="sans-serif">p99 Latency (ms)</text>
+</svg>

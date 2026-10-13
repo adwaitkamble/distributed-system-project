@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "exp_08_5n_bully_majority_t3_20261011_073051_b41608",
+  "exp_id": "EXP-08",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T07:31:21.534450+00:00",
+  "duration_sec": 30.388,
+  "config": {
+    "exp_id": "EXP-08",
+    "name": "Follower Rejoin & Catch-up Benchmark",
+    "node_count": 5,
+    "algorithm": "bully",
+    "replication_policy": "majority",
+    "fault_scenario": "follower_rejoin",
+    "request_count": 25,
+    "concurrency": 2,
+    "warmup_count": 2,
+    "trial_idx": 3,
+    "output_dir": "data/experiments/matrix",
+    "project_name": "matrix_exp_08",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "exp_08_5n_bully_majority_t3_20261011_073051_b41608_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_08_5n_bully_majority_t3_20261011_073051_b41608_requests.ndjson",
+      "size_bytes": 10949,
+      "sha256": "4b3d23f6480740d1067288188f5011c0e86ae0379805561a0ec9a43199957d8d",
+      "record_count": 25
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "exp_08_5n_bully_majority_t3_20261011_073051_b41608_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_08_5n_bully_majority_t3_20261011_073051_b41608_telemetry.ndjson",
+      "size_bytes": 9471,
+      "sha256": "2f171dd917847d813b34edc004a79ceeb402474becfd434890260f3035522478",
+      "record_count": 20
+    },
+    "summary_json": {
+      "filename": "exp_08_5n_bully_majority_t3_20261011_073051_b41608_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_08_5n_bully_majority_t3_20261011_073051_b41608_summary.json",
+      "size_bytes": 4679,
+      "sha256": "caa39f7f56d40c9604ee985e1e127d38e6f351090ea58015daba2ec89cb0f93e",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

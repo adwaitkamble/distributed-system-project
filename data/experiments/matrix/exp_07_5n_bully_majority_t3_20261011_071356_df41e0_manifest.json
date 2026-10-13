@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "exp_07_5n_bully_majority_t3_20261011_071356_df41e0",
+  "exp_id": "EXP-07",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T07:15:16.898801+00:00",
+  "duration_sec": 80.22,
+  "config": {
+    "exp_id": "EXP-07",
+    "name": "Sequential Cascading Failover",
+    "node_count": 5,
+    "algorithm": "bully",
+    "replication_policy": "majority",
+    "fault_scenario": "cascading_crash",
+    "request_count": 25,
+    "concurrency": 2,
+    "warmup_count": 2,
+    "trial_idx": 3,
+    "output_dir": "data/experiments/matrix",
+    "project_name": "matrix_exp_07",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "exp_07_5n_bully_majority_t3_20261011_071356_df41e0_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_07_5n_bully_majority_t3_20261011_071356_df41e0_requests.ndjson",
+      "size_bytes": 8741,
+      "sha256": "44e4f942572262e5b99ec8259570dd600d4374c270bc0f78d109fb90fd6398df",
+      "record_count": 20
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "exp_07_5n_bully_majority_t3_20261011_071356_df41e0_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_07_5n_bully_majority_t3_20261011_071356_df41e0_telemetry.ndjson",
+      "size_bytes": 58453,
+      "sha256": "e126310b27921d0880ce2323e757c211afa6ba945cdb5a281883ba9b51e7793a",
+      "record_count": 125
+    },
+    "summary_json": {
+      "filename": "exp_07_5n_bully_majority_t3_20261011_071356_df41e0_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_07_5n_bully_majority_t3_20261011_071356_df41e0_summary.json",
+      "size_bytes": 4844,
+      "sha256": "4b7ecfc039f30b694a03dd5b75ed3d85f4ec92eb1a293829ef7af9f30cd3a4d0",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

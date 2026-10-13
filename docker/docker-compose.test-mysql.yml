@@ -1,0 +1,20 @@
+---
+# Test MySQL instance for Phase 1 smoke test (amendment 8).
+# Start with: docker compose -f docker/docker-compose.test-mysql.yml up -d
+# Stop with:  docker compose -f docker/docker-compose.test-mysql.yml down -v
+services:
+  test-mysql:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: votingpass
+      MYSQL_DATABASE: voting_node
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pvotingpass"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s

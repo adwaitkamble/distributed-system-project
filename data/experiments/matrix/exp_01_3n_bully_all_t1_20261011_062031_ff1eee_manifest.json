@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "exp_01_3n_bully_all_t1_20261011_062031_ff1eee",
+  "exp_id": "EXP-01",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T06:20:57.381665+00:00",
+  "duration_sec": 25.981,
+  "config": {
+    "exp_id": "EXP-01",
+    "name": "Bully Baseline (ALL Policy)",
+    "node_count": 3,
+    "algorithm": "bully",
+    "replication_policy": "all",
+    "fault_scenario": "none",
+    "request_count": 25,
+    "concurrency": 3,
+    "warmup_count": 3,
+    "trial_idx": 1,
+    "output_dir": "data/experiments/matrix",
+    "project_name": "matrix_exp_01",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "exp_01_3n_bully_all_t1_20261011_062031_ff1eee_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_01_3n_bully_all_t1_20261011_062031_ff1eee_requests.ndjson",
+      "size_bytes": 11808,
+      "sha256": "f9ca6f0fbe6c1c83e27b9538cbd765663ab12338b74b6394a8a3128238645cde",
+      "record_count": 28
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "exp_01_3n_bully_all_t1_20261011_062031_ff1eee_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_01_3n_bully_all_t1_20261011_062031_ff1eee_telemetry.ndjson",
+      "size_bytes": 2828,
+      "sha256": "4f8c3189f50e066f01958b81b52d245953123a70db1d36d65d2286794c536916",
+      "record_count": 6
+    },
+    "summary_json": {
+      "filename": "exp_01_3n_bully_all_t1_20261011_062031_ff1eee_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_01_3n_bully_all_t1_20261011_062031_ff1eee_summary.json",
+      "size_bytes": 3680,
+      "sha256": "a50d5ae9927200999139fac0174d7c49bffbcceeef7e7de8bf0939d0389c8d68",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

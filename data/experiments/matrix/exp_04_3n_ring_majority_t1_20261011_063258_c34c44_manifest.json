@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "exp_04_3n_ring_majority_t1_20261011_063258_c34c44",
+  "exp_id": "EXP-04",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T06:33:23.272687+00:00",
+  "duration_sec": 25.018,
+  "config": {
+    "exp_id": "EXP-04",
+    "name": "Ring Baseline (MAJORITY Policy)",
+    "node_count": 3,
+    "algorithm": "ring",
+    "replication_policy": "majority",
+    "fault_scenario": "none",
+    "request_count": 25,
+    "concurrency": 3,
+    "warmup_count": 3,
+    "trial_idx": 1,
+    "output_dir": "data/experiments/matrix",
+    "project_name": "matrix_exp_04",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "exp_04_3n_ring_majority_t1_20261011_063258_c34c44_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_04_3n_ring_majority_t1_20261011_063258_c34c44_requests.ndjson",
+      "size_bytes": 12110,
+      "sha256": "240036920824e3080596588848f8e4a2d7d630de3477a7c9e4349841cd03ce5a",
+      "record_count": 28
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "exp_04_3n_ring_majority_t1_20261011_063258_c34c44_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_04_3n_ring_majority_t1_20261011_063258_c34c44_telemetry.ndjson",
+      "size_bytes": 2861,
+      "sha256": "99e993ce2a489a19dca9de4eb6df27498162f7089b63e801178db10262157adf",
+      "record_count": 6
+    },
+    "summary_json": {
+      "filename": "exp_04_3n_ring_majority_t1_20261011_063258_c34c44_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\matrix\\exp_04_3n_ring_majority_t1_20261011_063258_c34c44_summary.json",
+      "size_bytes": 3706,
+      "sha256": "5e65d1a81427710112da6d0af512848636752c74c522cb4a69ac57410513ce54",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

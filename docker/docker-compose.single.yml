@@ -1,0 +1,57 @@
+---
+# Phase 6.1 — Single Node Docker Validation Profile
+# Usage:
+#   docker compose -f docker/docker-compose.single.yml up -d --build
+#   docker compose -f docker/docker-compose.single.yml down -v
+
+services:
+  node1-db:
+    image: mysql:8
+    container_name: voting-node1-db
+    environment:
+      MYSQL_ROOT_PASSWORD: votingpass
+      MYSQL_DATABASE: voting_node
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pvotingpass"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 15s
+    networks:
+      - voting-net
+
+  node1:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: voting-node1
+    environment:
+      NODE_ID: 1
+      PEER_CONFIGURATION: "1:node1:50051"
+      INITIAL_COORDINATOR_ID: 1
+      GRPC_PORT: 50051
+      HTTP_PORT: 5000
+      ENABLE_WEB_BRIDGE: "true"
+      ELECTION_ALGORITHM: bully
+      REPLICATION_POLICY: all
+      USE_SQLITE: "false"
+      DB_HOST: node1-db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: votingpass
+      DB_NAME: voting_node
+      LOG_LEVEL: INFO
+    ports:
+      - "5000:5000"
+      - "50051:50051"
+    depends_on:
+      node1-db:
+        condition: service_healthy
+    networks:
+      - voting-net
+
+networks:
+  voting-net:
+    driver: bridge

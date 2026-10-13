@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "run_id": "preflight_02_3n_bully_majority_t1_20261011_055550_f460c7",
+  "exp_id": "PREFLIGHT-02",
+  "status": "PASSED",
+  "timestamp_utc": "2026-10-11T05:56:38.488538+00:00",
+  "duration_sec": 47.658,
+  "config": {
+    "exp_id": "PREFLIGHT-02",
+    "name": "",
+    "node_count": 3,
+    "algorithm": "bully",
+    "replication_policy": "majority",
+    "fault_scenario": "coord_crash",
+    "request_count": 15,
+    "concurrency": 2,
+    "warmup_count": 2,
+    "trial_idx": 1,
+    "output_dir": "data/experiments/preflight",
+    "project_name": "preflight_run",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "environment": {
+    "python_version": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "os": "Windows"
+  },
+  "artifacts": {
+    "raw_workload_ndjson": {
+      "filename": "preflight_02_3n_bully_majority_t1_20261011_055550_f460c7_requests.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\preflight\\preflight_02_3n_bully_majority_t1_20261011_055550_f460c7_requests.ndjson",
+      "size_bytes": 4242,
+      "sha256": "cfded6f9367f50b13382257e284c58fcdf6e0624252f8a9354bdccee3b5eb8b2",
+      "record_count": 10
+    },
+    "raw_telemetry_ndjson": {
+      "filename": "preflight_02_3n_bully_majority_t1_20261011_055550_f460c7_telemetry.ndjson",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\preflight\\preflight_02_3n_bully_majority_t1_20261011_055550_f460c7_telemetry.ndjson",
+      "size_bytes": 18480,
+      "sha256": "6d2cab24dd5b2396bbf1c8f8fa060e9ec662fc1bffa7cb4e7330c61ff0f25352",
+      "record_count": 39
+    },
+    "summary_json": {
+      "filename": "preflight_02_3n_bully_majority_t1_20261011_055550_f460c7_summary.json",
+      "path": "D:\\Studies\\B.Tech first sem\\Distributed System\\Distributed Voting System\\data\\experiments\\preflight\\preflight_02_3n_bully_majority_t1_20261011_055550_f460c7_summary.json",
+      "size_bytes": 3832,
+      "sha256": "d36c2132445274f4bf671372cc31a2827fe8bf677d1258324e942e443141b474",
+      "record_count": null
+    }
+  },
+  "error_count": 0
+}

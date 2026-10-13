@@ -1,0 +1,120 @@
+{
+  "schema_version": "1.0",
+  "run_id": "preflight_02_3n_bully_majority_t1_20261011_055403_92c8bc",
+  "exp_id": "PREFLIGHT-02",
+  "status": "FAILED",
+  "success": false,
+  "duration_sec": 51.752,
+  "timestamp_utc": "2026-10-11T05:54:55.293203+00:00",
+  "config": {
+    "exp_id": "PREFLIGHT-02",
+    "name": "",
+    "node_count": 3,
+    "algorithm": "bully",
+    "replication_policy": "majority",
+    "fault_scenario": "coord_crash",
+    "request_count": 15,
+    "concurrency": 2,
+    "warmup_count": 2,
+    "trial_idx": 1,
+    "output_dir": "data/experiments/preflight",
+    "project_name": "preflight_run",
+    "manage_cluster": true,
+    "telemetry_interval_sec": 1.0,
+    "timeout_sec": 180.0
+  },
+  "workload": {
+    "run_id": "preflight_02_3n_bully_majority_t1_20261011_055403_92c8bc",
+    "target_endpoint": "http://localhost:5002",
+    "concurrency": 2,
+    "warmup_requests": 0,
+    "measured_requests": 10,
+    "total_requests": 10,
+    "attempted_requests": 10,
+    "successful_requests": 0,
+    "rejected_requests": 0,
+    "failed_requests": 10,
+    "duration_sec": 0.0745,
+    "successful_throughput_ops_sec": 0.0,
+    "overall_throughput_ops_sec": 134.28,
+    "throughput_ops_sec": 0.0,
+    "latency_stats_ms": {
+      "p50": 0.0,
+      "p90": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "mean": 0.0,
+      "stddev": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "raw_trace_path": "data/experiments/preflight\\preflight_02_3n_bully_majority_t1_20261011_055403_92c8bc_requests.ndjson"
+  },
+  "container_telemetry": {
+    "total_samples": 39,
+    "sampling_interval_sec": 1.0,
+    "containers": {
+      "1": {
+        "container_name": "voting-node1",
+        "sample_count": 13,
+        "cpu_mean_pct": 1.39,
+        "cpu_max_pct": 5.72,
+        "mem_mean_bytes": 38156873,
+        "mem_max_bytes": 38671482,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 44200,
+        "net_tx_peak_bytes": 47900,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      },
+      "2": {
+        "container_name": "voting-node2",
+        "sample_count": 13,
+        "cpu_mean_pct": 1.53,
+        "cpu_max_pct": 6.6,
+        "mem_mean_bytes": 38606954,
+        "mem_max_bytes": 39279656,
+        "mem_limit_bytes": 8173322764,
+        "net_rx_peak_bytes": 72400,
+        "net_tx_peak_bytes": 73300,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      },
+      "3": {
+        "container_name": "voting-node3",
+        "sample_count": 13,
+        "cpu_mean_pct": 0.0,
+        "cpu_max_pct": 0.0,
+        "mem_mean_bytes": 0,
+        "mem_max_bytes": 0,
+        "mem_limit_bytes": 0,
+        "net_rx_peak_bytes": 0,
+        "net_tx_peak_bytes": 0,
+        "total_restarts": 0,
+        "statuses": [
+          "running"
+        ]
+      }
+    },
+    "unavailable_metrics": [
+      "grpc_internal_queue_depth",
+      "lock_wait_nanoseconds"
+    ]
+  },
+  "invariants": null,
+  "fault_metrics": {
+    "scenario": "coord_crash",
+    "crashed_coordinator_id": 3,
+    "new_coordinator_id": 2,
+    "election_failover_ms": 3870.19,
+    "write_readiness_ms": 3934.18,
+    "probe_write_success": true
+  },
+  "errors": [
+    "Execution exception: 'NoneType' object has no attribute 'get'"
+  ]
+}
