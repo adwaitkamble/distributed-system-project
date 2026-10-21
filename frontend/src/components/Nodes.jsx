@@ -7,13 +7,12 @@ import {
   XCircle, 
   ExternalLink, 
   Shield, 
-  Zap, 
   RefreshCw, 
   Cpu, 
   Database, 
   Network, 
   Radio,
-  ArrowRight
+  Crown
 } from 'lucide-react';
 
 export default function Nodes({ nodeInfo }) {
@@ -47,86 +46,87 @@ export default function Nodes({ nodeInfo }) {
   const coordinatorId = nodeInfo?.coordinator_id;
 
   return (
-    <div className="nodes-page" style={{ animation: 'fadeIn 0.3s ease-out' }}>
-      <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
+    <div className="nodes-page route-fade-in">
+      <div className="page-header">
         <div>
-          <h2 className="page-title">Cluster Nodes & Topology</h2>
+          <h2 className="page-title">Cluster Topology & Node Telemetry</h2>
           <p className="page-description">
-            Live health telemetry, gRPC peer connectivity, and role status across all cluster participants.
+            Real-time peer discovery, gRPC network endpoints, and operational roles for all participating cluster nodes.
           </p>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--text-secondary)', cursor: 'pointer' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.84rem', color: 'var(--color-text-secondary)', cursor: 'pointer' }}>
             <input
               type="checkbox"
               checked={autoRefresh}
               onChange={(e) => setAutoRefresh(e.target.checked)}
-              style={{ accentColor: 'var(--accent-indigo)' }}
+              style={{ accentColor: 'var(--color-teal-accent)' }}
             />
-            Auto-refresh (2.5s)
+            <span>Auto-refresh (2.5s)</span>
           </label>
           <button 
+            type="button"
             className="btn btn-secondary" 
             onClick={loadNodes}
-            style={{ padding: '0.45rem 0.9rem', fontSize: '0.8rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+            style={{ padding: '0.4rem 0.85rem', fontSize: '0.8125rem' }}
           >
-            <RefreshCw size={14} className={loading ? 'spin-icon' : ''} />
-            Refresh
+            <RefreshCw size={14} className={loading ? 'spin-icon' : ''} aria-hidden="true" />
+            <span>Refresh Telemetry</span>
           </button>
         </div>
       </div>
 
-      {/* Cluster Overview Stats */}
+      {/* Overview Stat Strip */}
       <div className="grid-4" style={{ marginBottom: '1.75rem' }}>
         <div className="stat-widget">
           <div className="stat-header">
             <span className="stat-label">Total Cluster Nodes</span>
-            <Server size={18} className="stat-icon" />
+            <Server size={18} className="stat-icon" aria-hidden="true" />
           </div>
-          <div className="stat-value" style={{ color: 'var(--accent-indigo-light)' }}>
+          <div className="stat-value">
             {nodes.length || (nodeInfo?.cluster_size || 3)}
           </div>
           <div className="stat-meta">
-            <span>Containerized peer processes</span>
+            <span>Containerized runtime peers</span>
           </div>
         </div>
 
         <div className="stat-widget">
           <div className="stat-header">
             <span className="stat-label">Active Coordinator</span>
-            <Zap size={18} className="stat-icon" style={{ color: 'var(--accent-emerald)' }} />
+            <Crown size={18} className="stat-icon" style={{ color: 'var(--color-teal-accent)' }} aria-hidden="true" />
           </div>
-          <div className="stat-value" style={{ color: 'var(--accent-emerald-light)' }}>
+          <div className="stat-value">
             Node {coordinatorId ?? '?'}
           </div>
           <div className="stat-meta">
-            <span>Holds cluster coordinator lease</span>
+            <span>Holds cluster leader lease</span>
           </div>
         </div>
 
         <div className="stat-widget">
           <div className="stat-header">
-            <span className="stat-label">Network Protocol</span>
-            <Network size={18} className="stat-icon" />
+            <span className="stat-label">Communication Layer</span>
+            <Network size={18} className="stat-icon" aria-hidden="true" />
           </div>
-          <div className="stat-value" style={{ fontSize: '1.4rem', color: 'var(--accent-cyan-light)' }}>
+          <div className="stat-value" style={{ fontSize: '1.35rem' }}>
             gRPC + HTTP
           </div>
           <div className="stat-meta">
-            <span>Protobuf message serialization</span>
+            <span>Protobuf binary serialization</span>
           </div>
         </div>
 
         <div className="stat-widget">
           <div className="stat-header">
-            <span className="stat-label">Consensus Election</span>
-            <Radio size={18} className="stat-icon" />
+            <span className="stat-label">Consensus Protocol</span>
+            <Radio size={18} className="stat-icon" aria-hidden="true" />
           </div>
-          <div className="stat-value" style={{ fontSize: '1.4rem', color: 'var(--accent-amber-light)' }}>
-            {nodeInfo?.algorithm?.toUpperCase() || 'BULLY'}
+          <div className="stat-value" style={{ fontSize: '1.35rem' }}>
+            {nodeInfo?.election_algorithm?.toUpperCase() || 'BULLY'}
           </div>
           <div className="stat-meta">
-            <span>Term #{nodeInfo?.election_term ?? 0} active</span>
+            <span>Election Term #{nodeInfo?.election_term ?? 0}</span>
           </div>
         </div>
       </div>
@@ -142,131 +142,111 @@ export default function Nodes({ nodeInfo }) {
           return (
             <div
               key={n.node_id}
-              className={`node-card ${isCoord ? 'is-coordinator' : ''}`}
+              className="card"
               style={{
-                background: isCoord 
-                  ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, rgba(15, 23, 42, 0.85) 100%)' 
-                  : (isCurrent ? 'linear-gradient(180deg, rgba(99, 102, 241, 0.08) 0%, rgba(15, 23, 42, 0.85) 100%)' : 'var(--bg-card)'),
-                border: isCoord 
-                  ? '1px solid rgba(16, 185, 129, 0.35)' 
-                  : (isCurrent ? '1px solid rgba(99, 102, 241, 0.35)' : '1px solid var(--border-subtle)'),
-                borderRadius: 'var(--radius-lg)',
-                padding: '1.5rem',
+                borderTop: isCoord 
+                  ? '4px solid var(--color-success)' 
+                  : (isCurrent ? '4px solid var(--color-teal-accent)' : '1px solid var(--color-border-subtle)'),
                 display: 'flex',
                 flexDirection: 'column',
-                position: 'relative',
-                transition: 'var(--transition-smooth)',
-                boxShadow: isCoord ? '0 8px 32px rgba(16, 185, 129, 0.12)' : 'var(--shadow-sm)'
               }}
             >
               {/* Header */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.15rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
                   <div
                     style={{
-                      width: '42px',
-                      height: '42px',
+                      width: '38px',
+                      height: '38px',
                       borderRadius: 'var(--radius-md)',
-                      background: isCoord ? 'rgba(16, 185, 129, 0.15)' : 'rgba(255, 255, 255, 0.05)',
-                      border: isCoord ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid var(--border-subtle)',
+                      backgroundColor: isCoord ? 'var(--color-success-bg)' : 'var(--color-surface-subtle)',
+                      border: '1px solid var(--color-border-subtle)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      color: isCoord ? 'var(--accent-emerald-light)' : 'var(--text-secondary)'
+                      color: isCoord ? 'var(--color-success-text)' : 'var(--color-navy-primary)'
                     }}
+                    aria-hidden="true"
                   >
-                    <Server size={22} />
+                    {isCoord ? <Crown size={20} /> : <Server size={20} />}
                   </div>
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                      <span style={{ fontSize: '1.15rem', fontWeight: 800 }}>Node {n.node_id}</span>
+                      <strong style={{ fontSize: '1.05rem', color: 'var(--color-navy-primary)' }}>
+                        Node {n.node_id}
+                      </strong>
                       {isCurrent && (
-                        <span style={{ 
-                          fontSize: '0.65rem', 
-                          background: 'rgba(99, 102, 241, 0.2)', 
-                          color: 'var(--accent-indigo-light)', 
-                          padding: '0.15rem 0.45rem', 
-                          borderRadius: '999px',
-                          fontWeight: 700
-                        }}>
-                          THIS HOST
+                        <span className="badge badge-active" style={{ fontSize: '0.625rem', padding: '0.1rem 0.4rem' }}>
+                          Current Host
                         </span>
                       )}
                     </div>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
                       Container: voting-node{n.node_id}
                     </span>
                   </div>
                 </div>
 
                 <span className={`badge ${isCoord ? 'badge-coordinator' : 'badge-follower'}`}>
-                  {isCoord ? '● Leader' : '○ Follower'}
+                  {isCoord ? '● Coordinator' : '○ Follower'}
                 </span>
               </div>
 
-              {/* Status details */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', fontSize: '0.85rem', flex: 1 }}>
+              {/* Status Details */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', fontSize: '0.84rem', flex: 1 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                    <Activity size={14} /> Health Status:
+                  <span style={{ color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <Activity size={14} aria-hidden="true" /> Health Status:
                   </span>
                   <span className={`badge ${n.is_active ? 'badge-active' : 'badge-inactive'}`}>
-                    {n.is_active ? <CheckCircle2 size={12} /> : <XCircle size={12} />}
-                    {n.is_active ? 'Online' : 'Offline'}
+                    {n.is_active ? <CheckCircle2 size={12} aria-hidden="true" /> : <XCircle size={12} aria-hidden="true" />}
+                    <span>{n.is_active ? 'Online' : 'Offline'}</span>
                   </span>
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                    <Network size={14} /> gRPC Port:
+                  <span style={{ color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <Network size={14} aria-hidden="true" /> gRPC Port:
                   </span>
-                  <code style={{ fontSize: '0.8rem', background: 'rgba(255,255,255,0.05)', padding: '0.15rem 0.5rem', borderRadius: '4px', fontFamily: 'var(--font-mono)' }}>
+                  <code style={{ fontSize: '0.8rem', backgroundColor: 'var(--color-surface-subtle)', padding: '0.15rem 0.45rem', borderRadius: '4px', fontFamily: 'var(--font-mono)' }}>
                     :{grpcPort}
                   </code>
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                    <Database size={14} /> MySQL Store:
+                  <span style={{ color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <Database size={14} aria-hidden="true" /> Database:
                   </span>
-                  <span style={{ color: 'var(--accent-emerald-light)', fontSize: '0.8rem', fontWeight: 600 }}>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--color-navy-primary)', fontWeight: 600 }}>
                     node{n.node_id}_db:3306 (WAL)
                   </span>
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                    <Cpu size={14} /> Web Console:
+                  <span style={{ color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <Cpu size={14} aria-hidden="true" /> REST Endpoint:
                   </span>
-                  <span style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>
-                    http://localhost:{httpPort}
+                  <span style={{ color: 'var(--color-text-secondary)', fontSize: '0.8rem', fontFamily: 'var(--font-mono)' }}>
+                    :{httpPort}
                   </span>
                 </div>
               </div>
 
               {/* Bottom Quick Switch Action */}
-              <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--border-subtle)' }}>
+              <div style={{ marginTop: '1.25rem', paddingTop: '0.85rem', borderTop: '1px solid var(--color-border-subtle)' }}>
                 {isCurrent ? (
-                  <div style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--text-muted)', padding: '0.4rem 0' }}>
-                    Currently viewing this node dashboard
+                  <div style={{ textAlign: 'center', fontSize: '0.8125rem', color: 'var(--color-text-muted)', padding: '0.35rem 0' }}>
+                    Currently viewing this node console
                   </div>
                 ) : (
                   <a
                     href={`http://localhost:${httpPort}`}
                     className="btn btn-secondary"
-                    style={{ 
-                      width: '100%', 
-                      fontSize: '0.8rem', 
-                      padding: '0.5rem',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '0.4rem',
-                      textDecoration: 'none'
-                    }}
+                    style={{ width: '100%', fontSize: '0.8125rem', padding: '0.45rem' }}
+                    title={`Open Node ${n.node_id} dashboard`}
                   >
-                    Open Node {n.node_id} Dashboard
-                    <ExternalLink size={14} />
+                    <span>Open Node {n.node_id} Console</span>
+                    <ExternalLink size={13} aria-hidden="true" />
                   </a>
                 )}
               </div>
@@ -275,61 +255,63 @@ export default function Nodes({ nodeInfo }) {
         })}
       </div>
 
-      {/* Cluster Coordination Invariants Audit Table */}
-      <div className="card" style={{ marginTop: '2rem' }}>
+      {/* Cluster Invariants Specification Table */}
+      <section className="card" style={{ marginTop: '2rem' }} aria-labelledby="invariants-table-title">
         <div className="card-title">
           <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Shield size={20} color="var(--accent-emerald)" />
-            Distributed Consensus & Safety Invariants
+            <Shield size={18} color="var(--color-teal-accent)" aria-hidden="true" />
+            <h3 id="invariants-table-title" style={{ fontSize: '1.0625rem', fontWeight: 700, margin: 0 }}>
+              Distributed Consensus & Safety Invariants
+            </h3>
           </span>
-          <span className="badge badge-active">Audited & Verified</span>
+          <span className="badge badge-active">Formally Audited</span>
         </div>
 
         <div className="table-responsive">
-          <table className="data-table">
+          <table className="data-table" aria-label="Consensus Safety Invariants">
             <thead>
               <tr>
-                <th>Invariant Guarantee</th>
-                <th>Status</th>
-                <th>Algorithmic Subsystem</th>
-                <th>Formal Specification</th>
+                <th scope="col">Invariant Guarantee</th>
+                <th scope="col">Status</th>
+                <th scope="col">Subsystem</th>
+                <th scope="col">Technical Specification</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td><strong>Leader Uniqueness</strong></td>
-                <td><span className="badge badge-active"><CheckCircle2 size={12} /> Verified</span></td>
-                <td>Election Manager (Bully / Ring)</td>
+                <td><span className="badge badge-active"><CheckCircle2 size={12} aria-hidden="true" /> Verified</span></td>
+                <td>Election Manager ({nodeInfo?.election_algorithm?.toUpperCase() || 'Bully'})</td>
                 <td>At most one active coordinator lease exists per monotonic Lamport election term #{nodeInfo?.election_term ?? 0}.</td>
               </tr>
               <tr>
                 <td><strong>Crash-Failure Detection</strong></td>
-                <td><span className="badge badge-active"><CheckCircle2 size={12} /> Active</span></td>
+                <td><span className="badge badge-active"><CheckCircle2 size={12} aria-hidden="true" /> Active</span></td>
                 <td>Heartbeat Health Daemon</td>
-                <td>Nodes evaluate peer liveness using <code>time.monotonic()</code> timeouts; heartbeat failure triggers immediate election.</td>
+                <td>Nodes evaluate peer liveness using monotonic timeouts; coordinator failure triggers deterministic election.</td>
               </tr>
               <tr>
-                <td><strong>Synchronous Replication Quorum</strong></td>
-                <td><span className="badge badge-active"><CheckCircle2 size={12} /> Active</span></td>
+                <td><strong>Replication Quorum</strong></td>
+                <td><span className="badge badge-active"><CheckCircle2 size={12} aria-hidden="true" /> Active</span></td>
                 <td>Replication Engine</td>
                 <td>Policy: <code>{nodeInfo?.replication_policy?.toUpperCase()}</code>. Ballots must achieve ack consensus prior to client reply.</td>
               </tr>
               <tr>
                 <td><strong>Recovery-Authority Rule</strong></td>
-                <td><span className="badge badge-active"><CheckCircle2 size={12} /> Enforced</span></td>
+                <td><span className="badge badge-active"><CheckCircle2 size={12} aria-hidden="true" /> Enforced</span></td>
                 <td>State Recovery & SyncLog</td>
                 <td>Prevents resurrection of ghost votes unacknowledged by a previous failing coordinator.</td>
               </tr>
               <tr>
-                <td><strong>Deterministic Total Ordering</strong></td>
-                <td><span className="badge badge-active"><CheckCircle2 size={12} /> Enforced</span></td>
+                <td><strong>Deterministic Ordering</strong></td>
+                <td><span className="badge badge-active"><CheckCircle2 size={12} aria-hidden="true" /> Enforced</span></td>
                 <td>Lamport Logical Clock</td>
-                <td>All state mutations stamped with strictly monotonic Lamport timestamps <code>(ts, node_id)</code>.</td>
+                <td>All state transitions stamped with monotonic logical timestamps <code>(ts, node_id)</code>.</td>
               </tr>
             </tbody>
           </table>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

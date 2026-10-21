@@ -10,8 +10,9 @@ import {
   Trophy, 
   ExternalLink,
   Layers,
-  Radio,
-  Zap
+  Zap,
+  AlertCircle,
+  RefreshCw
 } from 'lucide-react';
 import { fetchTally, fetchNodes } from '../api';
 
@@ -19,14 +20,17 @@ export default function Dashboard({ nodeInfo, onNavigate }) {
   const [tallyData, setTallyData] = useState({ tally: {}, total_votes: 0 });
   const [clusterNodes, setClusterNodes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const loadData = async () => {
     try {
+      setError(null);
       const [tRes, nRes] = await Promise.all([fetchTally(), fetchNodes()]);
-      if (tRes.success) setTallyData(tRes);
-      if (nRes.success) setClusterNodes(nRes.nodes || []);
+      if (tRes?.success) setTallyData(tRes);
+      if (nRes?.success) setClusterNodes(nRes.nodes || []);
     } catch (err) {
       console.error('Failed to load dashboard data:', err);
+      setError('Unable to retrieve latest telemetry from local Flask bridge.');
     } finally {
       setLoading(false);
     }
@@ -42,10 +46,10 @@ export default function Dashboard({ nodeInfo, onNavigate }) {
   const tally = tallyData.tally || {};
   const candidates = nodeInfo?.candidates || ['Alice', 'Bob', 'Charlie'];
 
-  // Calculate highest voted candidate for the winner highlight
+  // Calculate highest voted candidate for authoritative leader highlight
   let leadingCandidate = null;
   let maxVotes = -1;
-  candidates.forEach(c => {
+  candidates.forEach((c) => {
     const v = tally[c] || 0;
     if (v > maxVotes && v > 0) {
       maxVotes = v;
@@ -53,255 +57,295 @@ export default function Dashboard({ nodeInfo, onNavigate }) {
     }
   });
 
-  const isCoord = nodeInfo?.is_coordinator;
-  const activeNodesCount = clusterNodes.filter(n => n.is_active).length;
+  const isCoord = Boolean(nodeInfo?.is_coordinator);
+  const activeNodes = clusterNodes.filter((n) => n.is_active);
+  const activeNodesCount = activeNodes.length;
   const totalNodesCount = clusterNodes.length || 1;
-
-  // Candidate avatar colors
-  const candidateColors = {
-    Alice: { bg: 'linear-gradient(135deg, #6366f1, #8b5cf6)', bar: 'linear-gradient(90deg, #6366f1, #a855f7)' },
-    Bob: { bg: 'linear-gradient(135deg, #06b6d4, #3b82f6)', bar: 'linear-gradient(90deg, #06b6d4, #3b82f6)' },
-    Charlie: { bg: 'linear-gradient(135deg, #10b981, #059669)', bar: 'linear-gradient(90deg, #10b981, #34d399)' },
-  };
+  const coordId = nodeInfo?.coordinator_id ?? 'Unknown';
 
   return (
-    <div className="dashboard-page">
-      {/* Hero Cluster Status Banner */}
+    <div className="dashboard-page route-fade-in">
+      {/* Cluster Node Role Banner */}
       <div 
+        className="card"
         style={{
-          background: isCoord 
-            ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(6, 182, 212, 0.08))' 
-            : 'linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(59, 130, 246, 0.08))',
-          border: isCoord ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid rgba(99, 102, 241, 0.3)',
-          borderRadius: 'var(--radius-lg)',
-          padding: '1.5rem 1.75rem',
-          marginBottom: '2rem',
+          borderLeft: isCoord ? '4px solid var(--color-success)' : '4px solid var(--color-info)',
+          marginBottom: '1.75rem',
+          padding: '1.25rem 1.5rem',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
           flexWrap: 'wrap',
           gap: '1.25rem',
-          boxShadow: 'var(--shadow-sm)'
+          background: isCoord ? 'var(--color-success-bg)' : 'var(--color-surface)'
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <div 
             style={{
-              width: '48px',
-              height: '48px',
+              width: '44px',
+              height: '44px',
               borderRadius: 'var(--radius-md)',
-              background: isCoord ? 'rgba(16, 185, 129, 0.2)' : 'rgba(99, 102, 241, 0.2)',
+              background: isCoord ? 'var(--color-success)' : 'var(--color-info)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: isCoord ? 'var(--accent-emerald-light)' : 'var(--accent-indigo-light)',
+              color: '#FFFFFF',
+              flexShrink: 0
             }}
           >
-            {isCoord ? <Crown size={26} /> : <Server size={26} />}
+            {isCoord ? <Crown size={24} aria-hidden="true" /> : <Server size={24} aria-hidden="true" />}
           </div>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-              <h2 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0 }}>
-                {isCoord ? `Node ${nodeInfo?.node_id} is Active Cluster Leader` : `Node ${nodeInfo?.node_id} is Follower Replica`}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
+              <h2 style={{ fontSize: '1.15rem', fontWeight: 700, margin: 0, color: 'var(--color-navy-primary)' }}>
+                {isCoord ? `Node ${nodeInfo?.node_id} is Active Cluster Coordinator` : `Node ${nodeInfo?.node_id} is Follower Replica`}
               </h2>
               <span className={`badge ${isCoord ? 'badge-coordinator' : 'badge-follower'}`}>
-                {isCoord ? 'COORDINATOR' : 'FOLLOWER'}
+                {isCoord ? 'LEADER' : 'FOLLOWER'}
               </span>
             </div>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginTop: '0.25rem' }}>
+            <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.875rem', marginTop: '0.2rem' }}>
               {isCoord 
-                ? 'Accepting vote writes and orchestrating gRPC consensus replication to active replicas.' 
-                : `Synchronized with Leader (Node ${nodeInfo?.coordinator_id ?? '?'}). Follower nodes maintain read-only database replicas.`}
+                ? 'Accepting vote writes and orchestrating two-phase consensus replication to cluster followers.' 
+                : `Connected to Leader (Node ${coordId}). Follower replicas maintain read-only synchronized copies of the ballot log.`}
             </p>
           </div>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           {isCoord ? (
-            <button className="btn btn-primary" onClick={() => onNavigate('voting')}>
-              <Vote size={16} />
-              <span>Cast Ballot Now</span>
-              <ArrowRight size={14} />
+            <button 
+              type="button"
+              className="btn btn-primary" 
+              onClick={() => onNavigate('voting')}
+            >
+              <Vote size={15} aria-hidden="true" />
+              <span>Submit Ballot</span>
+              <ArrowRight size={14} aria-hidden="true" />
             </button>
           ) : (
             <a 
-              href={`http://localhost:${5000 + (nodeInfo?.coordinator_id || 3)}`}
-              className="btn btn-primary"
+              href={`http://localhost:${5000 + (nodeInfo?.coordinator_id || 1)}`}
+              className="btn btn-navy"
             >
-              <span>Switch to Leader (Node {nodeInfo?.coordinator_id})</span>
-              <ExternalLink size={14} />
+              <span>Connect to Coordinator (Node {coordId})</span>
+              <ExternalLink size={14} aria-hidden="true" />
             </a>
           )}
         </div>
       </div>
 
-      {/* Top Stat Widgets */}
+      {error && (
+        <div className="alert alert-warning" role="alert">
+          <AlertCircle size={18} aria-hidden="true" />
+          <span>{error}</span>
+        </div>
+      )}
+
+      {/* Primary Cluster Metrics (4 columns) */}
       <div className="grid-4">
         {/* Connected Node */}
         <div className="stat-widget">
           <div className="stat-header">
             <span className="stat-label">Connected Node</span>
-            <Server size={18} className="stat-icon" />
+            <Server size={18} className="stat-icon" aria-hidden="true" />
           </div>
-          <span className="stat-value" style={{ color: isCoord ? 'var(--accent-emerald-light)' : 'var(--accent-indigo-light)' }}>
+          <span className="stat-value">
             Node {nodeInfo?.node_id ?? '?'}
           </span>
           <span className="stat-meta">
-            <Radio size={12} style={{ color: isCoord ? 'var(--accent-emerald)' : 'var(--accent-indigo)' }} />
-            {isCoord ? 'Cluster Leader' : `Leader is Node ${nodeInfo?.coordinator_id ?? '?'}`}
+            <span 
+              className={`status-dot ${isCoord ? 'status-dot-active' : 'status-dot-info'}`} 
+              aria-hidden="true" 
+            />
+            {isCoord ? 'Cluster Coordinator' : `Coordinator is Node ${coordId}`}
           </span>
         </div>
 
-        {/* Cluster Coordinator */}
+        {/* Active Coordinator */}
         <div className="stat-widget">
           <div className="stat-header">
-            <span className="stat-label">Cluster Leader</span>
-            <Crown size={18} className="stat-icon" />
+            <span className="stat-label">Coordinator Lease</span>
+            <Crown size={18} className="stat-icon" aria-hidden="true" />
           </div>
-          <span className="stat-value" style={{ color: 'var(--accent-emerald-light)' }}>
+          <span className="stat-value">
             Node {nodeInfo?.coordinator_id ?? 'None'}
           </span>
           <span className="stat-meta">
-            <Zap size={12} style={{ color: 'var(--accent-amber)' }} />
-            Term #{nodeInfo?.election_term ?? 0} ({nodeInfo?.election_algorithm?.toUpperCase()})
+            <Zap size={13} style={{ color: 'var(--color-warning)' }} aria-hidden="true" />
+            Term #{nodeInfo?.election_term ?? 0} • {nodeInfo?.election_algorithm?.toUpperCase() || 'BULLY'}
           </span>
         </div>
 
-        {/* Committed Votes */}
+        {/* Committed Ballots */}
         <div className="stat-widget">
           <div className="stat-header">
             <span className="stat-label">Committed Ballots</span>
-            <CheckCircle2 size={18} className="stat-icon" />
+            <CheckCircle2 size={18} className="stat-icon" aria-hidden="true" />
           </div>
-          <span className="stat-value" style={{ color: 'var(--accent-cyan-light)' }}>
-            {totalCommitted}
+          <span className="stat-value">
+            {loading ? '...' : totalCommitted}
           </span>
           <span className="stat-meta">
-            <ShieldCheck size={12} style={{ color: 'var(--accent-cyan)' }} />
+            <ShieldCheck size={13} style={{ color: 'var(--color-teal-accent)' }} aria-hidden="true" />
             Authoritative DB verified
           </span>
         </div>
 
-        {/* Cluster Consensus Status */}
+        {/* Cluster Peer Topology */}
         <div className="stat-widget">
           <div className="stat-header">
-            <span className="stat-label">Cluster Mesh</span>
-            <Activity size={18} className="stat-icon" />
+            <span className="stat-label">Active Mesh Quorum</span>
+            <Activity size={18} className="stat-icon" aria-hidden="true" />
           </div>
-          <span className="stat-value" style={{ color: 'var(--accent-emerald-light)' }}>
-            {activeNodesCount}/{totalNodesCount} Active
+          <span className="stat-value">
+            {loading ? '...' : `${activeNodesCount}/${totalNodesCount} Healthy`}
           </span>
           <span className="stat-meta">
-            <Layers size={12} style={{ color: 'var(--accent-indigo)' }} />
-            Policy: {nodeInfo?.replication_policy?.toUpperCase()}
+            <Layers size={13} style={{ color: 'var(--color-text-secondary)' }} aria-hidden="true" />
+            Replication Policy: {nodeInfo?.replication_policy?.toUpperCase() || 'ALL'}
           </span>
         </div>
       </div>
 
-      {/* Main Grid: Live Leaderboard + Topology */}
+      {/* Main Grid: Authoritative Results Tally + Node Mesh */}
       <div className="grid-2">
-        {/* Authoritative Ballot Leaderboard */}
-        <div className="card">
+        {/* Authoritative Live Results Tally */}
+        <section className="card" aria-labelledby="tally-section-title">
           <div className="card-title">
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Trophy size={18} style={{ color: 'var(--accent-amber)' }} />
-              <span>Authoritative Live Tally</span>
+              <Trophy size={18} style={{ color: 'var(--color-warning)' }} aria-hidden="true" />
+              <h3 id="tally-section-title" style={{ fontSize: '1.0625rem', fontWeight: 700, margin: 0 }}>
+                Committed Ballot Results
+              </h3>
             </div>
-            <span className="badge badge-active">{totalCommitted} Total Confirmed</span>
+            <span className="badge badge-active">
+              {totalCommitted} {totalCommitted === 1 ? 'Vote Committed' : 'Votes Committed'}
+            </span>
           </div>
 
           <p className="card-subtitle">
-            Real-time verified votes committed across dedicated MySQL databases.
+            Authoritative results verified across distributed database replicas. Only 2-phase committed ballots contribute to the tally.
           </p>
 
-          <div style={{ marginTop: '1.25rem' }}>
+          {/* Results Table & Progress Bars */}
+          <div style={{ marginTop: '1rem' }}>
             {candidates.map((cand) => {
               const count = tally[cand] || 0;
               const pct = totalCommitted > 0 ? Math.round((count / totalCommitted) * 100) : 0;
               const isLeader = cand === leadingCandidate && count > 0;
-              const colorInfo = candidateColors[cand] || { bg: 'linear-gradient(135deg, #6366f1, #8b5cf6)', bar: 'linear-gradient(90deg, #6366f1, #a855f7)' };
 
               return (
-                <div key={cand} className="leaderboard-item">
-                  <div className="leaderboard-meta">
+                <div key={cand} className="tally-item">
+                  <div className="tally-meta">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                      <div 
-                        style={{
-                          width: '28px',
-                          height: '28px',
-                          borderRadius: '6px',
-                          background: colorInfo.bg,
-                          color: '#fff',
-                          fontWeight: 800,
-                          fontSize: '0.8rem',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}
-                      >
+                      <div className="candidate-avatar-badge" aria-hidden="true">
                         {cand.charAt(0)}
                       </div>
-                      <span style={{ fontWeight: 700, fontSize: '0.95rem' }}>{cand}</span>
-                      {isLeader && (
-                        <span className="badge" style={{ background: 'rgba(245, 158, 11, 0.15)', color: 'var(--accent-amber-light)', fontSize: '0.65rem', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
-                          ★ Leader
-                        </span>
-                      )}
+                      <div>
+                        <span style={{ fontWeight: 600, color: 'var(--color-navy-primary)' }}>{cand}</span>
+                        {isLeader && (
+                          <span 
+                            className="badge badge-warning" 
+                            style={{ marginLeft: '0.5rem', fontSize: '0.68rem', padding: '0.1rem 0.4rem' }}
+                          >
+                            ★ Leader
+                          </span>
+                        )}
+                      </div>
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                      <span style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-primary)' }}>{count}</span>
-                      <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>({pct}%)</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <span style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--color-text-primary)' }}>
+                        {count} {count === 1 ? 'vote' : 'votes'}
+                      </span>
+                      <span style={{ color: 'var(--color-text-muted)', fontSize: '0.84rem' }}>
+                        ({pct}%)
+                      </span>
                     </div>
                   </div>
 
-                  <div className="progress-track">
+                  <div 
+                    className="progress-track" 
+                    role="progressbar" 
+                    aria-valuenow={pct} 
+                    aria-valuemin={0} 
+                    aria-valuemax={100}
+                    aria-label={`${cand} votes: ${count} (${pct}%)`}
+                  >
                     <div 
                       className="progress-fill" 
-                      style={{ 
-                        width: `${pct}%`,
-                        background: colorInfo.bar
-                      }}
-                    ></div>
+                      style={{ width: `${pct}%` }} 
+                    />
                   </div>
                 </div>
               );
             })}
           </div>
 
-          <div style={{ marginTop: '1.75rem', display: 'flex', gap: '0.75rem', borderTop: '1px solid var(--border-subtle)', paddingTop: '1.25rem' }}>
-            <button className="btn btn-primary" onClick={() => onNavigate('voting')}>
-              <Vote size={15} />
+          {totalCommitted === 0 && !loading && (
+            <div 
+              style={{ 
+                padding: '1.25rem', 
+                textAlign: 'center', 
+                backgroundColor: 'var(--color-surface-subtle)', 
+                borderRadius: 'var(--radius-md)', 
+                border: '1px dashed var(--color-border-medium)',
+                marginTop: '1rem',
+                color: 'var(--color-text-muted)',
+                fontSize: '0.875rem'
+              }}
+            >
+              No ballots committed yet for this election. Cast a ballot to begin tallying.
+            </div>
+          )}
+
+          <div style={{ marginTop: '1.5rem', display: 'flex', gap: '0.75rem', borderTop: '1px solid var(--color-border-subtle)', paddingTop: '1.25rem', flexWrap: 'wrap' }}>
+            <button 
+              type="button"
+              className="btn btn-primary" 
+              onClick={() => onNavigate('voting')}
+            >
+              <Vote size={15} aria-hidden="true" />
               <span>Cast Ballot</span>
             </button>
-            <button className="btn btn-secondary" onClick={loadData}>
+            <button 
+              type="button"
+              className="btn btn-secondary" 
+              onClick={loadData}
+            >
+              <RefreshCw size={14} aria-hidden="true" />
               <span>Refresh Tally</span>
             </button>
           </div>
-        </div>
+        </section>
 
-        {/* Cluster Nodes Quick Overview */}
-        <div className="card">
+        {/* Cluster Nodes Overview */}
+        <section className="card" aria-labelledby="mesh-section-title">
           <div className="card-title">
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Server size={18} style={{ color: 'var(--accent-indigo)' }} />
-              <span>Cluster Node Mesh</span>
+              <Server size={18} style={{ color: 'var(--color-navy-primary)' }} aria-hidden="true" />
+              <h3 id="mesh-section-title" style={{ fontSize: '1.0625rem', fontWeight: 700, margin: 0 }}>
+                Cluster Nodes Overview
+              </h3>
             </div>
             <button
+              type="button"
               className="btn btn-secondary"
-              style={{ padding: '0.35rem 0.75rem', fontSize: '0.75rem' }}
+              style={{ padding: '0.3rem 0.65rem', fontSize: '0.75rem' }}
               onClick={() => onNavigate('nodes')}
             >
-              <span>View Full Mesh</span>
-              <ArrowRight size={12} />
+              <span>View Full Topology</span>
+              <ArrowRight size={12} aria-hidden="true" />
             </button>
           </div>
 
           <p className="card-subtitle">
-            Physical MySQL and gRPC peer consensus heartbeats.
+            Synchronized cluster nodes connected via gRPC consensus channels and local MySQL databases.
           </p>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             {clusterNodes.map((n) => {
               const isNodeLeader = n.is_coordinator;
               const port = 5000 + n.node_id;
@@ -313,47 +357,49 @@ export default function Dashboard({ nodeInfo, onNavigate }) {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    padding: '0.85rem 1.15rem',
+                    padding: '0.75rem 1rem',
                     borderRadius: 'var(--radius-md)',
-                    background: n.is_self 
-                      ? 'rgba(99, 102, 241, 0.08)' 
-                      : (isNodeLeader ? 'rgba(16, 185, 129, 0.06)' : 'rgba(255, 255, 255, 0.02)'),
-                    border: n.is_self 
-                      ? '1px solid rgba(99, 102, 241, 0.35)' 
-                      : (isNodeLeader ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid var(--border-subtle)'),
-                    transition: 'var(--transition)'
+                    background: n.is_self ? 'var(--color-teal-light)' : 'var(--color-surface-subtle)',
+                    border: n.is_self ? '1px solid var(--color-teal-border)' : '1px solid var(--color-border-subtle)',
+                    transition: 'background var(--transition-fast)'
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                     <div 
                       style={{
                         width: '32px',
                         height: '32px',
                         borderRadius: 'var(--radius-sm)',
-                        background: isNodeLeader ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255, 255, 255, 0.05)',
+                        background: isNodeLeader ? 'var(--color-success-bg)' : '#E2E8F0',
+                        color: isNodeLeader ? 'var(--color-success-text)' : 'var(--color-navy-primary)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: isNodeLeader ? 'var(--accent-emerald-light)' : 'var(--text-secondary)'
+                        flexShrink: 0
                       }}
+                      aria-hidden="true"
                     >
                       {isNodeLeader ? <Crown size={16} /> : <Server size={16} />}
                     </div>
 
                     <div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <span style={{ fontWeight: 700, fontSize: '0.95rem' }}>Node {n.node_id}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+                        <strong style={{ fontSize: '0.9rem', color: 'var(--color-navy-primary)' }}>
+                          Node {n.node_id}
+                        </strong>
                         {n.is_self && (
-                          <span className="badge badge-active" style={{ fontSize: '0.62rem' }}>Current Host</span>
+                          <span className="badge badge-active" style={{ fontSize: '0.625rem', padding: '0.1rem 0.4rem' }}>
+                            Connected Host
+                          </span>
                         )}
                       </div>
-                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                      <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
                         Port {port} • {n.address || 'gRPC:50051'}
                       </span>
                     </div>
                   </div>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span className={`badge ${isNodeLeader ? 'badge-coordinator' : 'badge-follower'}`}>
                       {isNodeLeader ? 'LEADER' : 'FOLLOWER'}
                     </span>
@@ -366,10 +412,11 @@ export default function Dashboard({ nodeInfo, onNavigate }) {
                         target="_blank"
                         rel="noreferrer"
                         className="btn btn-secondary"
-                        style={{ padding: '0.3rem 0.5rem', fontSize: '0.75rem' }}
-                        title={`Open Node ${n.node_id} web UI`}
+                        style={{ padding: '0.25rem 0.45rem', fontSize: '0.75rem' }}
+                        title={`Open Node ${n.node_id} web console in new tab`}
+                        aria-label={`Open Node ${n.node_id} in new window`}
                       >
-                        <ExternalLink size={12} />
+                        <ExternalLink size={13} aria-hidden="true" />
                       </a>
                     )}
                   </div>
@@ -378,11 +425,11 @@ export default function Dashboard({ nodeInfo, onNavigate }) {
             })}
           </div>
 
-          <div style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid var(--border-subtle)', fontSize: '0.8rem', color: 'var(--text-muted)', display: 'flex', justifyContent: 'space-between' }}>
-            <span>Election Algorithm: <strong style={{ color: 'var(--text-secondary)', textTransform: 'uppercase' }}>{nodeInfo?.election_algorithm || 'Bully'}</strong></span>
-            <span>MySQL Host: <strong style={{ color: 'var(--text-secondary)' }}>{nodeInfo?.db_host || 'isolated container'}</strong></span>
+          <div style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid var(--color-border-subtle)', fontSize: '0.8rem', color: 'var(--color-text-muted)', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
+            <span>Protocol: <strong style={{ color: 'var(--color-text-secondary)' }}>{nodeInfo?.election_algorithm?.toUpperCase() || 'BULLY'} Consensus</strong></span>
+            <span>Database: <strong style={{ color: 'var(--color-text-secondary)' }}>MySQL WAL Replica</strong></span>
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );

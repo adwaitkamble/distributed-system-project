@@ -5,13 +5,8 @@ import {
   Search, 
   Download, 
   RefreshCw, 
-  Filter, 
-  CheckCircle2, 
-  Clock, 
   Database, 
-  Radio, 
-  Code2,
-  FileSpreadsheet
+  Radio
 } from 'lucide-react';
 
 export default function Events() {
@@ -23,7 +18,7 @@ export default function Events() {
   const loadEvents = async () => {
     try {
       const res = await fetchEvents({ source, limit: 100 });
-      if (res.success) {
+      if (res?.success) {
         setEvents(res.events || []);
       }
     } catch (err) {
@@ -43,7 +38,7 @@ export default function Events() {
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(events, null, 2));
     const downloadAnchor = document.createElement('a');
     downloadAnchor.setAttribute('href', dataStr);
-    downloadAnchor.setAttribute('download', `distributed_voting_audit_log_${Date.now()}.json`);
+    downloadAnchor.setAttribute('download', `distributed_voting_audit_${Date.now()}.json`);
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
@@ -61,51 +56,55 @@ export default function Events() {
   });
 
   return (
-    <div className="events-page" style={{ animation: 'fadeIn 0.3s ease-out' }}>
-      <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
+    <div className="events-page route-fade-in">
+      <div className="page-header">
         <div>
-          <h2 className="page-title">Cluster Observability & Audit Log</h2>
+          <h2 className="page-title">Cluster Observability & Audit Stream</h2>
           <p className="page-description">
-            Live chronological stream of distributed election, consensus, and durable state sync operations.
+            Chronological audit stream of consensus transitions, coordinator elections, and distributed state synchronizations.
           </p>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
           <button
+            type="button"
             className="btn btn-secondary"
             onClick={handleExportJson}
             disabled={events.length === 0}
-            style={{ padding: '0.45rem 0.85rem', fontSize: '0.8rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+            style={{ padding: '0.4rem 0.85rem', fontSize: '0.8125rem' }}
           >
-            <Download size={14} />
-            Export Audit JSON
+            <Download size={14} aria-hidden="true" />
+            <span>Export Audit JSON</span>
           </button>
           <button
+            type="button"
             className="btn btn-secondary"
             onClick={loadEvents}
-            style={{ padding: '0.45rem 0.85rem', fontSize: '0.8rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+            style={{ padding: '0.4rem 0.85rem', fontSize: '0.8125rem' }}
           >
-            <RefreshCw size={14} className={loading ? 'spin-icon' : ''} />
-            Refresh
+            <RefreshCw size={14} className={loading ? 'spin-icon' : ''} aria-hidden="true" />
+            <span>Refresh</span>
           </button>
         </div>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="card" style={{ marginBottom: '1.5rem', padding: '1.25rem' }}>
+      <div className="card" style={{ marginBottom: '1.5rem', padding: '1rem 1.25rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
           {/* Source filters */}
-          <div style={{ display: 'flex', gap: '0.4rem' }}>
+          <div style={{ display: 'flex', gap: '0.35rem' }} role="group" aria-label="Filter events by source">
             {[
               { id: 'all', label: 'All Operations' },
               { id: 'election', label: 'Elections' },
-              { id: 'sync', label: 'Log Syncing' }
+              { id: 'sync', label: 'SyncLog Replays' }
             ].map((f) => (
               <button
                 key={f.id}
-                className={`btn btn-secondary ${source === f.id ? 'btn-primary' : ''}`}
-                style={{ padding: '0.4rem 0.85rem', fontSize: '0.8rem' }}
+                type="button"
+                className={`btn ${source === f.id ? 'btn-primary' : 'btn-secondary'}`}
+                style={{ padding: '0.35rem 0.75rem', fontSize: '0.8125rem' }}
                 onClick={() => setSource(f.id)}
+                aria-pressed={source === f.id}
               >
                 {f.label}
               </button>
@@ -113,51 +112,54 @@ export default function Events() {
           </div>
 
           {/* Search box */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', minWidth: '280px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', minWidth: '280px', flex: '1 1 auto', maxWidth: '400px' }}>
             <div style={{ position: 'relative', width: '100%' }}>
               <input
-                type="text"
+                type="search"
                 className="form-input"
-                placeholder="Search by ID, type, client..."
+                placeholder="Search audit records by ID, node, or type..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                style={{ paddingLeft: '2.2rem', paddingRight: '0.8rem', paddingTop: '0.45rem', paddingBottom: '0.45rem', fontSize: '0.85rem' }}
+                style={{ paddingLeft: '2.1rem', paddingRight: '0.75rem', paddingTop: '0.45rem', paddingBottom: '0.45rem', fontSize: '0.84rem' }}
+                aria-label="Search audit records"
               />
-              <Search size={15} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+              <Search size={14} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)' }} aria-hidden="true" />
             </div>
           </div>
         </div>
       </div>
 
       {/* Main Audit Feed Card */}
-      <div className="card">
+      <section className="card" aria-labelledby="audit-table-title">
         <div className="card-title">
-          <span style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-            <Terminal size={20} color="var(--accent-emerald)" />
-            Audit Stream ({filteredEvents.length} events logged)
+          <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Terminal size={18} color="var(--color-teal-accent)" aria-hidden="true" />
+            <h3 id="audit-table-title" style={{ fontSize: '1.0625rem', fontWeight: 700, margin: 0 }}>
+              Live Audit Log ({filteredEvents.length} events logged)
+            </h3>
           </span>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-            <span className="pulse-dot" style={{ background: 'var(--accent-emerald)' }} />
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>LIVE FEED</span>
+            <span className="status-dot status-dot-active" aria-hidden="true" />
+            <span style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', fontWeight: 600 }}>MONITORED</span>
           </div>
         </div>
 
         <div className="table-responsive">
-          <table className="data-table">
+          <table className="data-table" aria-label="Audit Log Table">
             <thead>
               <tr>
-                <th>Event Category</th>
-                <th>Event Action</th>
-                <th>Node ID</th>
-                <th>Lamport TS</th>
-                <th>Subject / Entity</th>
-                <th>Execution Payload Details</th>
+                <th scope="col">Category</th>
+                <th scope="col">Event Action</th>
+                <th scope="col">Node ID</th>
+                <th scope="col">Lamport TS</th>
+                <th scope="col">Entity / Context</th>
+                <th scope="col">Execution Details</th>
               </tr>
             </thead>
             <tbody>
               {filteredEvents.length === 0 ? (
                 <tr>
-                  <td colSpan="6" style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '2.5rem' }}>
+                  <td colSpan={6} style={{ textAlign: 'center', color: 'var(--color-text-muted)', padding: '2rem' }}>
                     {searchQuery ? 'No audit records matching your search query.' : 'No audit events recorded yet.'}
                   </td>
                 </tr>
@@ -167,54 +169,41 @@ export default function Events() {
                   return (
                     <tr key={ev.id}>
                       <td>
-                        <span 
-                          className="badge" 
-                          style={{
-                            background: isElection ? 'rgba(99, 102, 241, 0.15)' : 'rgba(6, 182, 212, 0.15)',
-                            color: isElection ? 'var(--accent-indigo-light)' : 'var(--accent-cyan-light)',
-                            border: isElection ? '1px solid rgba(99, 102, 241, 0.3)' : '1px solid rgba(6, 182, 212, 0.3)'
-                          }}
-                        >
-                          {isElection ? <Radio size={12} /> : <Database size={12} />}
-                          {ev.source?.toUpperCase()}
+                        <span className={`badge ${isElection ? 'badge-follower' : 'badge-neutral'}`}>
+                          {isElection ? <Radio size={12} aria-hidden="true" /> : <Database size={12} aria-hidden="true" />}
+                          <span>{ev.source?.toUpperCase()}</span>
                         </span>
                       </td>
                       <td>
-                        <strong style={{ color: 'var(--text-primary)', fontSize: '0.85rem' }}>
+                        <strong style={{ color: 'var(--color-navy-primary)', fontSize: '0.84rem' }}>
                           {ev.event_type}
                         </strong>
                       </td>
                       <td>
-                        <span style={{ 
-                          fontSize: '0.75rem', 
-                          background: 'rgba(255,255,255,0.05)', 
-                          padding: '0.15rem 0.5rem', 
-                          borderRadius: '4px',
-                          fontWeight: 600
-                        }}>
+                        <span style={{ fontSize: '0.75rem', backgroundColor: 'var(--color-surface-subtle)', padding: '0.15rem 0.45rem', borderRadius: '4px', fontWeight: 600 }}>
                           Node {ev.node_id}
                         </span>
                       </td>
                       <td>
-                        <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--accent-emerald-light)' }}>
+                        <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-navy-primary)', fontWeight: 600 }}>
                           #{ev.lamport_ts}
                         </span>
                       </td>
                       <td>
                         {ev.vote_id ? (
-                          <code style={{ fontSize: '0.75rem', color: 'var(--accent-cyan-light)' }}>{ev.vote_id}</code>
+                          <code style={{ fontSize: '0.75rem' }}>{ev.vote_id}</code>
                         ) : ev.client_id ? (
-                          <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Client: <strong>{ev.client_id}</strong></span>
+                          <span style={{ fontSize: '0.8rem' }}>Client: <strong>{ev.client_id}</strong></span>
                         ) : ev.election_term ? (
-                          <span style={{ fontSize: '0.8rem', color: 'var(--accent-amber-light)' }}>Term #{ev.election_term}</span>
+                          <span style={{ fontSize: '0.8rem' }}>Term #{ev.election_term}</span>
                         ) : (
-                          <span style={{ color: 'var(--text-muted)' }}>-</span>
+                          <span style={{ color: 'var(--color-text-muted)' }}>-</span>
                         )}
                       </td>
-                      <td style={{ maxWidth: '320px' }}>
+                      <td style={{ maxWidth: '300px' }}>
                         <code style={{ 
                           fontSize: '0.75rem', 
-                          color: 'var(--text-muted)', 
+                          color: 'var(--color-text-secondary)', 
                           display: 'block', 
                           overflow: 'hidden', 
                           textOverflow: 'ellipsis', 
@@ -230,7 +219,7 @@ export default function Events() {
             </tbody>
           </table>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

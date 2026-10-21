@@ -7,7 +7,7 @@ import Election from './components/Election';
 import Recovery from './components/Recovery';
 import Events from './components/Events';
 import { fetchNodeStatus } from './api';
-import { AlertCircle, ShieldCheck, Cpu } from 'lucide-react';
+import { AlertCircle, ShieldCheck } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -21,7 +21,7 @@ export default function App() {
       setApiError(null);
     } catch (err) {
       console.error('Error fetching node status:', err);
-      setApiError('Unable to connect to Flask REST Bridge. Ensure node container is running.');
+      setApiError('Unable to connect to Flask REST Bridge. Ensure the node container is running.');
     }
   };
 
@@ -40,17 +40,21 @@ export default function App() {
         onRefresh={loadStatus}
       />
 
-      <main className="main-content">
+      <main className="main-content" id="main-content" tabIndex={-1}>
         {apiError && (
-          <div className="alert alert-warning" style={{ marginBottom: '1.75rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <AlertCircle size={20} color="var(--accent-amber)" />
+          <div 
+            className="alert alert-warning" 
+            role="alert" 
+            style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}
+          >
+            <AlertCircle size={18} aria-hidden="true" style={{ color: 'var(--color-warning)' }} />
             <span>
               <strong>REST Bridge Disconnected:</strong> {apiError}
             </span>
           </div>
         )}
 
-        <div key={activeTab} style={{ animation: 'fadeIn 0.25s ease-out' }}>
+        <div key={activeTab}>
           {activeTab === 'dashboard' && (
             <Dashboard nodeInfo={nodeInfo} onNavigate={setActiveTab} />
           )}
@@ -77,28 +81,30 @@ export default function App() {
         </div>
       </main>
 
-      <footer style={{
-        marginTop: 'auto',
-        borderTop: '1px solid var(--border-subtle)',
-        background: 'rgba(7, 9, 14, 0.75)',
-        backdropFilter: 'blur(12px)',
-        padding: '1.25rem 2rem',
-        fontSize: '0.8rem',
-        color: 'var(--text-muted)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        gap: '1rem'
-      }}>
+      <footer 
+        role="contentinfo"
+        style={{
+          marginTop: 'auto',
+          borderTop: '1px solid var(--color-border-subtle)',
+          backgroundColor: '#FFFFFF',
+          padding: '1.25rem 2rem',
+          fontSize: '0.8125rem',
+          color: 'var(--color-text-secondary)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '1rem'
+        }}
+      >
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <ShieldCheck size={16} color="var(--accent-emerald)" />
-          <span>Fault-Tolerant Distributed Consensus • B.Tech Distributed Systems Project</span>
+          <ShieldCheck size={16} color="var(--color-teal-accent)" aria-hidden="true" />
+          <span>Fault-Tolerant Distributed Consensus • B.Tech Capstone Project</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-          <span>Protocol: <strong>Bully / Ring Leader Election</strong></span>
-          <span>Storage: <strong>Replicated MySQL WAL</strong></span>
-          <span>Transport: <strong>gRPC + HTTP REST</strong></span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
+          <span>Protocol: <strong style={{ color: 'var(--color-navy-primary)' }}>Bully / Ring Election</strong></span>
+          <span>Storage: <strong style={{ color: 'var(--color-navy-primary)' }}>Replicated MySQL WAL</strong></span>
+          <span>Transport: <strong style={{ color: 'var(--color-navy-primary)' }}>gRPC & HTTP REST</strong></span>
         </div>
       </footer>
     </div>

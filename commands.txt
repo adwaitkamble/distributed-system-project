@@ -1,0 +1,169 @@
+# ==============================================================================
+# DISTRIBUTED FAULT-TOLERANT VOTING SYSTEM — 5-NODE ARCHITECTURE TEST SEQUENCE
+# ==============================================================================
+# Run these commands sequentially in Windows PowerShell from the project root:
+# D:\Studies\B.Tech first sem\Distributed System\Distributed Voting System
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# STEP 1: START THE 5-NODE CLUSTER
+# ------------------------------------------------------------------------------
+# Launch all 10 containers (5 app nodes + 5 dedicated MySQL databases):
+docker compose -f docker/docker-compose.5node.yml up -d --build
+
+# Wait 15 seconds for databases to initialize:
+Start-Sleep -Seconds 15
+
+
+# ------------------------------------------------------------------------------
+# STEP 2: CHECK CLUSTER HEALTH & IDENTIFY INITIAL COORDINATOR
+# ------------------------------------------------------------------------------
+# Query all 5 nodes to view their current role, term, and coordinator:
+1..5 | ForEach-Object {
+    $p = 5000 + $_
+    try {
+        $n = Invoke-RestMethod "http://localhost:$p/api/node" -TimeoutSec 2
+        [PSCustomObject]@{
+            Node          = $n.node_id
+            Port          = $p
+            Role          = $n.role
+            IsCoordinator = $n.is_coordinator
+            CoordinatorID = $n.coordinator_id
+            Term          = $n.election_term
+        }
+    } catch {
+        [PSCustomObject]@{ Node = $_; Port = $p; Role = "OFFLINE"; IsCoordinator = $false; CoordinatorID = "-"; Term = "-" }
+    }
+} | Format-Table -AutoSize
+# EXPECTED: Node 5 is the 'coordinator' with Term 0. Nodes 1-4 are 'follower'.
+
+
+# ------------------------------------------------------------------------------
+# STEP 3: TEST INITIAL VOTING ON COORDINATOR (NODE 5)
+# ------------------------------------------------------------------------------
+# Submit ballot 'voter_01' for candidate 'Alice' to Coordinator Node 5 (Port 5005):
+Invoke-RestMethod -Uri "http://localhost:5005/api/votes" `
+  -Method Post `
+  -ContentType "application/json" `
+  -Body '{"client_id": "voter_01", "choice": "Alice"}'
+
+# Verify that the vote replicated and committed across all 5 databases:
+1..5 | ForEach-Object {
+    $p = 5000 + $_
+    $t = Invoke-RestMethod "http://localhost:$p/api/votes/tally"
+    [PSCustomObject]@{
+        Node           = $_
+        Port           = $p
+        Alice          = $t.tally.Alice
+        TotalCommitted = $t.total_votes
+    }
+} | Format-Table -AutoSize
+# EXPECTED: All 5 nodes show Alice = 1, TotalCommitted = 1.
+
+
+# ------------------------------------------------------------------------------
+# STEP 4: FAIL THE COORDINATOR (KILL NODE 5)
+# ------------------------------------------------------------------------------
+# Abruptly stop Coordinator container:
+docker stop voting-node5
+
+# Wait 4 seconds for the 3.0-second failure detection latch and Bully election:
+Start-Sleep -Seconds 4
+
+
+# ------------------------------------------------------------------------------
+# STEP 5: CHECK COORDINATOR STATUS AFTER CRASH
+# ------------------------------------------------------------------------------
+# Query the surviving nodes (Nodes 1 to 4) to verify automatic failover:
+1..5 | ForEach-Object {
+    $p = 5000 + $_
+    try {
+        $n = Invoke-RestMethod "http://localhost:$p/api/node" -TimeoutSec 2
+        [PSCustomObject]@{
+            Node          = $n.node_id
+            Port          = $p
+            Role          = $n.role
+            IsCoordinator = $n.is_coordinator
+            CoordinatorID = $n.coordinator_id
+            Term          = $n.election_term
+        }
+    } catch {
+        [PSCustomObject]@{ Node = $_; Port = $p; Role = "OFFLINE"; IsCoordinator = $false; CoordinatorID = "-"; Term = "-" }
+    }
+} | Format-Table -AutoSize
+# EXPECTED: Node 5 is OFFLINE. Node 4 is now the new 'coordinator' with Term > 0.
+
+
+# ------------------------------------------------------------------------------
+# STEP 6: EXPLICITLY CONDUCT LEADER ELECTION VIA API
+# ------------------------------------------------------------------------------
+# Trigger leader election explicitly from surviving Follower Node 1:
+Invoke-RestMethod -Uri "http://localhost:5001/api/election/start" `
+  -Method Post `
+  -ContentType "application/json" `
+  -Body '{"blocking": true}'
+
+# Inspect detailed election metrics (messages sent, term, resolution):
+Invoke-RestMethod "http://localhost:5004/api/election/status" | ConvertTo-Json -Depth 4
+
+
+# ------------------------------------------------------------------------------
+# STEP 7: TEST VOTING MECHANISM UNDER NEW LEADER (NODE 4)
+# ------------------------------------------------------------------------------
+# Submit ballot 'voter_02' for 'Bob' to new Coordinator Node 4 (Port 5004):
+Invoke-RestMethod -Uri "http://localhost:5004/api/votes" `
+  -Method Post `
+  -ContentType "application/json" `
+  -Body '{"client_id": "voter_02", "choice": "Bob"}'
+
+# Verify that surviving nodes (1 to 4) committed both votes:
+1..4 | ForEach-Object {
+    $p = 5000 + $_
+    $t = Invoke-RestMethod "http://localhost:$p/api/votes/tally"
+    [PSCustomObject]@{
+        Node           = $_
+        Port           = $p
+        Alice          = $t.tally.Alice
+        Bob            = $t.tally.Bob
+        TotalCommitted = $t.total_votes
+    }
+} | Format-Table -AutoSize
+# EXPECTED: Nodes 1-4 all show Alice = 1, Bob = 1, TotalCommitted = 2.
+
+
+# ------------------------------------------------------------------------------
+# STEP 8: RECOVER THE CRASHED NODE (NODE 5) & VERIFY CATCH-UP SYNC
+# ------------------------------------------------------------------------------
+# Restart Node 5:
+docker start voting-node5
+
+# Wait 4 seconds for AutoFollowerSync to pull missing votes from Node 4:
+Start-Sleep -Seconds 4
+
+# Check all 5 nodes again to confirm 100% database WAL parity:
+1..5 | ForEach-Object {
+    $p = 5000 + $_
+    try {
+        $n = Invoke-RestMethod "http://localhost:$p/api/node"
+        $t = Invoke-RestMethod "http://localhost:$p/api/votes/tally"
+        [PSCustomObject]@{
+            Node           = $n.node_id
+            Role           = $n.role
+            CoordinatorID  = $n.coordinator_id
+            Alice          = $t.tally.Alice
+            Bob            = $t.tally.Bob
+            TotalCommitted = $t.total_votes
+        }
+    } catch {
+        [PSCustomObject]@{ Node = $_; Role = "OFFLINE"; CoordinatorID = "-"; Alice = "-"; Bob = "-"; TotalCommitted = "-" }
+    }
+} | Format-Table -AutoSize
+# EXPECTED: Node 5 rejoins as 'follower', recognizes Node 4 as Coordinator,
+# and its database shows Alice = 1, Bob = 1, TotalCommitted = 2 (100% WAL parity).
+
+
+# ------------------------------------------------------------------------------
+# STEP 9: CLEAN TEARDOWN & VOLUME PURGE
+# ------------------------------------------------------------------------------
+# When finished, cleanly stop all containers and wipe test database volumes:
+docker compose -f docker/docker-compose.5node.yml down -v
