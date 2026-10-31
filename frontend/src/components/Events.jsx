@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { fetchEvents } from '../api';
 import { 
   Terminal, 
+  Table,
   Search, 
   Download, 
   RefreshCw, 
@@ -14,12 +15,38 @@ export default function Events() {
   const [source, setSource] = useState('all');
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [viewMode, setViewMode] = useState('table'); // 'table' | 'terminal'
+  const [autoScroll, setAutoScroll] = useState(true);
+
+  // Track newly polled event IDs for subtle row entry animation & Lamport pulse
+  const prevEventIdsRef = useRef(new Set());
+  const [newlyAddedIds, setNewlyAddedIds] = useState(new Set());
+  const terminalEndRef = useRef(null);
 
   const loadEvents = async () => {
     try {
       const res = await fetchEvents({ source, limit: 100 });
       if (res?.success) {
-        setEvents(res.events || []);
+        const incoming = res.events || [];
+
+        // Detect newly arrived events
+        if (prevEventIdsRef.current.size > 0) {
+          const freshIds = new Set();
+          incoming.forEach((ev) => {
+            if (!prevEventIdsRef.current.has(ev.id)) {
+              freshIds.add(ev.id);
+            }
+          });
+          if (freshIds.size > 0) {
+            setNewlyAddedIds(freshIds);
+            setTimeout(() => {
+              setNewlyAddedIds(new Set());
+            }, 2200);
+          }
+        }
+
+        prevEventIdsRef.current = new Set(incoming.map((ev) => ev.id));
+        setEvents(incoming);
       }
     } catch (err) {
       console.error('Failed to load events:', err);
@@ -33,6 +60,13 @@ export default function Events() {
     const interval = setInterval(loadEvents, 3000);
     return () => clearInterval(interval);
   }, [source]);
+
+  // Handle auto-scroll in live console mode
+  useEffect(() => {
+    if (viewMode === 'terminal' && autoScroll && terminalEndRef.current) {
+      terminalEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [events, viewMode, autoScroll]);
 
   const handleExportJson = () => {
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(events, null, 2));
@@ -66,6 +100,30 @@ export default function Events() {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
+          {/* Dual-View Mode Switcher */}
+          <div className="view-mode-toggle" role="group" aria-label="Select audit stream view mode">
+            <button
+              type="button"
+              className={`view-mode-btn ${viewMode === 'table' ? 'active' : ''}`}
+              onClick={() => setViewMode('table')}
+              aria-pressed={viewMode === 'table'}
+              title="Structured table for invariant verification"
+            >
+              <Table size={13} aria-hidden="true" />
+              <span>Table View</span>
+            </button>
+            <button
+              type="button"
+              className={`view-mode-btn ${viewMode === 'terminal' ? 'active' : ''}`}
+              onClick={() => setViewMode('terminal')}
+              aria-pressed={viewMode === 'terminal'}
+              title="Live streaming console log"
+            >
+              <Terminal size={13} aria-hidden="true" />
+              <span>Live Console</span>
+            </button>
+          </div>
+
           <button
             type="button"
             className="btn btn-secondary"
@@ -129,97 +187,177 @@ export default function Events() {
         </div>
       </div>
 
-      {/* Main Audit Feed Card */}
-      <section className="card" aria-labelledby="audit-table-title">
-        <div className="card-title">
-          <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Terminal size={18} color="var(--color-teal-accent)" aria-hidden="true" />
-            <h3 id="audit-table-title" style={{ fontSize: '1.0625rem', fontWeight: 700, margin: 0 }}>
-              Live Audit Log ({filteredEvents.length} events logged)
-            </h3>
-          </span>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-            <span className="status-dot status-dot-active" aria-hidden="true" />
-            <span style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', fontWeight: 600 }}>MONITORED</span>
+      {/* VIEW 1: Structured Audit Table View */}
+      {viewMode === 'table' && (
+        <section className="card" aria-labelledby="audit-table-title">
+          <div className="card-title">
+            <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <Table size={18} color="var(--color-teal-accent)" aria-hidden="true" />
+              <h3 id="audit-table-title" style={{ fontSize: '1.0625rem', fontWeight: 700, margin: 0 }}>
+                Live Audit Log ({filteredEvents.length} events logged)
+              </h3>
+            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              <span className="status-dot status-dot-active" aria-hidden="true" />
+              <span style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', fontWeight: 600 }}>MONITORED</span>
+            </div>
           </div>
-        </div>
 
-        <div className="table-responsive">
-          <table className="data-table" aria-label="Audit Log Table">
-            <thead>
-              <tr>
-                <th scope="col">Category</th>
-                <th scope="col">Event Action</th>
-                <th scope="col">Node ID</th>
-                <th scope="col">Lamport TS</th>
-                <th scope="col">Entity / Context</th>
-                <th scope="col">Execution Details</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredEvents.length === 0 ? (
+          <div className="table-responsive">
+            <table className="data-table" aria-label="Audit Log Table">
+              <thead>
                 <tr>
-                  <td colSpan={6} style={{ textAlign: 'center', color: 'var(--color-text-muted)', padding: '2rem' }}>
-                    {searchQuery ? 'No audit records matching your search query.' : 'No audit events recorded yet.'}
-                  </td>
+                  <th scope="col">Category</th>
+                  <th scope="col">Event Action</th>
+                  <th scope="col">Node ID</th>
+                  <th scope="col">Lamport TS</th>
+                  <th scope="col">Entity / Context</th>
+                  <th scope="col">Execution Details</th>
                 </tr>
-              ) : (
-                filteredEvents.map((ev) => {
-                  const isElection = ev.source === 'election';
-                  return (
-                    <tr key={ev.id}>
-                      <td>
-                        <span className={`badge ${isElection ? 'badge-follower' : 'badge-neutral'}`}>
-                          {isElection ? <Radio size={12} aria-hidden="true" /> : <Database size={12} aria-hidden="true" />}
-                          <span>{ev.source?.toUpperCase()}</span>
-                        </span>
-                      </td>
-                      <td>
-                        <strong style={{ color: 'var(--color-navy-primary)', fontSize: '0.84rem' }}>
-                          {ev.event_type}
-                        </strong>
-                      </td>
-                      <td>
-                        <span style={{ fontSize: '0.75rem', backgroundColor: 'var(--color-surface-subtle)', padding: '0.15rem 0.45rem', borderRadius: '4px', fontWeight: 600 }}>
-                          Node {ev.node_id}
-                        </span>
-                      </td>
-                      <td>
-                        <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-navy-primary)', fontWeight: 600 }}>
-                          #{ev.lamport_ts}
-                        </span>
-                      </td>
-                      <td>
-                        {ev.vote_id ? (
-                          <code style={{ fontSize: '0.75rem' }}>{ev.vote_id}</code>
-                        ) : ev.client_id ? (
-                          <span style={{ fontSize: '0.8rem' }}>Client: <strong>{ev.client_id}</strong></span>
-                        ) : ev.election_term ? (
-                          <span style={{ fontSize: '0.8rem' }}>Term #{ev.election_term}</span>
-                        ) : (
-                          <span style={{ color: 'var(--color-text-muted)' }}>-</span>
-                        )}
-                      </td>
-                      <td style={{ maxWidth: '300px' }}>
-                        <code style={{ 
-                          fontSize: '0.75rem', 
-                          color: 'var(--color-text-secondary)', 
-                          display: 'block', 
-                          overflow: 'hidden', 
-                          textOverflow: 'ellipsis', 
-                          whiteSpace: 'nowrap' 
-                        }}>
-                          {typeof ev.details === 'object' ? JSON.stringify(ev.details) : String(ev.details || '-')}
-                        </code>
-                      </td>
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
-        </div>
-      </section>
+              </thead>
+              <tbody>
+                {filteredEvents.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} style={{ textAlign: 'center', color: 'var(--color-text-muted)', padding: '2rem' }}>
+                      {searchQuery ? 'No audit records matching your search query.' : 'No audit events recorded yet.'}
+                    </td>
+                  </tr>
+                ) : (
+                  filteredEvents.map((ev) => {
+                    const isElection = ev.source === 'election';
+                    const isNew = newlyAddedIds.has(ev.id);
+
+                    return (
+                      <tr 
+                        key={ev.id} 
+                        className={isNew ? 'ledger-row-new' : ''}
+                      >
+                        <td>
+                          <span className={`badge ${isElection ? 'badge-follower' : 'badge-neutral'}`}>
+                            {isElection ? <Radio size={12} aria-hidden="true" /> : <Database size={12} aria-hidden="true" />}
+                            <span>{ev.source?.toUpperCase()}</span>
+                          </span>
+                        </td>
+                        <td>
+                          <strong style={{ color: 'var(--color-navy-primary)', fontSize: '0.84rem' }}>
+                            {ev.event_type}
+                          </strong>
+                        </td>
+                        <td>
+                          <span style={{ fontSize: '0.75rem', backgroundColor: 'var(--color-surface-subtle)', padding: '0.15rem 0.45rem', borderRadius: '4px', fontWeight: 600 }}>
+                            Node {ev.node_id}
+                          </span>
+                        </td>
+                        <td>
+                          <span 
+                            style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-navy-primary)', fontWeight: 600 }}
+                            className={isNew ? 'lamport-badge-new' : ''}
+                          >
+                            #{ev.lamport_ts}
+                          </span>
+                        </td>
+                        <td>
+                          {ev.vote_id ? (
+                            <code style={{ fontSize: '0.75rem' }}>{ev.vote_id}</code>
+                          ) : ev.client_id ? (
+                            <span style={{ fontSize: '0.8rem' }}>Client: <strong>{ev.client_id}</strong></span>
+                          ) : ev.election_term !== undefined && ev.election_term !== null ? (
+                            <span style={{ fontSize: '0.8rem' }}>Term #{ev.election_term}</span>
+                          ) : (
+                            <span style={{ color: 'var(--color-text-muted)' }}>-</span>
+                          )}
+                        </td>
+                        <td style={{ maxWidth: '300px' }}>
+                          <code style={{ 
+                            fontSize: '0.75rem', 
+                            color: 'var(--color-text-secondary)', 
+                            display: 'block', 
+                            overflow: 'hidden', 
+                            textOverflow: 'ellipsis', 
+                            whiteSpace: 'nowrap' 
+                          }}>
+                            {typeof ev.details === 'object' ? JSON.stringify(ev.details) : String(ev.details || '-')}
+                          </code>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
+
+      {/* VIEW 2: Streaming Console Terminal View */}
+      {viewMode === 'terminal' && (
+        <section className="terminal-window" aria-label="Live gRPC & Consensus Terminal Stream">
+          <div className="terminal-header">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <div className="terminal-dots" aria-hidden="true">
+                <span className="terminal-dot terminal-dot-red" />
+                <span className="terminal-dot terminal-dot-yellow" />
+                <span className="terminal-dot terminal-dot-green" />
+              </div>
+              <span style={{ fontWeight: 600, color: '#E2E8F0', letterSpacing: '0.04em' }}>
+                grpc://consensus-mesh • audit-stream.log
+              </span>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', cursor: 'pointer', fontSize: '0.75rem' }}>
+                <input
+                  type="checkbox"
+                  checked={autoScroll}
+                  onChange={(e) => setAutoScroll(e.target.checked)}
+                  style={{ accentColor: '#2DD4BF' }}
+                />
+                <span>Auto-scroll</span>
+              </label>
+              <span style={{ color: '#64748B' }}>{filteredEvents.length} frames logged</span>
+            </div>
+          </div>
+
+          <div className="terminal-body" role="log" aria-live="polite">
+            {filteredEvents.length === 0 ? (
+              <div style={{ color: '#64748B', fontStyle: 'italic', padding: '1.5rem 0' }}>
+                -- Waiting for cluster consensus events --
+              </div>
+            ) : (
+              filteredEvents.map((ev) => {
+                const isElection = ev.source === 'election';
+                const isNew = newlyAddedIds.has(ev.id);
+                const timeStr = ev.created_at ? new Date(ev.created_at).toISOString().substring(11, 23) : '--:--:--.---';
+                const payloadStr = typeof ev.details === 'object' ? JSON.stringify(ev.details) : String(ev.details || '');
+
+                return (
+                  <div 
+                    key={ev.id} 
+                    className={`terminal-line ${isNew ? 'ledger-row-new' : ''}`}
+                  >
+                    <span className="terminal-timestamp">[{timeStr}]</span>
+                    <span className="terminal-node-tag">[NODE {ev.node_id}]</span>
+                    <span className="terminal-lamport">[L:#{ev.lamport_ts}]</span>
+                    <span className={isElection ? 'terminal-source-election' : 'terminal-source-sync'}>
+                      [{ev.source?.toUpperCase()}]
+                    </span>
+                    <span className="terminal-event-name">{ev.event_type}</span>
+                    {ev.vote_id && <span style={{ color: '#38BDF8' }}>vote:{ev.vote_id}</span>}
+                    {ev.client_id && <span style={{ color: '#E2E8F0' }}>voter:{ev.client_id}</span>}
+                    {ev.election_term !== undefined && ev.election_term !== null && (
+                      <span style={{ color: '#FBBF24' }}>term:#{ev.election_term}</span>
+                    )}
+                    {payloadStr && payloadStr !== '{}' && (
+                      <span className="terminal-payload">→ {payloadStr}</span>
+                    )}
+                  </div>
+                );
+              })
+            )}
+            <div ref={terminalEndRef} />
+          </div>
+        </section>
+      )}
     </div>
   );
 }
