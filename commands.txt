@@ -9,7 +9,7 @@
 # STEP 1: START THE 5-NODE CLUSTER
 # ------------------------------------------------------------------------------
 # Launch all 10 containers (5 app nodes + 5 dedicated MySQL databases):
-docker compose -f docker/docker-compose.5node.yml up -d --build
+docker compose -f docker/docker-compose.5node.yml up -d
 
 # Wait 15 seconds for databases to initialize:
 Start-Sleep -Seconds 15

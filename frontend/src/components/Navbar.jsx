@@ -42,7 +42,7 @@ export default function Navbar({ activeTab, setActiveTab, nodeInfo, onRefresh })
       <div className="cluster-switch-bar">
         <div className="cluster-switch-group">
           <span className="cluster-switch-label">
-            <Radio size={14} aria-hidden="true" style={{ color: '#2DD4BF' }} />
+            <Radio size={14} aria-hidden="true" style={{ color: 'var(--color-cyan)' }} />
             <span>Cluster Mesh:</span>
           </span>
           <div className="cluster-switch-list" role="navigation" aria-label="Direct Node Switches">
@@ -159,7 +159,7 @@ export default function Navbar({ activeTab, setActiveTab, nodeInfo, onRefresh })
         <div className="navbar-actions">
           <div className="host-badge-chip">
             <span
-              className={`status-dot ${isCoord ? 'status-dot-active' : 'status-dot-info'}`}
+              className={`status-dot ${isCoord ? 'status-dot-active' : 'status-dot-indigo'}`}
               aria-hidden="true"
             />
             <span>Node {currentNodeId}</span>

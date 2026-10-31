@@ -68,7 +68,7 @@ export default function Election({ nodeInfo, onElectionTriggered }) {
         <div>
           <h2 className="page-title">Leader Election & Consensus</h2>
           <p className="page-description">
-            Autonomous failover coordination via deterministic leader election ({status?.algorithm?.toUpperCase() || 'BULLY'}). Ensures strict coordinator uniqueness across failures.
+            Autonomous failover coordination via deterministic leader election ({status?.algorithm?.toUpperCase() || 'BULLY'}). Guarantees coordinator uniqueness across dynamic peer crashes.
           </p>
         </div>
         <button 
@@ -113,13 +113,13 @@ export default function Election({ nodeInfo, onElectionTriggered }) {
         <div className="stat-widget">
           <div className="stat-header">
             <span className="stat-label">Active Coordinator</span>
-            <Crown size={18} className="stat-icon" style={{ color: 'var(--color-teal-accent)' }} aria-hidden="true" />
+            <Crown size={18} className="stat-icon" style={{ color: 'var(--color-indigo-light)' }} aria-hidden="true" />
           </div>
           <div className="stat-value">
             Node {status?.current_coordinator ?? '?'}
           </div>
           <div className="stat-meta">
-            <span>{status?.is_coordinator ? 'This node is Leader' : 'Remote peer holds lease'}</span>
+            <span>{status?.is_coordinator ? 'This node holds Leader lease' : 'Remote peer holds lease'}</span>
           </div>
         </div>
 
@@ -142,8 +142,8 @@ export default function Election({ nodeInfo, onElectionTriggered }) {
         <section className="card" aria-labelledby="trigger-election-title">
           <div className="card-title">
             <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Zap size={18} color="var(--color-warning)" aria-hidden="true" />
-              <h3 id="trigger-election-title" style={{ fontSize: '1.0625rem', fontWeight: 700, margin: 0 }}>
+              <Zap size={18} color="var(--color-amber)" aria-hidden="true" />
+              <h3 id="trigger-election-title" style={{ fontSize: '1.0625rem', fontWeight: 700, margin: 0, color: '#FFFFFF' }}>
                 Trigger Leader Election
               </h3>
             </span>
@@ -160,9 +160,9 @@ export default function Election({ nodeInfo, onElectionTriggered }) {
             style={{ 
               marginBottom: '1.25rem', 
               padding: '0.85rem', 
-              backgroundColor: 'var(--color-surface-subtle)', 
+              backgroundColor: 'rgba(255, 255, 255, 0.03)', 
               borderRadius: 'var(--radius-sm)', 
-              border: '1px solid var(--color-border-subtle)' 
+              border: '1px solid var(--color-border-glass)' 
             }}
           >
             <label style={{ display: 'flex', alignItems: 'center', gap: '0.55rem', fontSize: '0.84rem', color: 'var(--color-text-primary)', cursor: 'pointer' }}>
@@ -170,7 +170,7 @@ export default function Election({ nodeInfo, onElectionTriggered }) {
                 type="checkbox"
                 checked={blocking}
                 onChange={(e) => setBlocking(e.target.checked)}
-                style={{ accentColor: 'var(--color-teal-accent)' }}
+                style={{ accentColor: 'var(--color-indigo)' }}
               />
               <span style={{ fontWeight: 600 }}>Synchronous Resolution (Blocking RPC)</span>
             </label>
@@ -207,13 +207,13 @@ export default function Election({ nodeInfo, onElectionTriggered }) {
                 role="alert"
               >
                 {triggerResult.success ? (
-                  <CheckCircle2 size={18} style={{ flexShrink: 0, marginTop: '2px' }} aria-hidden="true" />
+                  <CheckCircle2 size={18} style={{ flexShrink: 0, marginTop: '2px', color: 'var(--color-cyan)' }} aria-hidden="true" />
                 ) : (
-                  <AlertTriangle size={18} style={{ flexShrink: 0, marginTop: '2px' }} aria-hidden="true" />
+                  <AlertTriangle size={18} style={{ flexShrink: 0, marginTop: '2px', color: 'var(--color-crimson)' }} aria-hidden="true" />
                 )}
                 <div style={{ flex: 1 }}>
                   <strong>{triggerResult.success ? 'Election Finalized' : 'Election Trigger Failed'}</strong>
-                  <p style={{ marginTop: '0.2rem', fontSize: '0.84rem' }}>
+                  <p style={{ marginTop: '0.2rem', fontSize: '0.84rem', color: 'var(--color-text-secondary)' }}>
                     {triggerResult.message || `Consensus finalized: Node ${triggerResult.coordinator_id} is elected Coordinator for Term #${triggerResult.term ?? status?.election_term}.`}
                   </p>
                 </div>
@@ -226,8 +226,8 @@ export default function Election({ nodeInfo, onElectionTriggered }) {
         <section className="card" aria-labelledby="metrics-title">
           <div className="card-title">
             <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <BarChart3 size={18} color="var(--color-navy-primary)" aria-hidden="true" />
-              <h3 id="metrics-title" style={{ fontSize: '1.0625rem', fontWeight: 700, margin: 0 }}>
+              <BarChart3 size={18} color="var(--color-indigo)" aria-hidden="true" />
+              <h3 id="metrics-title" style={{ fontSize: '1.0625rem', fontWeight: 700, margin: 0, color: '#FFFFFF' }}>
                 Algorithmic Message Complexity
               </h3>
             </span>
@@ -242,7 +242,7 @@ export default function Election({ nodeInfo, onElectionTriggered }) {
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
                 <span style={{ color: 'var(--color-text-secondary)', fontWeight: 600 }}>Total Logical Messages:</span>
-                <strong style={{ color: 'var(--color-navy-primary)', fontSize: '1rem' }}>{totalMsgs}</strong>
+                <strong style={{ color: '#FFFFFF', fontSize: '1rem', fontFamily: 'var(--font-mono)' }}>{totalMsgs}</strong>
               </div>
               <div className="progress-track">
                 <div className="progress-fill" style={{ width: `${Math.min(100, (totalMsgs / 20) * 100)}%` }} />
@@ -252,36 +252,36 @@ export default function Election({ nodeInfo, onElectionTriggered }) {
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
                 <span style={{ color: 'var(--color-text-muted)' }}>Election Broadcasts:</span>
-                <span>{electionSent}</span>
+                <span style={{ fontFamily: 'var(--font-mono)' }}>{electionSent}</span>
               </div>
               <div className="progress-track">
-                <div className="progress-fill" style={{ width: `${totalMsgs ? (electionSent / totalMsgs) * 100 : 0}%`, backgroundColor: '#0284C7' }} />
+                <div className="progress-fill" style={{ width: `${totalMsgs ? (electionSent / totalMsgs) * 100 : 0}%`, background: 'var(--color-indigo)' }} />
               </div>
             </div>
 
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
                 <span style={{ color: 'var(--color-text-muted)' }}>OK / Suppression Replies:</span>
-                <span>{okSent}</span>
+                <span style={{ fontFamily: 'var(--font-mono)' }}>{okSent}</span>
               </div>
               <div className="progress-track">
-                <div className="progress-fill" style={{ width: `${totalMsgs ? (okSent / totalMsgs) * 100 : 0}%`, backgroundColor: 'var(--color-warning)' }} />
+                <div className="progress-fill" style={{ width: `${totalMsgs ? (okSent / totalMsgs) * 100 : 0}%`, background: 'var(--color-amber)' }} />
               </div>
             </div>
 
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
                 <span style={{ color: 'var(--color-text-muted)' }}>Coordinator Victory Messages:</span>
-                <span>{coordSent}</span>
+                <span style={{ fontFamily: 'var(--font-mono)' }}>{coordSent}</span>
               </div>
               <div className="progress-track">
-                <div className="progress-fill" style={{ width: `${totalMsgs ? (coordSent / totalMsgs) * 100 : 0}%`, backgroundColor: 'var(--color-success)' }} />
+                <div className="progress-fill" style={{ width: `${totalMsgs ? (coordSent / totalMsgs) * 100 : 0}%`, background: 'var(--color-cyan)' }} />
               </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '0.75rem', borderTop: '1px solid var(--color-border-subtle)', fontSize: '0.8125rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '0.75rem', borderTop: '1px solid var(--color-border-glass)', fontSize: '0.8125rem' }}>
               <span style={{ color: 'var(--color-text-muted)' }}>Election Duration:</span>
-              <strong style={{ color: 'var(--color-navy-primary)' }}>
+              <strong style={{ color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
                 {metrics.duration_ms !== undefined ? `${metrics.duration_ms} ms` : 'Instantaneous / Fast'}
               </strong>
             </div>
@@ -293,8 +293,8 @@ export default function Election({ nodeInfo, onElectionTriggered }) {
       <section className="card" style={{ marginTop: '2rem' }} aria-labelledby="election-log-title">
         <div className="card-title">
           <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Clock size={18} color="var(--color-navy-primary)" aria-hidden="true" />
-            <h3 id="election-log-title" style={{ fontSize: '1.0625rem', fontWeight: 700, margin: 0 }}>
+            <Clock size={18} color="var(--color-cyan)" aria-hidden="true" />
+            <h3 id="election-log-title" style={{ fontSize: '1.0625rem', fontWeight: 700, margin: 0, color: '#FFFFFF' }}>
               Recent Election Audit Log
             </h3>
           </span>
@@ -328,12 +328,12 @@ export default function Election({ nodeInfo, onElectionTriggered }) {
                         {ev.event_type}
                       </span>
                     </td>
-                    <td>#{ev.election_term}</td>
+                    <td style={{ fontFamily: 'var(--font-mono)' }}>#{ev.election_term}</td>
                     <td>Node {ev.initiator_id}</td>
                     <td>Node {ev.node_id}</td>
-                    <td><code>#{ev.lamport_ts}</code></td>
+                    <td><code style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-cyan)' }}>#{ev.lamport_ts}</code></td>
                     <td>
-                      <code style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)' }}>
+                      <code style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', fontFamily: 'var(--font-mono)' }}>
                         {typeof ev.details === 'object' ? JSON.stringify(ev.details) : String(ev.details || '-')}
                       </code>
                     </td>

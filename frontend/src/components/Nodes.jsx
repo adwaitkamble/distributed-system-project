@@ -12,8 +12,10 @@ import {
   Database, 
   Network, 
   Radio,
-  Crown
+  Crown,
+  Box
 } from 'lucide-react';
+import Cluster3DTopology from './Cluster3DTopology';
 
 export default function Nodes({ nodeInfo }) {
   const [nodes, setNodes] = useState([]);
@@ -51,7 +53,7 @@ export default function Nodes({ nodeInfo }) {
         <div>
           <h2 className="page-title">Cluster Topology & Node Telemetry</h2>
           <p className="page-description">
-            Real-time peer discovery, gRPC network endpoints, and operational roles for all participating cluster nodes.
+            Real-time peer discovery, interactive 3D WebGL mesh, gRPC endpoints, and operational roles for all participating cluster nodes.
           </p>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
@@ -60,7 +62,7 @@ export default function Nodes({ nodeInfo }) {
               type="checkbox"
               checked={autoRefresh}
               onChange={(e) => setAutoRefresh(e.target.checked)}
-              style={{ accentColor: 'var(--color-teal-accent)' }}
+              style={{ accentColor: 'var(--color-cyan)' }}
             />
             <span>Auto-refresh (2.5s)</span>
           </label>
@@ -75,6 +77,25 @@ export default function Nodes({ nodeInfo }) {
           </button>
         </div>
       </div>
+
+      {/* 3D Interactive WebGL Hero Canvas */}
+      <section className="card" style={{ marginBottom: '1.75rem', padding: '1.25rem' }}>
+        <div className="card-title" style={{ marginBottom: '0.75rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Box size={18} style={{ color: 'var(--color-cyan)' }} aria-hidden="true" />
+            <h3 style={{ fontSize: '1.0625rem', fontWeight: 700, margin: 0, color: '#FFFFFF' }}>
+              Interactive 3D Consensus Topology Mesh
+            </h3>
+          </div>
+          <span className="badge badge-coordinator">
+            <Crown size={12} aria-hidden="true" />
+            Active Leader: Node {coordinatorId ?? 1}
+          </span>
+        </div>
+        <div className="bento-stage-3d" style={{ height: '380px' }}>
+          <Cluster3DTopology nodes={nodes} coordinatorId={coordinatorId || 1} />
+        </div>
+      </section>
 
       {/* Overview Stat Strip */}
       <div className="grid-4" style={{ marginBottom: '1.75rem' }}>
@@ -94,7 +115,7 @@ export default function Nodes({ nodeInfo }) {
         <div className="stat-widget">
           <div className="stat-header">
             <span className="stat-label">Active Coordinator</span>
-            <Crown size={18} className="stat-icon" style={{ color: 'var(--color-teal-accent)' }} aria-hidden="true" />
+            <Crown size={18} className="stat-icon" style={{ color: 'var(--color-indigo-light)' }} aria-hidden="true" />
           </div>
           <div className="stat-value">
             Node {coordinatorId ?? '?'}
@@ -145,8 +166,8 @@ export default function Nodes({ nodeInfo }) {
               className="card"
               style={{
                 borderTop: isCoord 
-                  ? '4px solid var(--color-success)' 
-                  : (isCurrent ? '4px solid var(--color-teal-accent)' : '1px solid var(--color-border-subtle)'),
+                  ? '4px solid var(--color-indigo)' 
+                  : (isCurrent ? '4px solid var(--color-cyan)' : '1px solid var(--color-border-glass)'),
                 display: 'flex',
                 flexDirection: 'column',
               }}
@@ -159,12 +180,12 @@ export default function Nodes({ nodeInfo }) {
                       width: '38px',
                       height: '38px',
                       borderRadius: 'var(--radius-md)',
-                      backgroundColor: isCoord ? 'var(--color-success-bg)' : 'var(--color-surface-subtle)',
-                      border: '1px solid var(--color-border-subtle)',
+                      backgroundColor: isCoord ? 'rgba(99, 102, 241, 0.2)' : 'rgba(255, 255, 255, 0.04)',
+                      border: isCoord ? '1px solid var(--color-indigo-glow)' : '1px solid var(--color-border-glass)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      color: isCoord ? 'var(--color-success-text)' : 'var(--color-navy-primary)'
+                      color: isCoord ? 'var(--color-indigo-light)' : '#FFFFFF'
                     }}
                     aria-hidden="true"
                   >
@@ -172,7 +193,7 @@ export default function Nodes({ nodeInfo }) {
                   </div>
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                      <strong style={{ fontSize: '1.05rem', color: 'var(--color-navy-primary)' }}>
+                      <strong style={{ fontSize: '1.05rem', color: '#FFFFFF' }}>
                         Node {n.node_id}
                       </strong>
                       {isCurrent && (
@@ -181,14 +202,14 @@ export default function Nodes({ nodeInfo }) {
                         </span>
                       )}
                     </div>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>
                       Container: voting-node{n.node_id}
                     </span>
                   </div>
                 </div>
 
                 <span className={`badge ${isCoord ? 'badge-coordinator' : 'badge-follower'}`}>
-                  {isCoord ? '● Coordinator' : '○ Follower'}
+                  {isCoord ? '★ Leader' : '○ Follower'}
                 </span>
               </div>
 
@@ -208,7 +229,7 @@ export default function Nodes({ nodeInfo }) {
                   <span style={{ color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                     <Network size={14} aria-hidden="true" /> gRPC Port:
                   </span>
-                  <code style={{ fontSize: '0.8rem', backgroundColor: 'var(--color-surface-subtle)', padding: '0.15rem 0.45rem', borderRadius: '4px', fontFamily: 'var(--font-mono)' }}>
+                  <code style={{ fontSize: '0.8rem', backgroundColor: 'rgba(255, 255, 255, 0.04)', padding: '0.15rem 0.45rem', borderRadius: '4px', fontFamily: 'var(--font-mono)', color: 'var(--color-cyan-light)' }}>
                     :{grpcPort}
                   </code>
                 </div>
@@ -217,7 +238,7 @@ export default function Nodes({ nodeInfo }) {
                   <span style={{ color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                     <Database size={14} aria-hidden="true" /> Database:
                   </span>
-                  <span style={{ fontSize: '0.8rem', color: 'var(--color-navy-primary)', fontWeight: 600 }}>
+                  <span style={{ fontSize: '0.8rem', color: '#FFFFFF', fontWeight: 600, fontFamily: 'var(--font-mono)' }}>
                     node{n.node_id}_db:3306 (WAL)
                   </span>
                 </div>
@@ -233,7 +254,7 @@ export default function Nodes({ nodeInfo }) {
               </div>
 
               {/* Bottom Quick Switch Action */}
-              <div style={{ marginTop: '1.25rem', paddingTop: '0.85rem', borderTop: '1px solid var(--color-border-subtle)' }}>
+              <div style={{ marginTop: '1.25rem', paddingTop: '0.85rem', borderTop: '1px solid var(--color-border-glass)' }}>
                 {isCurrent ? (
                   <div style={{ textAlign: 'center', fontSize: '0.8125rem', color: 'var(--color-text-muted)', padding: '0.35rem 0' }}>
                     Currently viewing this node console
@@ -259,8 +280,8 @@ export default function Nodes({ nodeInfo }) {
       <section className="card" style={{ marginTop: '2rem' }} aria-labelledby="invariants-table-title">
         <div className="card-title">
           <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Shield size={18} color="var(--color-teal-accent)" aria-hidden="true" />
-            <h3 id="invariants-table-title" style={{ fontSize: '1.0625rem', fontWeight: 700, margin: 0 }}>
+            <Shield size={18} color="var(--color-cyan)" aria-hidden="true" />
+            <h3 id="invariants-table-title" style={{ fontSize: '1.0625rem', fontWeight: 700, margin: 0, color: '#FFFFFF' }}>
               Distributed Consensus & Safety Invariants
             </h3>
           </span>
@@ -279,34 +300,34 @@ export default function Nodes({ nodeInfo }) {
             </thead>
             <tbody>
               <tr>
-                <td><strong>Leader Uniqueness</strong></td>
+                <td><strong style={{ color: '#FFFFFF' }}>Leader Uniqueness</strong></td>
                 <td><span className="badge badge-active"><CheckCircle2 size={12} aria-hidden="true" /> Verified</span></td>
                 <td>Election Manager ({nodeInfo?.election_algorithm?.toUpperCase() || 'Bully'})</td>
                 <td>At most one active coordinator lease exists per monotonic Lamport election term #{nodeInfo?.election_term ?? 0}.</td>
               </tr>
               <tr>
-                <td><strong>Crash-Failure Detection</strong></td>
+                <td><strong style={{ color: '#FFFFFF' }}>Crash-Failure Detection</strong></td>
                 <td><span className="badge badge-active"><CheckCircle2 size={12} aria-hidden="true" /> Active</span></td>
                 <td>Heartbeat Health Daemon</td>
                 <td>Nodes evaluate peer liveness using monotonic timeouts; coordinator failure triggers deterministic election.</td>
               </tr>
               <tr>
-                <td><strong>Replication Quorum</strong></td>
+                <td><strong style={{ color: '#FFFFFF' }}>Replication Quorum</strong></td>
                 <td><span className="badge badge-active"><CheckCircle2 size={12} aria-hidden="true" /> Active</span></td>
                 <td>Replication Engine</td>
-                <td>Policy: <code>{nodeInfo?.replication_policy?.toUpperCase()}</code>. Ballots must achieve ack consensus prior to client reply.</td>
+                <td>Policy: <code style={{ fontFamily: 'var(--font-mono)' }}>{nodeInfo?.replication_policy?.toUpperCase()}</code>. Ballots must achieve ack consensus prior to client reply.</td>
               </tr>
               <tr>
-                <td><strong>Recovery-Authority Rule</strong></td>
+                <td><strong style={{ color: '#FFFFFF' }}>Recovery-Authority Rule</strong></td>
                 <td><span className="badge badge-active"><CheckCircle2 size={12} aria-hidden="true" /> Enforced</span></td>
                 <td>State Recovery & SyncLog</td>
                 <td>Prevents resurrection of ghost votes unacknowledged by a previous failing coordinator.</td>
               </tr>
               <tr>
-                <td><strong>Deterministic Ordering</strong></td>
+                <td><strong style={{ color: '#FFFFFF' }}>Deterministic Ordering</strong></td>
                 <td><span className="badge badge-active"><CheckCircle2 size={12} aria-hidden="true" /> Enforced</span></td>
                 <td>Lamport Logical Clock</td>
-                <td>All state transitions stamped with monotonic logical timestamps <code>(ts, node_id)</code>.</td>
+                <td>All state transitions stamped with monotonic logical timestamps <code style={{ fontFamily: 'var(--font-mono)' }}>(ts, node_id)</code>.</td>
               </tr>
             </tbody>
           </table>

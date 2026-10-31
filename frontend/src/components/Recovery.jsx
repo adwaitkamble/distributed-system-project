@@ -104,9 +104,9 @@ export default function Recovery({ nodeInfo, onRecoveryTriggered }) {
         <div className="stat-widget">
           <div className="stat-header">
             <span className="stat-label">Ghost Votes Demoted</span>
-            <AlertTriangle size={18} className="stat-icon" style={{ color: 'var(--color-warning)' }} aria-hidden="true" />
+            <AlertTriangle size={18} className="stat-icon" style={{ color: 'var(--color-amber)' }} aria-hidden="true" />
           </div>
-          <div className="stat-value">
+          <div className="stat-value" style={{ fontFamily: 'var(--font-mono)' }}>
             {lastRec?.rejected_partial_finalizations_count ?? 0}
           </div>
           <div className="stat-meta">
@@ -117,9 +117,9 @@ export default function Recovery({ nodeInfo, onRecoveryTriggered }) {
         <div className="stat-widget">
           <div className="stat-header">
             <span className="stat-label">Committed Replayed</span>
-            <Database size={18} className="stat-icon" style={{ color: 'var(--color-success)' }} aria-hidden="true" />
+            <Database size={18} className="stat-icon" style={{ color: 'var(--color-cyan)' }} aria-hidden="true" />
           </div>
-          <div className="stat-value">
+          <div className="stat-value" style={{ fontFamily: 'var(--font-mono)' }}>
             {lastRec?.committed_votes_count ?? 0}
           </div>
           <div className="stat-meta">
@@ -133,8 +133,8 @@ export default function Recovery({ nodeInfo, onRecoveryTriggered }) {
         <section className="card" aria-labelledby="sync-card-title">
           <div className="card-title">
             <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <RotateCcw size={18} color="var(--color-navy-primary)" aria-hidden="true" />
-              <h3 id="sync-card-title" style={{ fontSize: '1.0625rem', fontWeight: 700, margin: 0 }}>
+              <RotateCcw size={18} color="var(--color-indigo)" aria-hidden="true" />
+              <h3 id="sync-card-title" style={{ fontSize: '1.0625rem', fontWeight: 700, margin: 0, color: '#FFFFFF' }}>
                 Trigger State Recovery
               </h3>
             </span>
@@ -151,15 +151,15 @@ export default function Recovery({ nodeInfo, onRecoveryTriggered }) {
             style={{
               padding: '0.85rem 1rem',
               borderRadius: 'var(--radius-md)',
-              backgroundColor: 'var(--color-surface-subtle)',
-              border: '1px solid var(--color-border-subtle)',
+              backgroundColor: 'rgba(255, 255, 255, 0.03)',
+              border: '1px solid var(--color-border-glass)',
               marginBottom: '1.25rem',
               fontSize: '0.8125rem',
               lineHeight: 1.5
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--color-navy-primary)', fontWeight: 600, marginBottom: '0.25rem' }}>
-              <ShieldCheck size={16} color="var(--color-teal-accent)" aria-hidden="true" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#FFFFFF', fontWeight: 600, marginBottom: '0.25rem' }}>
+              <ShieldCheck size={16} color="var(--color-cyan)" aria-hidden="true" />
               Safety Guarantee
             </div>
             A recovering node remains strictly non-voting until peer log merging and database replay complete successfully.
@@ -193,13 +193,13 @@ export default function Recovery({ nodeInfo, onRecoveryTriggered }) {
                 role="alert"
               >
                 {triggerResult.success ? (
-                  <CheckCircle2 size={18} style={{ flexShrink: 0, marginTop: '2px' }} aria-hidden="true" />
+                  <CheckCircle2 size={18} style={{ flexShrink: 0, marginTop: '2px', color: 'var(--color-cyan)' }} aria-hidden="true" />
                 ) : (
-                  <AlertTriangle size={18} style={{ flexShrink: 0, marginTop: '2px' }} aria-hidden="true" />
+                  <AlertTriangle size={18} style={{ flexShrink: 0, marginTop: '2px', color: 'var(--color-crimson)' }} aria-hidden="true" />
                 )}
                 <div style={{ flex: 1 }}>
                   <strong>{triggerResult.success ? 'State Recovery Completed' : 'Recovery Rejected'}</strong>
-                  <p style={{ marginTop: '0.2rem', fontSize: '0.84rem' }}>
+                  <p style={{ marginTop: '0.2rem', fontSize: '0.84rem', color: 'var(--color-text-secondary)' }}>
                     {triggerResult.success
                       ? `Promoted to ${triggerResult.role?.toUpperCase()}. Synced ${triggerResult.votes_synced_count ?? 0} missing records in ${triggerResult.duration_ms ?? 0} ms.`
                       : triggerResult.error || 'Failed to satisfy recovery consensus policy.'}
@@ -214,8 +214,8 @@ export default function Recovery({ nodeInfo, onRecoveryTriggered }) {
         <section className="card" aria-labelledby="telemetry-card-title">
           <div className="card-title">
             <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <FileText size={18} color="var(--color-navy-primary)" aria-hidden="true" />
-              <h3 id="telemetry-card-title" style={{ fontSize: '1.0625rem', fontWeight: 700, margin: 0 }}>
+              <FileText size={18} color="var(--color-cyan)" aria-hidden="true" />
+              <h3 id="telemetry-card-title" style={{ fontSize: '1.0625rem', fontWeight: 700, margin: 0, color: '#FFFFFF' }}>
                 SyncLog Execution Telemetry
               </h3>
             </span>
@@ -224,38 +224,38 @@ export default function Recovery({ nodeInfo, onRecoveryTriggered }) {
 
           {lastRec ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.84rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.5rem', borderBottom: '1px solid var(--color-border-subtle)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.5rem', borderBottom: '1px solid var(--color-border-glass)' }}>
                 <span style={{ color: 'var(--color-text-muted)' }}>Status / Outcome:</span>
                 <span className={`badge ${lastRec.success ? 'badge-active' : 'badge-inactive'}`}>
                   {lastRec.success ? 'Verified Success' : 'Failed / Incomplete'}
                 </span>
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.5rem', borderBottom: '1px solid var(--color-border-subtle)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.5rem', borderBottom: '1px solid var(--color-border-glass)' }}>
                 <span style={{ color: 'var(--color-text-muted)' }}>Accepted Remote Records:</span>
-                <strong style={{ color: 'var(--color-navy-primary)' }}>{lastRec.accepted_votes_count ?? 0}</strong>
+                <strong style={{ color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>{lastRec.accepted_votes_count ?? 0}</strong>
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.5rem', borderBottom: '1px solid var(--color-border-subtle)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.5rem', borderBottom: '1px solid var(--color-border-glass)' }}>
                 <span style={{ color: 'var(--color-text-muted)' }}>Rejected Partial Finalizations:</span>
-                <strong style={{ color: 'var(--color-warning-text)' }}>{lastRec.rejected_partial_finalizations_count ?? 0}</strong>
+                <strong style={{ color: 'var(--color-amber)', fontFamily: 'var(--font-mono)' }}>{lastRec.rejected_partial_finalizations_count ?? 0}</strong>
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.5rem', borderBottom: '1px solid var(--color-border-subtle)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.5rem', borderBottom: '1px solid var(--color-border-glass)' }}>
                 <span style={{ color: 'var(--color-text-muted)' }}>Client-ID Conflicts:</span>
-                <span>{lastRec.client_id_conflicts_count ?? 0}</span>
+                <span style={{ fontFamily: 'var(--font-mono)' }}>{lastRec.client_id_conflicts_count ?? 0}</span>
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.5rem', borderBottom: '1px solid var(--color-border-subtle)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.5rem', borderBottom: '1px solid var(--color-border-glass)' }}>
                 <span style={{ color: 'var(--color-text-muted)' }}>Peers Polled:</span>
-                <span>
+                <span style={{ fontFamily: 'var(--font-mono)' }}>
                   {lastRec.peers_contacted?.length ? `Nodes: [${lastRec.peers_contacted.join(', ')}]` : 'None / Local only'}
                 </span>
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ color: 'var(--color-text-muted)' }}>Execution Duration:</span>
-                <span style={{ color: 'var(--color-navy-primary)', fontWeight: 600 }}>{lastRec.duration_ms ?? 0} ms</span>
+                <span style={{ color: '#FFFFFF', fontWeight: 600, fontFamily: 'var(--font-mono)' }}>{lastRec.duration_ms ?? 0} ms</span>
               </div>
 
               {lastRec.error && (

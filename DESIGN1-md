@@ -1,0 +1,19 @@
+# Design System: Fault-Tolerant Voting Console
+
+## 1. Core Tokens (Claude Design Framework)
+*   **Background Base:** Deep Obsidian `#0B0F19`[cite: 4, 6]
+*   **Surface Cards:** Glassmorphic translucent panels (blur 16px, 8% white border)[cite: 4, 6]
+*   **Primary Accent (Coordinator/Active):** Electric Indigo `#6366F1`[cite: 4]
+*   **Secondary Accent (Success/Committed):** Cyan `#06B6D4`[cite: 4, 6]
+*   **Error/Failover:** Crimson `#E11D48`
+*   **Typography:** Modern sans-serif utilizing CSS `clamp()` for responsive fluid scaling[cite: 4, 6]. Monospace (`JetBrains Mono`) strictly reserved for cryptographic receipts, Lamport timestamps, and the Live Console view.
+
+## 2. Layout Architecture
+*   **Dashboard:** Bento grid layout isolating the Voting Booth, Live Tally, and active Node Mesh[cite: 4].
+*   **Audit Feed (Dual-View):** Segmented toggle maintaining the structured table for verification and the dark-terminal console for live failover velocity.
+
+## 3. Motion & Physics (GSAP & CSS)
+*   **Hardware Acceleration:** All GSAP transforms must use `translate3d(0,0,0)` or `will-change: transform` to guarantee 60fps rendering during heavy gRPC polling[cite: 7].
+*   **State Interpolation:** Tally counts and progress meters must use GSAP to smoothly tween between the 2.5s `fetchTally()` resolutions.
+*   **Memory Safety:** All React component animations must be wrapped in `useGSAP()` alongside the native `clearInterval` logic to prevent zombie listeners upon unmounting[cite: 3, 7].
+*   **Ledger Rows:** New entries utilize the established `ledgerRowSlideIn` (240ms cubic-bezier) CSS transition with a gentle teal highlight pulse on the Lamport timestamp.
